@@ -10,8 +10,6 @@
   <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg"  alt="mysql logo"      width="70" height="70">
 </p>
 
-<button data-toggle-text="Que horrível! Mudar de volta!">Usar caldeirão nos parágrafos</button>
-
 <div style="text-align:center;margin:auto;font-size:50px">
     <i class="devicon-html5-plain"></i>
     <i class="devicon-css3-plain"></i>
@@ -26,13 +24,13 @@
     <i class="devicon-gitlab-plain"></i>
 </div>
 
-<div style="text-align:center;margin:auto">
+<p align="center">
     <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
     <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
     <img src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipseide&logoColor=white">
     <img src="https://img.shields.io/badge/VScode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
     <img src="https://img.shields.io/badge/unity-FFFFFF?style=for-the-badge&logo=unity&logoColor=black">
-</div>
+</p>
 
 <h3>Experiência Profissional</h3>
 
@@ -46,7 +44,7 @@ Projetos em destaque: [SAPRE]()
 
 <h3>Redes sociais</h3>
 
-<div style="text-align:center">
+<p align="center">
       <a href="mailto:phenriquebcampos@gmail.com">
         <img alt="Gmail" src="https://img.shields.io/badge/Gmail-EA4335?style=flat&logo=gmail&logoColor=white">
       </a>
@@ -62,11 +60,11 @@ Projetos em destaque: [SAPRE]()
       <a href="https://twitter.com/drope_sem_rumo">
         <img alt="Artstation" src="https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white">
       </a>
-</div>
+</p>
 
 <br/>
 
-[//]: #
+[//]: 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
 
