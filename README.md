@@ -2,6 +2,12 @@
 
 <h3>Minhas Skills</h3>
 
+<p align="center">
+  <a href="https://getbootstrap.com/">
+    <img src="https://predocampos.github.io/public/images/icons/c-original.svg" alt="c logo" width="200" height="165">
+  </a>
+</p>
+
 <div style="text-align:center;margin:auto;font-size:50px">
     <i class="devicon-java-plain"></i>
     <i class="devicon-c-plain"></i>
