@@ -4,8 +4,13 @@
 
 <p align="center">
   <a href="https://getbootstrap.com/">
-    <img src="https://predocampos.github.io/public/images/icons/c-original.svg" alt="c logo" width="200" height="165">
+    <img src="https://predocampos.github.io/public/images/icons/c-original.svg" alt="c logo" width="100" height="100">
   </a>
+  <img src="https://predocampos.github.io/public/images/icons/c-original.svg" alt="c logo" width="100" height="100">
+  <img src="https://predocampos.github.io/public/images/icons/java-original.svg" alt="java logo" width="100" height="100">
+  <img src="https://predocampos.github.io/public/images/icons/cplusplus-original.svg" alt="cplusplus logo" width="100" height="100">
+  <img src="https://predocampos.github.io/public/images/icons/python-original.svg" alt="python logo" width="100" height="100">
+  <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg" alt="mysql logo" width="100" height="100">
 </p>
 
 <div style="text-align:center;margin:auto;font-size:50px">
