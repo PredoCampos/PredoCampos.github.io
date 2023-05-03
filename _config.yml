@@ -1,16 +1,16 @@
 
 # Setup
-title:               DevAid
-email:               example@gmail.com
-tagline:             Free Jekyll theme made for developers
+title:               Predo Campos
+email:               phenriquebcampos@gmail.com
+tagline:             Demo
 url:                 "" # insert your site's URL
 baseurl:             ""
 
 # About/contact
 author: # you can edit these to be your personal details
-  name:              Xiaoying Riley
-  url:               https://twitter.com/3rdwave_themes
-  email:
+  name:              Pedro Campos
+  url:               https://twitter.com/PredoCampos_
+  email:             phenriquebcampos@gmail.com
 
 # Google services
 google_verification:
@@ -22,16 +22,16 @@ google_tag_manager:
 bing_verification:
 
 # Social
-github_username: thundergolfer
-twitter_username: 3rdwave_themes
-instagram_username: kevin/
-facebook: 3rdwavethemes/
-linkedin_username: xiaoying
-dribbble_username: Xiaoying
+github_username: predocampos
+twitter_username: predocampos_
+instagram_username: drope_sem_rumo
+facebook:
+linkedin_username: predocampos
+dribbble_username:
 
 # Custom vars
-version:             1.0.1
-github:
+version:             1.0.0
+github:              
   repo:              https://github.com/kevit/devaid-jekyll-theme
 
 # Gems - Dependencies for this theme
