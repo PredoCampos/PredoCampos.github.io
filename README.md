@@ -24,12 +24,6 @@
   <img src="https://predocampos.github.io/public/images/icons/gitlab-original.svg"          alt="gitlab logo"       width="70" height="70">
 </p>
 
-<div id="DevOps" style="text-align:center;margin:auto;font-size:50px">
-    <i class="devicon-git-plain"></i>
-    <i class="devicon-github-plain"></i>
-    <i class="devicon-gitlab-plain"></i>
-</div>
-
 <p align="center">
     <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
     <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
@@ -67,8 +61,6 @@ Projetos em destaque: [SAPRE]()
         <img alt="Artstation" src="https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white">
       </a>
 </p>
-
-<br/>
 
 [//]:#
 
