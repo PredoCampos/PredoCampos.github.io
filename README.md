@@ -3,23 +3,14 @@
 <h3>Minhas Skills</h3>
 
 <p align="center">
-  <a href="https://getbootstrap.com/">
-    <img src="https://predocampos.github.io/public/images/icons/c-original.svg" alt="c logo" width="100" height="100">
-  </a>
-  <img src="https://predocampos.github.io/public/images/icons/c-original.svg" alt="c logo" width="100" height="100">
-  <img src="https://predocampos.github.io/public/images/icons/java-original.svg" alt="java logo" width="100" height="100">
-  <img src="https://predocampos.github.io/public/images/icons/cplusplus-original.svg" alt="cplusplus logo" width="100" height="100">
-  <img src="https://predocampos.github.io/public/images/icons/python-original.svg" alt="python logo" width="100" height="100">
-  <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg" alt="mysql logo" width="100" height="100">
+  <img src="https://predocampos.github.io/public/images/icons/c-original.svg"               alt="c logo"          width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/cplusplus-original.svg"       alt="cplusplus logo"  width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/java-original.svg"            alt="java logo"       width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/python-original.svg"          alt="python logo"     width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg"  alt="mysql logo"      width="70" height="70">
 </p>
 
-<div style="text-align:center;margin:auto;font-size:50px">
-    <i class="devicon-java-plain"></i>
-    <i class="devicon-c-plain"></i>
-    <i class="devicon-cplusplus-plain"></i>
-    <i class="devicon-python-plain"></i>
-    <i class="devicon-mysql-plain"></i>
-</div>
+<button data-toggle-text="Que horrível! Mudar de volta!">Usar caldeirão nos parágrafos</button>
 
 <div style="text-align:center;margin:auto;font-size:50px">
     <i class="devicon-html5-plain"></i>
