@@ -15,7 +15,7 @@
   <img src="https://predocampos.github.io/public/images/icons/css3-original.svg"            alt="css3 logo"         width="70" height="70">
   <img src="https://predocampos.github.io/public/images/icons/javascript-original.svg"      alt="javascript logo"   width="70" height="70">
   <img src="https://predocampos.github.io/public/images/icons/selenium-original.svg"        alt="selenium logo"     width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/wordpress-plain.svg"          alt="wordpress logo"    width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/wordpress-original.svg"       alt="wordpress logo"    width="70" height="70">
 </p>
 
 <p align="center">
