@@ -3,20 +3,26 @@
 <h3>Minhas Skills</h3>
 
 <p align="center">
-  <img src="https://predocampos.github.io/public/images/icons/c-original.svg"               alt="c logo"          width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/cplusplus-original.svg"       alt="cplusplus logo"  width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/java-original.svg"            alt="java logo"       width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/python-original.svg"          alt="python logo"     width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg"  alt="mysql logo"      width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/c-original.svg"               alt="c logo"            width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/cplusplus-original.svg"       alt="cplusplus logo"    width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/java-original.svg"            alt="java logo"         width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/python-original.svg"          alt="python logo"       width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg"  alt="mysql logo"        width="70" height="70">
 </p>
 
-<div style="text-align:center;margin:auto;font-size:50px">
-    <i class="devicon-html5-plain"></i>
-    <i class="devicon-css3-plain"></i>
-    <i class="devicon-javascript-plain"></i>
-    <i class="devicon-selenium-plain"></i>
-    <i class="devicon-wordpress-plain"></i>
-</div>
+<p align="center">
+  <img src="https://predocampos.github.io/public/images/icons/html5-original.svg"           alt="html5 logo"        width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/css3-original.svg"            alt="css3 logo"         width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/javascript-original.svg"      alt="javascript logo"   width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/selenium-original.svg"        alt="selenium logo"     width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/wordpress-plain.svg"          alt="wordpress logo"    width="70" height="70">
+</p>
+
+<p align="center">
+  <img src="https://predocampos.github.io/public/images/icons/git-original.svg"             alt="git logo"          width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/github-original.svg"          alt="github logo"       width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/gitlab-plain.svg"             alt="gitlab logo"       width="70" height="70">
+</p>
 
 <div id="DevOps" style="text-align:center;margin:auto;font-size:50px">
     <i class="devicon-git-plain"></i>
@@ -64,7 +70,7 @@ Projetos em destaque: [SAPRE]()
 
 <br/>
 
-[//]: 
+[//]:#
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
 
