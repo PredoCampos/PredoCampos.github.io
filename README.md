@@ -21,7 +21,7 @@
 <p align="center">
   <img src="https://predocampos.github.io/public/images/icons/git-original.svg"             alt="git logo"          width="70" height="70">
   <img src="https://predocampos.github.io/public/images/icons/github-original.svg"          alt="github logo"       width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/gitlab-plain.svg"             alt="gitlab logo"       width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/gitlab-original.svg"          alt="gitlab logo"       width="70" height="70">
 </p>
 
 <div id="DevOps" style="text-align:center;margin:auto;font-size:50px">
