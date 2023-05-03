@@ -29,8 +29,7 @@
     <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
     <img src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipseide&logoColor=white">
     <img src="https://img.shields.io/badge/VScode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
-    <img src="https://img.shields.io/badge/unity-FFFFFF
-?style=for-the-badge&logo=unity&logoColor=black">
+    <img src="https://img.shields.io/badge/unity-FFFFFF?style=for-the-badge&logo=unity&logoColor=black">
 </div>
 
 <h3>Experiência Profissional</h3>
