@@ -62,6 +62,25 @@ Projetos em destaque: [SAPRE]()
       </a>
 </p>
 
+<details>
+  <summary>OPEN</summary>
+
+  ```text
+      ___
+     /___/\_                                
+    _\   \/_/\__                         
+  __\       \/_/\                       
+  \   __    __ \ \                    
+ __\  \_\   \_\ \ \   __              
+/_/\\   __   __  \ \_/_/\       
+\_\/_\__\/\__\/\__\/_\_\/          
+   \_\/_/\       /_\_\/         
+      \_\/       \_\/     
+ 
+ 
+  ```
+</details>
+
 [//]:#
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
