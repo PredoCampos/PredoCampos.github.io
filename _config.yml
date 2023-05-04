@@ -1,52 +1,22 @@
-# Configuração
-title:              Predo Campos
-email:              phenriquebcampos@gmail.com
-url:                "https://predocampos.github.io"
-baseurl:            ""
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
-# Sobre
-name:               Pedro Campos
-email:              phenriquebcampos@gmail.com
-
-# Redes sociais
-github_username:    predocampos
-twitter_username:   predocampos_
-instagram_username: drope_sem_rumo
-linkedin_username:  predocampos
-
-# Configurações de construção
-markdown:           kramdown
-permalink:          pretty
+# Build settings
+markdown: kramdown
+permalink: pretty
 plugins:
   - jekyll-sitemap
 compress_html:
   clippings: all
-  comments:  all
+  comments: all
   startings: [html, head, body]
 
-# Caminho das páginas
+# Pages Path
 defaults:
   - scope:
       path: "_pages"
     values:
       permalink: /:basename:output_ext
-widgets:
-  - title: Sobre
-    url: about
-    archor: true
-  - title: Documentação
-    url: docs
-    archor: true
-  - title: Licença
-    url: license
-    archor: true
-  - title: Contato
-    url: contact
-    archor: true
-  - title: Blog
-    url: blog
-  - title: Página
-    url: page
 
 include:
   - _pages
@@ -55,6 +25,10 @@ sass:
   sass_dir: assets/scss
   style: compressed
 
-# Excluir do processamento
+# Exclude from processing.
 exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE.text
   - README.md
+  - SECURITY.md
