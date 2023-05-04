@@ -2,46 +2,45 @@
 # Setup
 title:               Predo Campos
 email:               phenriquebcampos@gmail.com
-tagline:             Demo
-url:                 "" # insert your site's URL
+url:                 "https://predocampos.github.io"
 baseurl:             ""
 
 # About/contact
-author: # you can edit these to be your personal details
+author:
   name:              Pedro Campos
   url:               https://twitter.com/PredoCampos_
   email:             phenriquebcampos@gmail.com
-
-# Google services
-google_verification:
-# Use either direct GA implementation or set up GTM account
-# - using both will skew your data (leave blank to not use at all)
-google_analytics:
-google_tag_manager:
-# Bing services
-bing_verification:
 
 # Social
 github_username: predocampos
 twitter_username: predocampos_
 instagram_username: drope_sem_rumo
-facebook:
 linkedin_username: predocampos
-dribbble_username:
 
 # Custom vars
 version:             1.0.0
 github:              
-  repo:              https://github.com/kevit/devaid-jekyll-theme
+  repo:              https://github.com/PredoCampos/PredoCampos.github.io
 
-# Gems - Dependencies for this theme
+# Gems
 gems:
-  # None currently
 
 # Build settings
 markdown:     kramdown
 permalink:    pretty
+plugins:
+  - jekyll-sitemap
+compress_html:
+  clippings: all
+  comments: all
+  startings: [html, head, body]
 
+# Pages Path
+defaults:
+  - scope:
+      path: "_pages"
+    values:
+      permalink: /:basename:output_ext
 widgets:
   - title: About
     url: about
@@ -62,3 +61,17 @@ widgets:
     url: blog
   - title: Page
     url: page
+
+include:
+  - _pages
+
+sass:
+  sass_dir: assets/scss
+  style: compressed
+
+# Exclude from processing.
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - LICENSE.text
+  - README.md
