@@ -8,7 +8,6 @@
   <img src="https://predocampos.github.io/public/images/icons/java-original.svg"            alt="java logo"         width="70" height="70">
   <img src="https://predocampos.github.io/public/images/icons/python-original.svg"          alt="python logo"       width="70" height="70">
   <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg"  alt="mysql logo"        width="70" height="70">
-  
 </p>
 
 <p align="center">
@@ -67,17 +66,6 @@ Projetos em destaque: [SAPRE]()
   <summary>OPEN</summary>
 
   ```text
-      ___
-     /___/\_                                
-    _\   \/_/\__                         
-  __\       \/_/\                       
-  \   __    __ \ \                    
- __\  \_\   \_\ \ \   __              
-/_/\\   __   __  \ \_/_/\       
-\_\/_\__\/\__\/\__\/_\_\/          
-   \_\/_/\       /_\_\/         
-      \_\/       \_\/     
- 
  
   ```
 </details>
