@@ -8,6 +8,7 @@
   <img src="https://predocampos.github.io/public/images/icons/java-original.svg"            alt="java logo"         width="70" height="70">
   <img src="https://predocampos.github.io/public/images/icons/python-original.svg"          alt="python logo"       width="70" height="70">
   <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg"  alt="mysql logo"        width="70" height="70">
+  
 </p>
 
 <p align="center">
