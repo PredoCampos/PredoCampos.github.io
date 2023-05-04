@@ -1,65 +1,51 @@
+# Configuração
+title:              Predo Campos
+email:              phenriquebcampos@gmail.com
+url:                "https://predocampos.github.io"
+baseurl:            ""
 
-# Setup
-title:               Predo Campos
-email:               phenriquebcampos@gmail.com
-url:                 "https://predocampos.github.io"
-baseurl:             ""
+# Sobre
+name:               Pedro Campos
+email:              phenriquebcampos@gmail.com
 
-# About/contact
-author:
-  name:              Pedro Campos
-  url:               https://twitter.com/PredoCampos_
-  email:             phenriquebcampos@gmail.com
-
-# Social
-github_username: predocampos
-twitter_username: predocampos_
+# Redes sociais
+github_username:    predocampos
+twitter_username:   predocampos_
 instagram_username: drope_sem_rumo
-linkedin_username: predocampos
+linkedin_username:  predocampos
 
-# Custom vars
-version:             1.0.0
-github:              
-  repo:              https://github.com/PredoCampos/PredoCampos.github.io
-
-# Gems
-gems:
-
-# Build settings
-markdown:     kramdown
-permalink:    pretty
+# Configurações de construção
+markdown:           kramdown
+permalink:          pretty
 plugins:
   - jekyll-sitemap
 compress_html:
   clippings: all
-  comments: all
+  comments:  all
   startings: [html, head, body]
 
-# Pages Path
+# Caminho das páginas
 defaults:
   - scope:
       path: "_pages"
     values:
       permalink: /:basename:output_ext
 widgets:
-  - title: About
+  - title: Sobre
     url: about
     archor: true
-  - title: Features
-    url: features
-    archor: true
-  - title: Docs
+  - title: Documentação
     url: docs
     archor: true
-  - title: License
+  - title: Licença
     url: license
     archor: true
-  - title: Contact
+  - title: Contato
     url: contact
     archor: true
   - title: Blog
     url: blog
-  - title: Page
+  - title: Página
     url: page
 
 include:
@@ -69,9 +55,6 @@ sass:
   sass_dir: assets/scss
   style: compressed
 
-# Exclude from processing.
+# Excluir do processamento
 exclude:
-  - Gemfile
-  - Gemfile.lock
-  - LICENSE.text
   - README.md
