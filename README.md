@@ -3,25 +3,25 @@
 <h3>Minhas Skills</h3>
 
 <p align="center">
-  <img src="https://predocampos.github.io/public/images/icons/c-original.svg"               alt="c logo"            width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/cplusplus-original.svg"       alt="cplusplus logo"    width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/java-original.svg"            alt="java logo"         width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/python-original.svg"          alt="python logo"       width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg"  alt="mysql logo"        width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/c-original.svg"               alt="c logo"            width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/cplusplus-original.svg"       alt="cplusplus logo"    width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/java-original.svg"            alt="java logo"         width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/python-original.svg"          alt="python logo"       width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/mysql-original-wordmark.svg"  alt="mysql logo"        width="70" height="70">
 </p>
 
 <p align="center">
-  <img src="https://predocampos.github.io/public/images/icons/html5-original.svg"           alt="html5 logo"        width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/css3-original.svg"            alt="css3 logo"         width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/javascript-original.svg"      alt="javascript logo"   width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/selenium-original.svg"        alt="selenium logo"     width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/wordpress-original.svg"       alt="wordpress logo"    width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/html5-original.svg"           alt="html5 logo"        width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/css3-original.svg"            alt="css3 logo"         width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/javascript-original.svg"      alt="javascript logo"   width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/selenium-original.svg"        alt="selenium logo"     width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/wordpress-original.svg"       alt="wordpress logo"    width="70" height="70">
 </p>
 
 <p align="center">
-  <img src="https://predocampos.github.io/public/images/icons/git-original.svg"             alt="git logo"          width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/github-original.svg"          alt="github logo"       width="70" height="70">
-  <img src="https://predocampos.github.io/public/images/icons/gitlab-original.svg"          alt="gitlab logo"       width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/git-original.svg"             alt="git logo"          width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/github-original.svg"          alt="github logo"       width="70" height="70">
+  <img src="https://predocampos.github.io/assets/images/icons/gitlab-original.svg"          alt="gitlab logo"       width="70" height="70">
 </p>
 
 <p align="center">
@@ -61,14 +61,6 @@ Projetos em destaque: [SAPRE]()
         <img alt="Artstation" src="https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white">
       </a>
 </p>
-
-<details>
-  <summary>OPEN</summary>
-
-  ```text
- 
-  ```
-</details>
 
 [//]:#
 

@@ -1,48 +1,31 @@
 ---
-#-------------------------------
 # General Site Settings
 
-title: Kross
-logo:
-author: themefisher
-description: this is meta description
-email: steve.fruits@email.com
-phone: +880 2544 658 256
-address: 125/A, CA Commercial Area, California, USA
+title: Pedro Campos
+description: A personal site to showcase my talents as an indie game developer, pixel artist, and illustrator.
+email: phenriquebcampos@gmail.com
 copyright: Copyright &copy; 2020 Designed by [Themefisher](https://themefisher.com) & Developed by [Getjekyllthemes](https://getjekyllthemes.com)
 
 menu:
   - { name: About, link: "/about" }
-  - { name: Blog, link: "/blog" }
+  - { name: Projects, link: "/projects" }
   - { name: Portfolio, link: "/portfolio" }
   - { name: Contact, link: "/contact" }
 
 #-------------------------------
-# Google Analytics Section
+# Social
 
-# Analytics helps you understand who visits your website.
-# Learn more at: http://support.google.com/analytics/answer/1008065
+github_username:    predocampos
+linkedin_username:  predocampos
+twitter_username:   predocampos_
+instagram_username: drope_sem_rumo
 
-# NOTE: If you want to use Google Analytics for basic web tracking: Just uncomment and enter your UA-Code here.
-
-google-analytics: # UA-XXXXXX-X
-
-#-------------------------------
-# Comment Section (Disqus)
-
-disqus-identifier: # Add your shortname for Disqus Comment. For example mr-brown
-
-#-------------------------------
-# Hero Section
-
-hero:
-  hero-title: Hi! I’m <br> Christoher <br> UX designer
 
 social:
-  - { icon: "ti-facebook", link: "#" }
+  - { icon: "ti-github",    link: "https://github.com/PredoCampos" }
+  - { icon: "ti-linkedin",  link: "https://www.linkedin.com/in/pedro-camposti/" }
+  - { icon: "ti-twitter",   link: "https://twitter.com/PredoCampos_" }
   - { icon: "ti-instagram", link: "#" }
-  - { icon: "ti-dribbble", link: "#" }
-  - { icon: "ti-twitter", link: "#" }
 
 #-------------------------------
 # About (Section and Page)
@@ -82,90 +65,6 @@ team:
   - title: "John Doe"
     image: "assets/images/team/member-3.png"
     designation: "Designer"
-
-#-------------------------------
-# Skills Section
-
-skills-title: Skills
-skills:
-  - { name: Web Design, color: "#fdb157", value: "90%" }
-  - { name: Logo Design, color: "#9473e6", value: "60%" }
-  - { name: After Effects, color: "#bdecf6", value: "80%" }
-  - { name: Web App, color: "#ffbcaa", value: "70%" }
-
-#-------------------------------
-# Exprerience Section
-
-experience-title: Experience
-experience:
-  - {
-      name: Junior UX Designer,
-      icon: "icon-1.png",
-      date: "Jan 2007 - Feb 2009",
-      organization: "WEBEX",
-    }
-  - {
-      name: UX & UI Designer,
-      icon: "icon-2.png",
-      date: "Mar 2009 - Aug 2014",
-      organization: "AUGMEDIX",
-    }
-  - {
-      name: Senior UI Designer,
-      icon: "icon-3.png",
-      date: "Sep 2014 - Present",
-      organization: "THEMEFISHER",
-    }
-
-#-------------------------------
-# Education Section
-
-education-title: Education
-education:
-  - {
-      name: Marters in UX Design,
-      date: "2006",
-      organization: "Masassusets Institute of Technology",
-    }
-  - {
-      name: Honours in Fine Arts,
-      date: "2004",
-      organization: "Harvard University",
-    }
-  - {
-      name: Higher Secondary Certificat,
-      date: "2000",
-      organization: "Cardiff School",
-    }
-  - {
-      name: Secondary School Certificate,
-      date: "1998",
-      organization: "Cardiff School",
-    }
-
-#-------------------------------
-# Services Section
-
-services-title: Services
-services:
-  - {
-      name: UI Design,
-      icon: ti-palette,
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      active: ,# Add true to select section
-    }
-  - {
-      name: UX Design,
-      icon: ti-vector,
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      active: true, # Add true to select section
-    }
-  - {
-      name: Interaction Design,
-      icon: ti-panel,
-      description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-      active: ,# Add true to select section
-    }
 
 #-------------------------------
 # Portfolio (Section and Page)
@@ -244,6 +143,68 @@ portfolio-items:
       - type: "illustration"
 
 #-------------------------------
+# Skills Section
+
+skills-title: Skills
+skills:
+  - { name: Web Design, color: "#fdb157", value: "90%" }
+  - { name: Logo Design, color: "#9473e6", value: "60%" }
+  - { name: After Effects, color: "#bdecf6", value: "80%" }
+  - { name: Web App, color: "#ffbcaa", value: "70%" }
+
+#-------------------------------
+# Exprerience Section
+
+experience-title: Experience
+experience:
+  - {
+      name: Junior UX Designer,
+      icon: "icon-1.png",
+      date: "Jan 2007 - Feb 2009",
+      organization: "WEBEX",
+    }
+  - {
+      name: UX & UI Designer,
+      icon: "icon-2.png",
+      date: "Mar 2009 - Aug 2014",
+      organization: "AUGMEDIX",
+    }
+  - {
+      name: Senior UI Designer,
+      icon: "icon-3.png",
+      date: "Sep 2014 - Present",
+      organization: "THEMEFISHER",
+    }
+
+#-------------------------------
+# Education Section
+
+education-title: Education
+education:
+  - {
+      name: Marters in UX Design,
+      date: "2006",
+      organization: "Masassusets Institute of Technology",
+    }
+  - {
+      name: Honours in Fine Arts,
+      date: "2004",
+      organization: "Harvard University",
+    }
+  - {
+      name: Higher Secondary Certificat,
+      date: "2000",
+      organization: "Cardiff School",
+    }
+  - {
+      name: Secondary School Certificate,
+      date: "1998",
+      organization: "Cardiff School",
+    }
+
+
+
+#-------------------------------
 # Testimonials Section
 
 testimonial-items:
@@ -299,5 +260,5 @@ client-slider-items:
 #-------------------------------
 # Contact Section
 
-contact-title: Contact Info
-contact-email: steve.fruits@email.com
+contact-title: Informações para Contato
+contact-email: phenriquebcampos@gmail.com
