@@ -54,19 +54,7 @@ work-process:
     icon: "assets/images/icons/print.png"
     content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
 
-# My Team Section
-team:
-  - title: "Jack Schenziwe"
-    image: "assets/images/team/member-1.png"
-    designation: "Project Manager"
 
-  - title: "Julias Carlie"
-    image: "assets/images/team/member-2.png"
-    designation: "Web Developer"
-
-  - title: "John Doe"
-    image: "assets/images/team/member-3.png"
-    designation: "Designer"
 
 #-------------------------------
 # Portfolio (Section and Page)
@@ -149,34 +137,10 @@ portfolio-items:
 
 skills-title: Skills
 skills:
-  - { name: Web Design, color: "#fdb157", value: "90%" }
-  - { name: Logo Design, color: "#9473e6", value: "60%" }
-  - { name: After Effects, color: "#bdecf6", value: "80%" }
-  - { name: Web App, color: "#ffbcaa", value: "70%" }
-
-#-------------------------------
-# Exprerience Section
-
-experience-title: Experience
-experience:
-  - {
-      name: Junior UX Designer,
-      icon: "icon-1.png",
-      date: "Jan 2007 - Feb 2009",
-      organization: "WEBEX",
-    }
-  - {
-      name: UX & UI Designer,
-      icon: "icon-2.png",
-      date: "Mar 2009 - Aug 2014",
-      organization: "AUGMEDIX",
-    }
-  - {
-      name: Senior UI Designer,
-      icon: "icon-3.png",
-      date: "Sep 2014 - Present",
-      organization: "THEMEFISHER",
-    }
+  - { name: Web Design,     color: "#fdb157", value: "50%" }
+  - { name: Logo Design,    color: "#9473e6", value: "50%" }
+  - { name: After Effects,  color: "#bdecf6", value: "50%" }
+  - { name: Web App,        color: "#ffbcaa", value: "50%" }
 
 #-------------------------------
 # Education Section
@@ -184,80 +148,31 @@ experience:
 education-title: Education
 education:
   - {
-      name: Marters in UX Design,
-      date: "2006",
-      organization: "Masassusets Institute of Technology",
+      name: Informática,
+      date: "2015",
+      organization: "Instituto Federal do Maranhão - IFMA",
     }
   - {
-      name: Honours in Fine Arts,
-      date: "2004",
-      organization: "Harvard University",
+      name: Ciência da Computação,
+      date: "2019",
+      organization: "Universidade Federal do Maranhão - UFMA",
     }
-  - {
-      name: Higher Secondary Certificat,
-      date: "2000",
-      organization: "Cardiff School",
-    }
-  - {
-      name: Secondary School Certificate,
-      date: "1998",
-      organization: "Cardiff School",
-    }
-
-
 
 #-------------------------------
+
+# My Team Section
+team:
+  - title: "Pedro Campos"
+    image: "assets/images/team/member-1.png"
+    designation: "me"
+
 # Testimonials Section
 
 testimonial-items:
-  - name: "Jesica Gomez"
+  - name: "Pedro Campos"
     image: "assets/images/testimonial/client-1.png"
-    designation: "CEO, Funder"
-    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <strong>quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</strong> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-
-  - name: "Jesica Gomez"
-    image: "assets/images/testimonial/client-1.png"
-    designation: "CEO, Funder"
-    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <strong>quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</strong> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-
-  - name: "Jesica Gomez"
-    image: "assets/images/testimonial/client-1.png"
-    designation: "CEO, Funder"
-    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, <strong>quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</strong> Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-
-#-------------------------------
-# Client Slider Section
-
-client-slider-items:
-  - logo: "assets/images/clients-logo/client-logo-1.png"
-    url: "#"
-
-  - logo: "assets/images/clients-logo/client-logo-2.png"
-    url: "#"
-
-  - logo: "assets/images/clients-logo/client-logo-3.png"
-    url: "#"
-
-  - logo: "assets/images/clients-logo/client-logo-4.png"
-    url: "#"
-
-  - logo: "assets/images/clients-logo/client-logo-5.png"
-    url: "#"
-
-  - logo: "assets/images/clients-logo/client-logo-1.png"
-    url: "#"
-
-  - logo: "assets/images/clients-logo/client-logo-2.png"
-    url: "#"
-
-  - logo: "assets/images/clients-logo/client-logo-3.png"
-    url: "#"
-
-  - logo: "assets/images/clients-logo/client-logo-4.png"
-    url: "#"
-
-  - logo: "assets/images/clients-logo/client-logo-5.png"
-    url: "#"
+    designation: "me"
+    content: "me"
 
 #-------------------------------
 # Contact Section
