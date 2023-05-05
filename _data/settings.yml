@@ -15,11 +15,13 @@ menu:
 #-------------------------------
 # Social
 
+hero:
+  hero-title: Hi! I’m <br> Pedro <br> dev or somthing like this
+
 github_username:    predocampos
 linkedin_username:  predocampos
 twitter_username:   predocampos_
 instagram_username: drope_sem_rumo
-
 
 social:
   - { icon: "ti-github",    link: "https://github.com/PredoCampos" }
