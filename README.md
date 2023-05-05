@@ -1,58 +1,77 @@
-# Kross Jekyll
+# Pedro Campos
 
-Kross Jekyll Creative Portfolio Template ported from [Kross HTML Template](https://themefisher.com/products/kross/)
+<h3>Minhas Skills</h3>
 
-## Demo
+<p align="center">
+  <img src="https://predocampos.github.io/public/images/icons/c-original.svg"               alt="c logo"            width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/cplusplus-original.svg"       alt="cplusplus logo"    width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/java-original.svg"            alt="java logo"         width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/python-original.svg"          alt="python logo"       width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/mysql-original-wordmark.svg"  alt="mysql logo"        width="70" height="70">
+</p>
 
-| Homepage  | About  | Blog  | Portfolio  | Contact  |
-|---|---|---|---|---|
-| ![Homepage](https://user-images.githubusercontent.com/37659754/58154295-1a9c5300-7c93-11e9-992c-ad8d2ff8d99f.png) | ![About](https://user-images.githubusercontent.com/37659754/58154317-28ea6f00-7c93-11e9-914b-b7e5f1cdab0e.png) | ![Blog](https://user-images.githubusercontent.com/37659754/58154339-369ff480-7c93-11e9-9568-53b7ebdc6b2d.png) | ![portfolio](https://user-images.githubusercontent.com/37659754/58154368-491a2e00-7c93-11e9-8900-f5a6abe0a61d.png) | ![contact](https://user-images.githubusercontent.com/37659754/58154403-57684a00-7c93-11e9-9cea-ea28253a6f6a.png) |
+<p align="center">
+  <img src="https://predocampos.github.io/public/images/icons/html5-original.svg"           alt="html5 logo"        width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/css3-original.svg"            alt="css3 logo"         width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/javascript-original.svg"      alt="javascript logo"   width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/selenium-original.svg"        alt="selenium logo"     width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/wordpress-original.svg"       alt="wordpress logo"    width="70" height="70">
+</p>
 
-[Live Preview](http://demo.themefisher.com/kross).
+<p align="center">
+  <img src="https://predocampos.github.io/public/images/icons/git-original.svg"             alt="git logo"          width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/github-original.svg"          alt="github logo"       width="70" height="70">
+  <img src="https://predocampos.github.io/public/images/icons/gitlab-original.svg"          alt="gitlab logo"       width="70" height="70">
+</p>
 
-## Setup
+<p align="center">
+    <img src="https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=jira&logoColor=white">
+    <img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">
+    <img src="https://img.shields.io/badge/Eclipse-2C2255?style=for-the-badge&logo=eclipseide&logoColor=white">
+    <img src="https://img.shields.io/badge/VScode-007ACC?style=for-the-badge&logo=visualstudiocode&logoColor=white">
+    <img src="https://img.shields.io/badge/unity-FFFFFF?style=for-the-badge&logo=unity&logoColor=black">
+</p>
 
-To start your project, fork this repository
-After forking the repo, your site will be live immediately on your personal Github Pages account, e.g. `https://yourusername.github.io/your-repo-name/`.
+<h3>Experiência Profissional</h3>
 
-Make sure GitHub Pages is enabled for your repo. It might take some time for the site to propagate entirely.
+[<img align="left" height="94px" width="94px" alt="TJMA" src="https://www.irib.org.br/app/webroot/files/downloads/images/MARCA%20SECUNDARIA%201.png">][tjma.link]
+**Gerente de Projeto Júnior** \
+[**TJMA**][tjma.link] • Estágio \
+Linguagens & Tecnologias: `Jira`, `Java`, `Eclipse`,\
+Projetos em destaque: [SAPRE]()
 
-## Customize
+<br/>
 
-Things you can customize in `_data/settings.yml` (no HTML/CSS):
+<h3>Redes sociais</h3>
 
-- Theme General Settings ( name, logo, email, phone, address )
-- Hero Section
-- About Section
-- Team Section
-- Skills Section
-- Experience Section
-- Education Section
-- Services Section
-- Portfolio Section
-- Testimonials Section
-- Client Slider Section
-- Contact Section
+<p align="center">
+      <a href="mailto:phenriquebcampos@gmail.com">
+        <img alt="Gmail" src="https://img.shields.io/badge/Gmail-EA4335?style=flat&logo=gmail&logoColor=white">
+      </a>
+      <a href="https://www.linkedin.com/in/pedro-camposti/">
+        <img alt="Linkedin" src="https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white">
+      </a>
+      <a href="https://github.com/PredoCampos">
+        <img alt="Github" src="https://img.shields.io/badge/GitHub-100000?style=flat&logo=github&logoColor=white">
+      </a>
+      <a href="https://twitter.com/drope_sem_rumo">
+        <img alt="Twitter" src="https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white">
+      </a>
+      <a href="https://twitter.com/drope_sem_rumo">
+        <img alt="Artstation" src="https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white">
+      </a>
+</p>
 
-## Deployment
+<details>
+  <summary>OPEN</summary>
 
-To run the theme locally, navigate to the theme directory and run `bundle install` to install the dependencies, then run `jekyll serve` or `bundle exec jekyll serve` to start the Jekyll server.
-I would recommend checking the [Deployment Methods](https://jekyllrb.com/docs/deployment-methods/) page on Jekyll's website.
+  ```text
+ 
+  ```
+</details>
 
-## Reporting Issues
+[//]:#
 
-We use GitHub Issues as the official bug tracker for the **Kross Theme**. Please Search [existing issues](https://github.com/themefisher/kross-jekyll/issues). It’s possible someone has already reported the same problem.
-If your problem or idea is not addressed yet, [open a new issue](https://github.com/themefisher/kross-jekyll/issues/new)
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
 
-## Technical Support or Questions
-
-If you have questions or need help integrating the product please [contact us](mailto:themefisher@gmail.com) instead of opening an issue.
-
-<!-- licence -->
-## License
-
-Copyright (c) 2016 - Present, Designed & Developed by [Themefisher](https://themefisher.com)
-
-**Code License:** Released under the [MIT](https://github.com/themefisher/kross-jekyll/blob/main/LICENSE) license.
-
-**Image license:** The images are only for demonstration purposes. They have their license, we don't have permission to share those images.
+[tjma.link]: <https://www.tjma.jus.br/>
