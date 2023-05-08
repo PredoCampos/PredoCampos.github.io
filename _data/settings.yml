@@ -16,7 +16,7 @@ menu:
 # Social
 
 hero:
-  hero-title: Olá! Sou o Pedro e sou <h1> Dev </h1>
+  hero-title: Olá! Sou o <br> Pedro <br> e sou <p class="writer"> Dev </p>
 
 github_username:    predocampos
 linkedin_username:  predocampos
