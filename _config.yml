@@ -1,5 +1,5 @@
-baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: ""
+url: ""
 
 # Build settings
 markdown: kramdown
@@ -27,8 +27,4 @@ sass:
 
 # Exclude from processing.
 exclude:
-  - Gemfile
-  - Gemfile.lock
-  - LICENSE.text
   - README.md
-  - SECURITY.md
