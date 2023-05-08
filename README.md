@@ -35,20 +35,19 @@
 <h3>Experiência Profissional</h3>
 
 [<img align="left" height="85px" width="95px" alt="PETCOMP" src="https://petcompufma.org/assets/images/logos/PETComp.png">][tjma.link]
-**Gerente de Projeto Júnior** \
-[**TJMA**][tjma.link] • Estágio \
-Linguagens & Tecnologias: `Jira`, `Java`, `Eclipse`,\
-Projetos em destaque: [SAPRE]()
+**Aluno Bolsista** \
+[**PETCOMP**][petcomp.link] • Aprendiz \
+Projetos: `Escrita de Artigos`, `Elaboração de Minicursos, Palestras e Monitorias`, `Organização de Eventos Acadêmicos`.
 
 [<img align="left" height="95px" width="95px" alt="TJMA" src="https://www.irib.org.br/app/webroot/files/downloads/images/MARCA%20SECUNDARIA%201.png">][tjma.link]
 **Estágio em Desenvolvimento** \
 [**TJMA**][tjma.link] • Estágio \
-Linguagens & Tecnologias: `Jira`, `Java`, `Eclipse`,\
-Projetos em destaque: [SAPRE]()
+Linguagens & Tecnologias: `Jira`, `Java`, `Eclipse`.\
+Projetos em destaque: [SAPRE]().
 
 <br/>
 
-<h3>Redes sociais</h3>
+<h3>Contato</h3>
 
 <p align="center">
       <a href="mailto:phenriquebcampos@gmail.com">
@@ -70,3 +69,4 @@ Projetos em destaque: [SAPRE]()
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/devicon.min.css">
 
 [tjma.link]: <https://www.tjma.jus.br/>
+[petcomp.link]: <https://petcompufma.org/>
