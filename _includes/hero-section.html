@@ -45,52 +45,77 @@
 </section>
 <!-- /hero area -->
 <script>
-    function typeWriter(elemento) {
+  function typeWriter(elemento) {
     const textoArray = elemento.innerHTML.split('');
     elemento.innerHTML = '';
-  
+
     for (let i = 0; i < textoArray.length; i++) {
-      setTimeout(function() {
+      setTimeout(function () {
         elemento.innerHTML += textoArray[i];
       }, 75 * i);
     }
   }
 
   function eraseText(elemento) {
-  const texto = elemento.innerHTML;
-  const textoArray = texto.split('');
-  elemento.innerHTML = '';
+    const textoArray = elemento.innerHTML.split('');
+    elemento.innerHTML = '';
 
-  for (let i = textoArray.length - 1; i >= 0; i--) {
-    setTimeout(function() {
-      textoArray.pop();
-      elemento.innerHTML = textoArray.join('');
-    }, 75 * (textoArray.length - i));
+    for (let i = textoArray.length - 1; i >= 0; i--) {
+      setTimeout(function () {
+        textoArray.pop();
+        elemento.innerHTML = textoArray.join('');
+      }, 75 * (textoArray.length - i));
+    }
   }
-}
-typeWriter(document.querySelector('.write'));
-eraseText(document.querySelector('.write'));
+
+  function typeWriteFinal(elemento, texto) {
+    const textoArray = texto.split('');
+    elemento.innerHTML = '';
+
+    for (let i = 0; i < textoArray.length; i++) {
+      setTimeout(function () {
+        elemento.innerHTML += textoArray[i];
+      }, 75 * i);
+    }
+
+    setTimeout(function () {
+      const textoArray = elemento.innerHTML.split('');
+      elemento.innerHTML = '';
+
+      for (let i = textoArray.length - 1; i >= 0; i--) {
+        setTimeout(function () {
+          textoArray.pop();
+          elemento.innerHTML = textoArray.join('');
+        }, 75 * (textoArray.length - i));
+      }
+    }, 150);
+  }
+
+const elemento = document.querySelector('.write');
+const texto = 'Olá, Mundo!';
+
+typeWriteFinal(elemento, texto);
 
 </script>
 
 <style>
-h1::after {
-  content: '|';
-  opacity: 1;
-  margin-left: 5px;
-  display: inline-block;
-  animation: blink .7s infinite;
-}
-
-@keyframes blink {
-
-  0%,
-  100% {
+  h1::after {
+    content: '|';
     opacity: 1;
+    margin-left: 5px;
+    display: inline-block;
+    animation: blink .7s infinite;
   }
 
-  50% {
-    opacity: 0;
+  @keyframes blink {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0;
+    }
   }
-}
 </style>
