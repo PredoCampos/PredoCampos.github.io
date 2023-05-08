@@ -34,7 +34,7 @@
 
 <h3>Experiência Profissional</h3>
 
-[<img align="left" height="105px" width="95px" alt="PETCOMP" src="https://petcompufma.org/assets/images/logos/PETComp.png">][tjma.link]
+[<img align="left" height="95px" width="105px" alt="PETCOMP" src="https://petcompufma.org/assets/images/logos/PETComp.png">][tjma.link]
 **Gerente de Projeto Júnior** \
 [**TJMA**][tjma.link] • Estágio \
 Linguagens & Tecnologias: `Jira`, `Java`, `Eclipse`,\
