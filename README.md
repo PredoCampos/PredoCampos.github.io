@@ -34,13 +34,13 @@
 
 <h3>Experiência Profissional</h3>
 
-[<img align="left" height="95px" width="105px" alt="PETCOMP" src="https://petcompufma.org/assets/images/logos/PETComp.png">][tjma.link]
+[<img align="left" height="95px" width="95px" alt="PETCOMP" src="https://petcompufma.org/assets/images/logos/PETComp.png">][tjma.link]
 **Gerente de Projeto Júnior** \
 [**TJMA**][tjma.link] • Estágio \
 Linguagens & Tecnologias: `Jira`, `Java`, `Eclipse`,\
 Projetos em destaque: [SAPRE]()
 
-[<img align="left" height="92px" width="92px" alt="TJMA" src="https://www.irib.org.br/app/webroot/files/downloads/images/MARCA%20SECUNDARIA%201.png">][tjma.link]
+[<img align="left" height="95px" width="95px" alt="TJMA" src="https://www.irib.org.br/app/webroot/files/downloads/images/MARCA%20SECUNDARIA%201.png">][tjma.link]
 **Estágio em Desenvolvimento** \
 [**TJMA**][tjma.link] • Estágio \
 Linguagens & Tecnologias: `Jira`, `Java`, `Eclipse`,\
