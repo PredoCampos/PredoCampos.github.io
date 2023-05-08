@@ -57,9 +57,6 @@ Projetos em destaque: [SAPRE]()
       <a href="https://twitter.com/drope_sem_rumo">
         <img alt="Twitter" src="https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white">
       </a>
-      <a href="https://twitter.com/drope_sem_rumo">
-        <img alt="Artstation" src="https://img.shields.io/badge/Twitter-1DA1F2?style=flat&logo=twitter&logoColor=white">
-      </a>
 </p>
 
 [//]:#
