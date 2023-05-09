@@ -47,7 +47,6 @@
 <script>
   function typeWriterEffect(elemento, texto) {
     const textoArray = texto.split('');
-    elemento.innerHTML = '';
 
     for (let i = 0; i < textoArray.length; i++) {
       setTimeout(function () {
@@ -57,7 +56,6 @@
 
     setTimeout(function () {
       const textoArray = elemento.innerHTML.split('');
-      elemento.innerHTML = '';
 
       for (let i = textoArray.length - 1; i >= 0; i--) {
         setTimeout(function () {
@@ -72,6 +70,7 @@
   const texto = 'Olá, Mundo!';
 
   function loopTypeWriter() {
+    elemento.innerHTML = '';
     typeWriterEffect(elemento, texto);
     setTimeout(loopTypeWriter, 3000);
   }
