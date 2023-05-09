@@ -45,37 +45,14 @@
 </section>
 <!-- /hero area -->
 <script>
-  function typeWriter(elemento) {
-    const textoArray = elemento.innerHTML.split('');
-    elemento.innerHTML = '';
-
-    for (let i = 0; i < textoArray.length; i++) {
-      setTimeout(function () {
-        elemento.innerHTML += textoArray[i];
-      }, 75 * i);
-    }
-  }
-
-  function eraseText(elemento) {
-    const textoArray = elemento.innerHTML.split('');
-    elemento.innerHTML = '';
-
-    for (let i = textoArray.length - 1; i >= 0; i--) {
-      setTimeout(function () {
-        textoArray.pop();
-        elemento.innerHTML = textoArray.join('');
-      }, 75 * (textoArray.length - i));
-    }
-  }
-
-  function typeWriteFinal(elemento, texto) {
+  function typeWriterEffect(elemento, texto) {
     const textoArray = texto.split('');
     elemento.innerHTML = '';
 
     for (let i = 0; i < textoArray.length; i++) {
       setTimeout(function () {
         elemento.innerHTML += textoArray[i];
-      }, 75 * i);
+      }, 100 * i);
     }
 
     setTimeout(function () {
@@ -86,15 +63,20 @@
         setTimeout(function () {
           textoArray.pop();
           elemento.innerHTML = textoArray.join('');
-        }, 75 * (textoArray.length - i));
+        }, 100 * (textoArray.length - i));
       }
-    }, 15000);
+    }, 2500);
   }
 
-const elemento = document.querySelector('.write');
-const texto = 'Olá, Mundo!';
+  const elemento = document.querySelector('.write');
+  const texto = 'Olá, Mundo!';
 
-typeWriteFinal(elemento, texto);
+  function loopTypeWriter() {
+    typeWriterEffect(elemento, texto);
+    setTimeout(loopTypeWriter, 3000);
+  }
+
+  loopTypeWriter();
 
 </script>
 
