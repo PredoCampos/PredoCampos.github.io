@@ -67,12 +67,18 @@
   }
 
   const elemento = document.querySelector('.write');
-  const texto = 'Olá, Mundo!';
+  const texto = ['Olá,', 'Mundo!', 'Bem-vindo(a)!', 'Chatbot', 'JavaScript'];
 
   function loopTypeWriter() {
     elemento.innerHTML = '';
-    typeWriterEffect(elemento, texto);
-    setTimeout(loopTypeWriter, 3000);
+
+    for (let i = 0; i < texto.length; i++) {
+      setTimeout(function () {
+        typeWriterEffect(elemento, texto[i]);
+      }, 2500 * i);
+    }
+
+    setTimeout(loopTypeWriter, 2500 * texto.length);
   }
 
   loopTypeWriter();
