@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-lg-11 mx-auto">
         <h1 class="text-white font-tertiary">{{ site.data.settings.hero.hero-title }}</h1>
-        <h1 class="text-white font-tertiary write">Desenvolvedor</h1>
+        <h1 class="text-white font-tertiary write"> </h1>
       </div>
     </div>
   </div>
@@ -45,42 +45,79 @@
 </section>
 <!-- /hero area -->
 <script>
-  function typeWriterEffect(elemento, texto) {
-    const textoArray = texto.split('');
 
-    for (let i = 0; i < textoArray.length; i++) {
-      setTimeout(function () {
-        elemento.innerHTML += textoArray[i];
-      }, 100 * i  );
+  function typeWriterWrite(elemento, texto) {
+    if (elemento.innerHTML.trim() !== '') {
+      typeWriterDelete(elemento);
     }
 
-    setTimeout(function () {
-      const textoArrayReversed = elemento.innerHTML.split('');
+    const textoArray = texto.split('');
 
-      for (let i = textoArrayReversed.length - 1; i >= 0; i--) {
-        setTimeout(function () {
-          textoArrayReversed.pop();
-          elemento.innerHTML = textoArrayReversed.join('');
-        }, 100 * (textoArrayReversed.length - i));
+    let i = 0;
+    const timer = setInterval(function () {
+      elemento.innerHTML += textoArray[i];
+      i++;
+
+      if (i === textoArray.length) {
+        clearInterval(timer);
       }
-    }, 2500);
+    }, 100);
+  }
+
+  function typeWriterDelete(elemento) {
+    if (elemento.innerHTML.trim() === '') {
+      return;
+    }
+
+    const textoArray = elemento.innerHTML.split('');
+
+    let i = textoArray.length - 1;
+    const timer = setInterval(function () {
+      textoArray.pop();
+      elemento.innerHTML = textoArray.join('');
+      i--;
+
+      if (i < 0) {
+        clearInterval(timer);
+      }
+    }, 100);
   }
 
   const elemento = document.querySelector('.write');
-  const texto = ['Olá,', 'Mundo!', 'Bem-vindo(a)!', 'Chatbot', 'JavaScript'];
+  const texto = ['Desenvolvedor', 'Pixel Artist', 'GameDev'];
 
   function loopTypeWriter() {
-    for (let i = 0; i < texto.length; i++) {
+    let i = 0;
+    let delay = 0;
+
+    function writeAndDelete() {
+      typeWriterWrite(elemento, texto[i]);
+
+      const textoArray = texto[i].split('');
+      const writeDuration = textoArray.length * 100;
+
       setTimeout(function () {
-        elemento.innerHTML = '';
-        typeWriterEffect(elemento, texto[i]);
-      }, 2500 * i);
+        typeWriterDelete(elemento);
+
+        const deleteDuration = textoArray.length * 50;
+        const deleteDelay = deleteDuration + 2000;
+
+        i++;
+        delay += writeDuration + 2000;
+
+        if (i === texto.length) {
+          setTimeout(loopTypeWriter, delay + 1500);
+        } else {
+          setTimeout(writeAndDelete, deleteDelay);
+        }
+      }, writeDuration + 2000);
     }
 
-    setTimeout(loopTypeWriter, 2500 * texto.length);
+    writeAndDelete();
   }
 
   loopTypeWriter();
+
 </script>
 
 <style>
