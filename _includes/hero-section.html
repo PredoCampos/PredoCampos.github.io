@@ -70,10 +70,9 @@
   const texto = ['Olá,', 'Mundo!', 'Bem-vindo(a)!', 'Chatbot', 'JavaScript'];
 
   function loopTypeWriter() {
-    elemento.innerHTML = '';
-
     for (let i = 0; i < texto.length; i++) {
       setTimeout(function () {
+        elemento.innerHTML = '';
         typeWriterEffect(elemento, texto[i]);
       }, 2500 * i);
     }
