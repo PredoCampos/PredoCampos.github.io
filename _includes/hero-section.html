@@ -55,13 +55,13 @@
     }
 
     setTimeout(function () {
-      const textoArray = elemento.innerHTML.split('');
+      const textoArrayReversed = elemento.innerHTML.split('');
 
-      for (let i = textoArray.length - 1; i >= 0; i--) {
+      for (let i = textoArrayReversed.length - 1; i >= 0; i--) {
         setTimeout(function () {
-          textoArray.pop();
-          elemento.innerHTML = textoArray.join('');
-        }, 100 * (textoArray.length - i));
+          textoArrayReversed.pop();
+          elemento.innerHTML = textoArrayReversed.join('');
+        }, 100 * (textoArrayReversed.length - i));
       }
     }, 2500);
   }
