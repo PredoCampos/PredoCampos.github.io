@@ -6,24 +6,6 @@ markdown: kramdown
 permalink: pretty
 plugins:
   - jekyll-sitemap
-compress_html:
-  clippings: all
-  comments: all
-  startings: [html, head, body]
-
-# Pages Path
-defaults:
-  - scope:
-      path: "_pages"
-    values:
-      permalink: /:basename:output_ext
-
-include:
-  - _pages
-
-sass:
-  sass_dir: assets/scss
-  style: compressed
 
 # Exclude from processing.
 exclude:

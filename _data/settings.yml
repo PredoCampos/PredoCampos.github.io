@@ -1,65 +1,3 @@
----
-# General Site Settings
-
-title: Pedro Campos
-description: A personal site to showcase my talents as an indie game developer, pixel artist, and illustrator.
-email: phenriquebcampos@gmail.com
-copyright: Copyright &copy; 2020 Designed by [Themefisher](https://themefisher.com) & Developed by [Getjekyllthemes](https://getjekyllthemes.com)
-
-menu:
-  - { name: About, link: "/about" }
-  - { name: Projects, link: "/projects" }
-  - { name: Portfolio, link: "/portfolio" }
-  - { name: Contact, link: "/contact" }
-
-#-------------------------------
-
-
-#-------------------------------
-# Social
-
-hero:
-  hero-title: Olá! Sou o Pedro e sou Dev
-
-github_username:    predocampos
-linkedin_username:  predocampos
-twitter_username:   predocampos_
-instagram_username: drope_sem_rumo
-
-social:
-  - { icon: "ti-github",    link: "https://github.com/PredoCampos" }
-  - { icon: "ti-linkedin",  link: "https://www.linkedin.com/in/pedro-camposti/" }
-  - { icon: "ti-twitter",   link: "https://twitter.com/PredoCampos_" }
-  - { icon: "ti-instagram", link: "#" }
-
-#-------------------------------
-# About (Section and Page)
-
-# About Section
-blurb: Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-
-blurb-btn-link: "/about"
-blurb-btn-name: know more
-
-# About Page
-
-# Work Process Section
-work-process:
-  - title: "Research and Plan"
-    icon: "assets/images/icons/plan.png"
-    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-
-  - title: "Design and Develop"
-    icon: "assets/images/icons/design.png"
-    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-
-  - title: "Deliver"
-    icon: "assets/images/icons/print.png"
-    content: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-
-
-
-#-------------------------------
 # Portfolio (Section and Page)
 
 # Portfolio Home Section
@@ -136,32 +74,6 @@ portfolio-items:
       - type: "illustration"
 
 #-------------------------------
-# Skills Section
-
-skills-title: Skills
-skills:
-  - { name: Web Design,     color: "#fdb157", value: "50%" }
-  - { name: Logo Design,    color: "#9473e6", value: "50%" }
-  - { name: After Effects,  color: "#bdecf6", value: "50%" }
-  - { name: Web App,        color: "#ffbcaa", value: "50%" }
-
-#-------------------------------
-# Education Section
-
-education-title: Education
-education:
-  - {
-      name: Informática,
-      date: "2015",
-      organization: "Instituto Federal do Maranhão - IFMA",
-    }
-  - {
-      name: Ciência da Computação,
-      date: "2019",
-      organization: "Universidade Federal do Maranhão - UFMA",
-    }
-
-#-------------------------------
 
 # My Team Section
 team:
@@ -176,9 +88,3 @@ testimonial-items:
     image: "assets/images/testimonial/client-1.png"
     designation: "me"
     content: "me"
-
-#-------------------------------
-# Contact Section
-
-contact-title: Informações para Contato
-contact-email: phenriquebcampos@gmail.com
