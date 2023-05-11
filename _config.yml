@@ -1,15 +1,28 @@
+# Site configuration
+title: My Jekyll Site
+description: A default Jekyll site
 baseurl: ""
 url: ""
 
 # Build settings
 markdown: kramdown
+theme: minima
 permalink: pretty
+
+# Plugins
 plugins:
+  - jekyll-feed
   - jekyll-sitemap
 
+# SASS configuration
 sass:
   sass_dir: assets/scss
 
-# Exclude from processing.
+# Exclude files and directories from the build process
 exclude:
   - README.md
+  - .gitignore
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
