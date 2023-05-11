@@ -1,1 +1,5 @@
-/.idea/*
+# Pasta .idea é criada pelo IntelliJ
+.idea/*
+
+# Pasta version não deve ser rastreada pelo Git
+version/*
