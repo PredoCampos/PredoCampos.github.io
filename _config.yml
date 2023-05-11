@@ -7,6 +7,9 @@ permalink: pretty
 plugins:
   - jekyll-sitemap
 
+sass:
+  sass_dir: assets/scss
+
 # Exclude from processing.
 exclude:
   - README.md
