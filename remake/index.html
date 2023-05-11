@@ -43,7 +43,11 @@
     <script src="/assets/plugins/shuffle/shuffle.min.js"></script>
     <script src="/assets/plugins/slick/slick.min.js"></script>
     <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/script.js">
+        const elemento = document.querySelector('.write');
+        const texto = ['Desenvolvedor', 'Pixel Artist', 'GameDev'];
+        loopTypeWriter();
+    </script>
 </head>
 
 <body>
@@ -239,8 +243,6 @@
     <section id="contact" class="contact section has-pattern">
         <div class="container">
             <div class="contact-inner">
-                <h2 class="title  text-center">Contact</h2>
-                <div class="clearfix"></div>
                 <div class="info text-center">
                     <h4 class="sub-title">Get Connected</h4>
                     <ul class="social-icons list-inline">
@@ -259,13 +261,6 @@
     </div>
 </footer>
 <!-- Footer -->
-
-
-<script>
-    const elemento = document.querySelector('.write');
-    const texto = ['Desenvolvedor', 'Pixel Artist', 'GameDev'];
-    loopTypeWriter();
-</script>
 
 <style>
     h1::after {
