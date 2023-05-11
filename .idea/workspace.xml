@@ -1,0 +1,924 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ff20121b-e802-47d6-b8f7-6fa3a8495dc4" name="Changes" comment="changes">
+      <change afterPath="$PROJECT_DIR$/0-0b31311637d9d6f1d93b - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0-0b31311637d9d6f1d93b.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0-0b31311637d9d6f1d93b.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0-0b31311637d9d6f1d93b.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0-5214aac20b81c5abe794 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0-5214aac20b81c5abe794.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0-5214aac20b81c5abe794.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/0-5214aac20b81c5abe794.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-5bab451b706e6cd5e218 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-5bab451b706e6cd5e218.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-5bab451b706e6cd5e218.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-5bab451b706e6cd5e218.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-d3b1200cce24f249e5fe - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-d3b1200cce24f249e5fe.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-d3b1200cce24f249e5fe.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-d3b1200cce24f249e5fe.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-d5eb133895be9e7ac9f9 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-d5eb133895be9e7ac9f9.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-d5eb133895be9e7ac9f9.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-d5eb133895be9e7ac9f9.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-dea06b0d5ec688cc4c58 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-dea06b0d5ec688cc4c58.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-dea06b0d5ec688cc4c58.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-dea06b0d5ec688cc4c58.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-f7354e81786913af02e5 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-f7354e81786913af02e5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-f7354e81786913af02e5.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-f7354e81786913af02e5.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-fb3c2e5b88423c845963 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-fb3c2e5b88423c845963.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-fb3c2e5b88423c845963.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/1-fb3c2e5b88423c845963.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/404 - Copia.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/404 - Copia/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/404.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/404/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-0f905145ee4e6c0e2d98 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-0f905145ee4e6c0e2d98.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-0f905145ee4e6c0e2d98.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-0f905145ee4e6c0e2d98.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-28aaea0caedac4975518 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-28aaea0caedac4975518.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-28aaea0caedac4975518.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-28aaea0caedac4975518.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-60f93c20223ee8b8db7b - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-60f93c20223ee8b8db7b.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-60f93c20223ee8b8db7b.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-60f93c20223ee8b8db7b.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-78c28a211ca10debded4 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-78c28a211ca10debded4.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-78c28a211ca10debded4.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-78c28a211ca10debded4.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-8d1af8a4232dbfc01400 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-8d1af8a4232dbfc01400.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-8d1af8a4232dbfc01400.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-8d1af8a4232dbfc01400.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-9459e126f09b62814870 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-9459e126f09b62814870.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-9459e126f09b62814870.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-9459e126f09b62814870.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-b1e2d9afae0c1ea61e41 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-b1e2d9afae0c1ea61e41.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-b1e2d9afae0c1ea61e41.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-b1e2d9afae0c1ea61e41.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-bfe26f84d07f320b5acf - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-bfe26f84d07f320b5acf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-bfe26f84d07f320b5acf.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-bfe26f84d07f320b5acf.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-c7aa32aa471a96b93f22 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-c7aa32aa471a96b93f22.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-c7aa32aa471a96b93f22.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-c7aa32aa471a96b93f22.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-e13e2a486383945001b5 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-e13e2a486383945001b5.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-e13e2a486383945001b5.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-e13e2a486383945001b5.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-f7e2384bcf38162b2b4c - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-f7e2384bcf38162b2b4c.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-f7e2384bcf38162b2b4c.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/6-f7e2384bcf38162b2b4c.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/7-7df65c4f733bff5c67b3 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/7-7df65c4f733bff5c67b3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/7-7df65c4f733bff5c67b3.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/7-7df65c4f733bff5c67b3.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/PredoCampos.github.io.rar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-8c2dbe4eafcf02a7ec9f - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-8c2dbe4eafcf02a7ec9f.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-8c2dbe4eafcf02a7ec9f.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-8c2dbe4eafcf02a7ec9f.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-bbba99d00b120c556c52 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-bbba99d00b120c556c52.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-bbba99d00b120c556c52.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-bbba99d00b120c556c52.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chunk-map - Copia.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chunk-map.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---node-modules-gatsby-plugin-offline-app-shell-js-a5814bd9535675e5b054 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---node-modules-gatsby-plugin-offline-app-shell-js-a5814bd9535675e5b054.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---node-modules-gatsby-plugin-offline-app-shell-js-a5814bd9535675e5b054.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---node-modules-gatsby-plugin-offline-app-shell-js-a5814bd9535675e5b054.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-404-js-8445982b695075b074a8 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-404-js-8445982b695075b074a8.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-404-js-8445982b695075b074a8.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-404-js-8445982b695075b074a8.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-404-js-95fc92342278f5749acb - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-404-js-95fc92342278f5749acb.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-404-js-95fc92342278f5749acb.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-404-js-95fc92342278f5749acb.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-0365e6b4251650aedcf3 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-0365e6b4251650aedcf3.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-0365e6b4251650aedcf3.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-0365e6b4251650aedcf3.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-1bc293209a4473fbc401 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-1bc293209a4473fbc401.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-1bc293209a4473fbc401.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-1bc293209a4473fbc401.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-9bbaffe265c7f7081573 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-9bbaffe265c7f7081573.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-9bbaffe265c7f7081573.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/component---src-pages-index-js-9bbaffe265c7f7081573.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons - Copia/icon-144x144.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons - Copia/icon-192x192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons - Copia/icon-256x256.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons - Copia/icon-384x384.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons - Copia/icon-48x48.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons - Copia/icon-512x512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons - Copia/icon-72x72.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons - Copia/icon-96x96.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons/icon-144x144.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons/icon-192x192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons/icon-256x256.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons/icon-384x384.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons/icon-48x48.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons/icon-512x512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons/icon-72x72.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/icons/icon-96x96.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/index - Copia.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifest - Copia.webmanifest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/manifest.webmanifest" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/offline-plugin-app-shell-fallback - Copia/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/offline-plugin-app-shell-fallback/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robots - Copia.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/robots.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sitemap - Copia.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sitemap.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Light-183de736efe789394f26ed013b0b5cdd.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Light-62b8f0fd78f4d842b3a75c1d2512e449.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Light-73b7f4385ae2f8028e1b365a48038582.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-LightItalic-1222cf0d45062719e06c3d7d44937e8f.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-LightItalic-3ede1be73648125ed40cfd07e1292bf1.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-LightItalic-f34c1430353885b55d271d473235eb6a.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Medium-115d37180a9c07e2f480ca81b032babe.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Medium-46b36969c7bb1d7ed4c8253e8f274788.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Medium-88178c3f2a309ad11520ee62765072d0.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-MediumItalic-3df14639dd2cb07c83bd39707d70910f.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-MediumItalic-4afe8032c647b57de924543c052e0ee4.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-MediumItalic-6eb2ac5a1d38f19c7085b131356b355e.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Regular-96e0a7c47fdd7a8f05007837ead73b35.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Regular-b63c62e591d0c8fbe2c8f009883346d5.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Regular-e08232148510aade507c2af9bb66acd0.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-RegularItalic-35657aa2d12ff78e3d8a8a5ba28c2c35.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-RegularItalic-3a445970c7bcd6b102ac6bd60178b0bc.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-RegularItalic-c408807a3001d1f7773f5f7fe513c165.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Semibold-347808401d7a6607ff9a86897aec0a39.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Semibold-8325d174436d55e995c7214faafcd47b.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-Semibold-d8b856473a51d7eec2a9bccf2fbea54c.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-SemiboldItalic-6473be72d5216d0ec21d273af09b9fa3.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-SemiboldItalic-71941c0c0420e703494d6e2a62bc12d4.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/Calibre-SemiboldItalic-8f3e4b3eaed73e67bbc4fc81f308a35f.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-Medium-02bbb63875ebdbf463e764bb3d8ff190.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-Medium-7df7729fbc66c426b3500d72bc140f5c.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-Medium-99497ab65b5b8a7e5c18b7b3edde5c85.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-MediumItalic-92f9fb02060aabf378f0639de5e033ef.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-MediumItalic-9fbdbe4e2d56f80d6775b61f9b264df8.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-MediumItalic-ae7ea80fb472a7d27aa69b3cf00f487c.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-Regular-7faa66605357721067fe1b07d9103015.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-Regular-d59c1702c527525e9939ba06166a3750.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-Regular-d892da9f8895428033ec68a6c0426ba6.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-RegularItalic-502441ff6ee56a1df1558e8461050a46.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-RegularItalic-8eddf7adea62d66b9e4d031b58dfaaa6.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-RegularItalic-bb1fc3ab1772befac3587b30ca876a09.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-Semibold-2d4bff46a7a9ba9dc7701f75726a7815.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-Semibold-8282ed99a84b8e9c803baf3df5b76c01.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-Semibold-cebe2bfbe8a283427e3c5ad8a1b8ae2f.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-SemiboldItalic-2fd68bed64aeaceadc6402efc4d82767.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-SemiboldItalic-41da0311eaa7077546785a822a6ba21a.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/SFMono-SemiboldItalic-ca70ba8a9030ed9bb7e081f63fd3831b.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/android-icon-192x192-1fcec46152a833ebd486ebcac493fc4c.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-2f5bc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-5795d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-6c677.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-80d5f.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-a715b.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-c8bdf.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-a1a3b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-ddf64.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-61442.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-db9b3.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/146/path---index-6a9-gHwR0N8kCc4cAPNcMkK225fZ31s.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/164/path---404-html-516-62a-NZuapzHg3X9TaN1iIixfv1W23E.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/190/path---index-6a9-gCq2TSpl5SF9PjX2JRq4MJxiGM.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/20/path---index-6a9-A8K2n00f4Ade2Mj1w6TWneYFSrA.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/2241923043.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/232/path---index-6a9-8PxxDhBOpnzAPKqjJuzV68qOKY.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/246/path---index-6a9-0yf08z44C6B5famFBxLeTQFjHY.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/253/path---index-6a9-GI2DVkAS0bq7NfvSijDLYQ5D4jw.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/27/path---index-6a9-pfAeeUpKa0w3jlx8du3GpXoATg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/272/path---index-6a9-oriRua69ubRNi8n0WZOYNlM.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/274/path---index-6a9-YJGN70xVEQuIRrE10uR8LCyGUbc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/295/path---index-6a9-smHbFOUsNvNiUxnzg3F75wo2StU.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/296/path---index-6a9-raX0Oe1thuzJHxB0HhAgHrQA698.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/305/path---index-6a9-EFZ9xG0beSd7d01VdFzN7WR3K68.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/305/path---index-6a9-Ncimmlm2Kt1N7EQKxj9MEBkR1xg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/366/path---index-6a9-PKeyy09C59HHvHAOH8ezWy9AXM.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/377/path---index-6a9-A75ZowEc8iSp3RV0DvxdVEf2c.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/409/path---index-6a9-PFprRNm1fjkR4CPXGskBqZ5OpE.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/417/path---index-6a9-eycAS2zxXYafPOjD0bWLk0DNkI.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/44/path---404-22-d-bce-NZuapzHg3X9TaN1iIixfv1W23E.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/44/path---index-6a9-pPnCu4tlzA0NYYKtrSmBZlsI0ek.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/464/path---index-6a9-laoplYAGUItwhwDlhj6OpQDcU.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/466/path---index-6a9-1KhfpEelvOVjk49CHDwaqagVQ.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/517/path---index-6a9-bOTdv6R4YuQUzJ1fLuHU1KKNh98.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/520/path---offline-plugin-app-shell-fallback-a-30-c5a-NZuapzHg3X9TaN1iIixfv1W23E.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/529/path---index-6a9-LN4pYMztMNS92TvlYSq6Zshyu08.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/555/path---index-6a9-iHr37staLmyqtRfEItJEG6PWqxc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/582/path---index-6a9-g0p71q1M2eBX6eWwPDfdUDP1M.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/612/path---index-6a9-QMfNlxL4KR6EFeVC8mqtNbpTA2M.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/624/path---index-6a9-d2qAzTWfsGMbNmNVeSgmrKknFVo.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/647/path---index-6a9-lJ3xCyXSBe5P1jj7AmWxZips3WY.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/658/path---index-6a9-y4xZX7xeoVZyZLWxTMhkMtEsEU.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/660/path---index-6a9-UVj60VkXJKRjf26rzuX9RyYAowA.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/668/path---index-6a9-qHYfViptfaRn6CX0B42ocVZE.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/670/path---index-6a9-20bpk5gwpJe8ekwocgBuhc1SBWg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/683/path---index-6a9-aenNX5TTRReTx3l56719Ecc0.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/692/path---index-6a9-DR5gaKh6zGhgF7FBXMeA6FhzIdE.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/692/path---index-6a9-skQocgHEF93J6eUOCcnspvNntw.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/705/path---index-6a9-LM0R0fc2gZxYt3nLkxWEcu859Q.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/707/path---index-6a9-2330sYj4eZ5ytXqQTS3QsFu6fw.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/725/path---index-6a9-UcbxPgv4VQi43QBGHF51Xrv9ZI.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/740/path---index-6a9-tahgNqFqOLs1Xd38uv3jXqj3j8k.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/755/path---index-6a9-c6IMrkp5IlxsgJa73ixiDnuVtTA.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/776/path---index-6a9-4SZxGyoH2cMO99xxYhUk8eo1dvs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/78/path---index-6a9-kKvuknq0ekdpyBTcm19P6EJxAdA.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/782/path---index-6a9-8lLeOBb8Ge5CPBb3o2QLDOserTQ.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/795/path---index-6a9-NIoctpj3CoRuaIVvjFNDgSfL6o.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/8/path---index-6a9-wdabA28Dk8hIpMP9laLq3noqhwk.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/804/path---index-6a9-32pFM965QPWdlWmCE0HD9SlMTnE.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/810/path---index-6a9-qTp1Uua7FjKcrykIEGuvuJyuxFc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/820/path---index-6a9-3CfpNBDwpbJDg9hJLlX9fPG6wCs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/824/path---index-6a9-NMo5sb55dDN2SnZf7vd1wIOrSQ.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/827/path---index-6a9-1N0oUqoht1iWYE7Y8l89uPa2t0.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/855/path---index-6a9-CYIBKXRnH7iqLW43da2iH8YmoWk.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/882/path---index-6a9-GMcGU19zNo5oH3YgaXHok74HLFg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/89/path---index-6a9-nHHgGg2kdNq6Hc0aJuROs82VQsc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/898/path---index-6a9-65WczD1B3VFI59oREi5JjtlJ1kQ.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/908/path---index-6a9-mfq12GtL6vSrjS15jmsARsS4o.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/919/path---index-6a9-ubRQN4NNnpscQeQ3sF21oAKWuw.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/920/path---dev-404-page-5-f-9-fab-NZuapzHg3X9TaN1iIixfv1W23E.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/935/path---index-6a9-LZSN8gBpdN6irHSuMp8stz6RPs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/952/path---index-6a9-LG04tv3y376frqqW2tF5WsXUBtU.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/953/path---index-6a9-RmI2bEDsAOuMjZXugSWqEewMEno.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/956/path---index-6a9-p2N7IfRF4SzuHlDdUoHNAzu9F8.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/d/997/path---index-6a9-VGi9VSdpn9MGEIQBoWkdVZCG4.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-4a58b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-679cf.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-73181.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-cf734.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-e7966.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-eb308.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gladrates-01dfde5ea151658fcea331e85491caf2-4a58b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gladrates-01dfde5ea151658fcea331e85491caf2-679cf.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gladrates-01dfde5ea151658fcea331e85491caf2-73181.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gladrates-01dfde5ea151658fcea331e85491caf2-cf734.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gladrates-01dfde5ea151658fcea331e85491caf2-e7966.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/gladrates-01dfde5ea151658fcea331e85491caf2-eb308.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/goandmarry-d5a912bcc049e54af9013540824e123d-4a58b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/goandmarry-d5a912bcc049e54af9013540824e123d-679cf.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/goandmarry-d5a912bcc049e54af9013540824e123d-73181.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/goandmarry-d5a912bcc049e54af9013540824e123d-cf734.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/goandmarry-d5a912bcc049e54af9013540824e123d-e7966.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/goandmarry-d5a912bcc049e54af9013540824e123d-eb308.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-ae01c.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-ef924.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/halcyon-4660e57f6dc66a2170ee3d38632ecddf-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-12696.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-18e65.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-40930.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-6547d.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-78c28.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-9b75e.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-d1239.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-ffc2a.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-2aa02184544838608ef8e99db396234d-1fcd2.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-2aa02184544838608ef8e99db396234d-7c211.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-2aa02184544838608ef8e99db396234d-90d1e.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-2aa02184544838608ef8e99db396234d-aa362.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-2aa02184544838608ef8e99db396234d-b68a9.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-2aa02184544838608ef8e99db396234d-ed30d.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-a7c1a30867e4b53b21ca05e3985b31cb-12696.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-a7c1a30867e4b53b21ca05e3985b31cb-18e65.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-a7c1a30867e4b53b21ca05e3985b31cb-40930.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-a7c1a30867e4b53b21ca05e3985b31cb-6547d.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-a7c1a30867e4b53b21ca05e3985b31cb-78c28.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-a7c1a30867e4b53b21ca05e3985b31cb-9b75e.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-a7c1a30867e4b53b21ca05e3985b31cb-d1239.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/me-a7c1a30867e4b53b21ca05e3985b31cb-ffc2a.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/resume-cc1c5a6e6a30f7dd16434cd041fe65a0.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-ae01c.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-ef924.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static - Copia/v3-145435c08cd326b9151f2106c9b0b60e-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Light-183de736efe789394f26ed013b0b5cdd.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Light-62b8f0fd78f4d842b3a75c1d2512e449.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Light-73b7f4385ae2f8028e1b365a48038582.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-LightItalic-1222cf0d45062719e06c3d7d44937e8f.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-LightItalic-3ede1be73648125ed40cfd07e1292bf1.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-LightItalic-f34c1430353885b55d271d473235eb6a.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Medium-115d37180a9c07e2f480ca81b032babe.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Medium-46b36969c7bb1d7ed4c8253e8f274788.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Medium-88178c3f2a309ad11520ee62765072d0.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-MediumItalic-3df14639dd2cb07c83bd39707d70910f.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-MediumItalic-4afe8032c647b57de924543c052e0ee4.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-MediumItalic-6eb2ac5a1d38f19c7085b131356b355e.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Regular-96e0a7c47fdd7a8f05007837ead73b35.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Regular-b63c62e591d0c8fbe2c8f009883346d5.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Regular-e08232148510aade507c2af9bb66acd0.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-RegularItalic-35657aa2d12ff78e3d8a8a5ba28c2c35.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-RegularItalic-3a445970c7bcd6b102ac6bd60178b0bc.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-RegularItalic-c408807a3001d1f7773f5f7fe513c165.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Semibold-347808401d7a6607ff9a86897aec0a39.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Semibold-8325d174436d55e995c7214faafcd47b.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-Semibold-d8b856473a51d7eec2a9bccf2fbea54c.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-SemiboldItalic-6473be72d5216d0ec21d273af09b9fa3.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-SemiboldItalic-71941c0c0420e703494d6e2a62bc12d4.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Calibre-SemiboldItalic-8f3e4b3eaed73e67bbc4fc81f308a35f.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-Medium-02bbb63875ebdbf463e764bb3d8ff190.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-Medium-7df7729fbc66c426b3500d72bc140f5c.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-Medium-99497ab65b5b8a7e5c18b7b3edde5c85.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-MediumItalic-92f9fb02060aabf378f0639de5e033ef.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-MediumItalic-9fbdbe4e2d56f80d6775b61f9b264df8.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-MediumItalic-ae7ea80fb472a7d27aa69b3cf00f487c.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-Regular-7faa66605357721067fe1b07d9103015.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-Regular-d59c1702c527525e9939ba06166a3750.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-Regular-d892da9f8895428033ec68a6c0426ba6.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-RegularItalic-502441ff6ee56a1df1558e8461050a46.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-RegularItalic-8eddf7adea62d66b9e4d031b58dfaaa6.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-RegularItalic-bb1fc3ab1772befac3587b30ca876a09.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-Semibold-2d4bff46a7a9ba9dc7701f75726a7815.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-Semibold-8282ed99a84b8e9c803baf3df5b76c01.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-Semibold-cebe2bfbe8a283427e3c5ad8a1b8ae2f.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-SemiboldItalic-2fd68bed64aeaceadc6402efc4d82767.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-SemiboldItalic-41da0311eaa7077546785a822a6ba21a.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/SFMono-SemiboldItalic-ca70ba8a9030ed9bb7e081f63fd3831b.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/android-icon-192x192-1fcec46152a833ebd486ebcac493fc4c.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-2f5bc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-5795d.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-6c677.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-80d5f.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-a715b.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-c8bdf.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/blistabloc-d0f8ae5e695dd35cb5c1bfbe3eecbd44-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-a1a3b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-ddf64.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexamplus-38b6b29a6bbcc65a175f25c678100294-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-61442.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-db9b3.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/cbtexampro-7e4f4ad95bd165219500f63e5b8c9d45-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/146/path---index-6a9-gHwR0N8kCc4cAPNcMkK225fZ31s.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/164/path---404-html-516-62a-NZuapzHg3X9TaN1iIixfv1W23E.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/190/path---index-6a9-gCq2TSpl5SF9PjX2JRq4MJxiGM.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/20/path---index-6a9-A8K2n00f4Ade2Mj1w6TWneYFSrA.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/2241923043.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/232/path---index-6a9-8PxxDhBOpnzAPKqjJuzV68qOKY.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/246/path---index-6a9-0yf08z44C6B5famFBxLeTQFjHY.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/253/path---index-6a9-GI2DVkAS0bq7NfvSijDLYQ5D4jw.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/27/path---index-6a9-pfAeeUpKa0w3jlx8du3GpXoATg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/272/path---index-6a9-oriRua69ubRNi8n0WZOYNlM.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/274/path---index-6a9-YJGN70xVEQuIRrE10uR8LCyGUbc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/295/path---index-6a9-smHbFOUsNvNiUxnzg3F75wo2StU.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/296/path---index-6a9-raX0Oe1thuzJHxB0HhAgHrQA698.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/305/path---index-6a9-EFZ9xG0beSd7d01VdFzN7WR3K68.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/305/path---index-6a9-Ncimmlm2Kt1N7EQKxj9MEBkR1xg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/366/path---index-6a9-PKeyy09C59HHvHAOH8ezWy9AXM.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/377/path---index-6a9-A75ZowEc8iSp3RV0DvxdVEf2c.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/409/path---index-6a9-PFprRNm1fjkR4CPXGskBqZ5OpE.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/417/path---index-6a9-eycAS2zxXYafPOjD0bWLk0DNkI.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/44/path---404-22-d-bce-NZuapzHg3X9TaN1iIixfv1W23E.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/44/path---index-6a9-pPnCu4tlzA0NYYKtrSmBZlsI0ek.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/464/path---index-6a9-laoplYAGUItwhwDlhj6OpQDcU.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/466/path---index-6a9-1KhfpEelvOVjk49CHDwaqagVQ.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/517/path---index-6a9-bOTdv6R4YuQUzJ1fLuHU1KKNh98.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/520/path---offline-plugin-app-shell-fallback-a-30-c5a-NZuapzHg3X9TaN1iIixfv1W23E.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/529/path---index-6a9-LN4pYMztMNS92TvlYSq6Zshyu08.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/555/path---index-6a9-iHr37staLmyqtRfEItJEG6PWqxc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/582/path---index-6a9-g0p71q1M2eBX6eWwPDfdUDP1M.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/612/path---index-6a9-QMfNlxL4KR6EFeVC8mqtNbpTA2M.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/624/path---index-6a9-d2qAzTWfsGMbNmNVeSgmrKknFVo.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/647/path---index-6a9-lJ3xCyXSBe5P1jj7AmWxZips3WY.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/658/path---index-6a9-y4xZX7xeoVZyZLWxTMhkMtEsEU.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/660/path---index-6a9-UVj60VkXJKRjf26rzuX9RyYAowA.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/668/path---index-6a9-qHYfViptfaRn6CX0B42ocVZE.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/670/path---index-6a9-20bpk5gwpJe8ekwocgBuhc1SBWg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/683/path---index-6a9-aenNX5TTRReTx3l56719Ecc0.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/692/path---index-6a9-DR5gaKh6zGhgF7FBXMeA6FhzIdE.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/692/path---index-6a9-skQocgHEF93J6eUOCcnspvNntw.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/705/path---index-6a9-LM0R0fc2gZxYt3nLkxWEcu859Q.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/707/path---index-6a9-2330sYj4eZ5ytXqQTS3QsFu6fw.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/725/path---index-6a9-UcbxPgv4VQi43QBGHF51Xrv9ZI.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/740/path---index-6a9-tahgNqFqOLs1Xd38uv3jXqj3j8k.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/755/path---index-6a9-c6IMrkp5IlxsgJa73ixiDnuVtTA.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/776/path---index-6a9-4SZxGyoH2cMO99xxYhUk8eo1dvs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/78/path---index-6a9-kKvuknq0ekdpyBTcm19P6EJxAdA.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/782/path---index-6a9-8lLeOBb8Ge5CPBb3o2QLDOserTQ.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/795/path---index-6a9-NIoctpj3CoRuaIVvjFNDgSfL6o.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/8/path---index-6a9-wdabA28Dk8hIpMP9laLq3noqhwk.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/804/path---index-6a9-32pFM965QPWdlWmCE0HD9SlMTnE.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/810/path---index-6a9-qTp1Uua7FjKcrykIEGuvuJyuxFc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/820/path---index-6a9-3CfpNBDwpbJDg9hJLlX9fPG6wCs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/824/path---index-6a9-NMo5sb55dDN2SnZf7vd1wIOrSQ.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/827/path---index-6a9-1N0oUqoht1iWYE7Y8l89uPa2t0.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/855/path---index-6a9-CYIBKXRnH7iqLW43da2iH8YmoWk.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/882/path---index-6a9-GMcGU19zNo5oH3YgaXHok74HLFg.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/89/path---index-6a9-nHHgGg2kdNq6Hc0aJuROs82VQsc.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/898/path---index-6a9-65WczD1B3VFI59oREi5JjtlJ1kQ.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/908/path---index-6a9-mfq12GtL6vSrjS15jmsARsS4o.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/919/path---index-6a9-ubRQN4NNnpscQeQ3sF21oAKWuw.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/920/path---dev-404-page-5-f-9-fab-NZuapzHg3X9TaN1iIixfv1W23E.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/935/path---index-6a9-LZSN8gBpdN6irHSuMp8stz6RPs.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/952/path---index-6a9-LG04tv3y376frqqW2tF5WsXUBtU.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/953/path---index-6a9-RmI2bEDsAOuMjZXugSWqEewMEno.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/956/path---index-6a9-p2N7IfRF4SzuHlDdUoHNAzu9F8.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/d/997/path---index-6a9-VGi9VSdpn9MGEIQBoWkdVZCG4.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-4a58b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-679cf.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-73181.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-cf734.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-e7966.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gidirush-f4bbd790b96f63d0fe66caf5a527ddfe-eb308.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gladrates-01dfde5ea151658fcea331e85491caf2-4a58b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gladrates-01dfde5ea151658fcea331e85491caf2-679cf.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gladrates-01dfde5ea151658fcea331e85491caf2-73181.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gladrates-01dfde5ea151658fcea331e85491caf2-cf734.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gladrates-01dfde5ea151658fcea331e85491caf2-e7966.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/gladrates-01dfde5ea151658fcea331e85491caf2-eb308.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/goandmarry-d5a912bcc049e54af9013540824e123d-4a58b.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/goandmarry-d5a912bcc049e54af9013540824e123d-679cf.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/goandmarry-d5a912bcc049e54af9013540824e123d-73181.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/goandmarry-d5a912bcc049e54af9013540824e123d-cf734.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/goandmarry-d5a912bcc049e54af9013540824e123d-e7966.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/goandmarry-d5a912bcc049e54af9013540824e123d-eb308.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-ae01c.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-ef924.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/halcyon-4660e57f6dc66a2170ee3d38632ecddf-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-12696.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-18e65.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-40930.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-6547d.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-78c28.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-9b75e.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-d1239.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/hendrix-a7c1a30867e4b53b21ca05e3985b31cb-ffc2a.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-2aa02184544838608ef8e99db396234d-1fcd2.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-2aa02184544838608ef8e99db396234d-7c211.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-2aa02184544838608ef8e99db396234d-90d1e.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-2aa02184544838608ef8e99db396234d-aa362.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-2aa02184544838608ef8e99db396234d-b68a9.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-2aa02184544838608ef8e99db396234d-ed30d.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-a7c1a30867e4b53b21ca05e3985b31cb-12696.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-a7c1a30867e4b53b21ca05e3985b31cb-18e65.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-a7c1a30867e4b53b21ca05e3985b31cb-40930.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-a7c1a30867e4b53b21ca05e3985b31cb-6547d.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-a7c1a30867e4b53b21ca05e3985b31cb-78c28.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-a7c1a30867e4b53b21ca05e3985b31cb-9b75e.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-a7c1a30867e4b53b21ca05e3985b31cb-d1239.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/me-a7c1a30867e4b53b21ca05e3985b31cb-ffc2a.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/resume-cc1c5a6e6a30f7dd16434cd041fe65a0.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-69b91.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-6d689.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-8bda8.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-8c63e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-9102e.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-94352.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-a3e29.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-ae01c.webp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-ef924.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/v3-145435c08cd326b9151f2106c9b0b60e-ffea1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sw - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sw.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-0348151c7010cc97c96c - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-0348151c7010cc97c96c.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-0348151c7010cc97c96c.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-0348151c7010cc97c96c.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-1db8e20086c1a6396d2b - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-1db8e20086c1a6396d2b.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-1db8e20086c1a6396d2b.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-1db8e20086c1a6396d2b.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-2af37477ea4ce2958042 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-2af37477ea4ce2958042.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-2af37477ea4ce2958042.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-2af37477ea4ce2958042.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-36365a09e6692e88930f - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-36365a09e6692e88930f.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-36365a09e6692e88930f.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-36365a09e6692e88930f.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-3c9bcb172f2aa5b304a8 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-3c9bcb172f2aa5b304a8.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-3c9bcb172f2aa5b304a8.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-3c9bcb172f2aa5b304a8.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-4d0f1331d156664b9685 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-4d0f1331d156664b9685.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-4d0f1331d156664b9685.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-4d0f1331d156664b9685.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-5eb1c200b0d2b690b052 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-5eb1c200b0d2b690b052.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-5eb1c200b0d2b690b052.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-5eb1c200b0d2b690b052.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-62c923c4bc63d982e8ca - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-62c923c4bc63d982e8ca.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-62c923c4bc63d982e8ca.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-62c923c4bc63d982e8ca.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-70bd055c88babd55d226 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-70bd055c88babd55d226.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-70bd055c88babd55d226.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-70bd055c88babd55d226.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-7785b693f08d50d80e27 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-7785b693f08d50d80e27.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-7785b693f08d50d80e27.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-7785b693f08d50d80e27.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-88735024d277158f1bbf - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-88735024d277158f1bbf.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-88735024d277158f1bbf.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-88735024d277158f1bbf.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-ce42c020b4a71be2a5e9 - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-ce42c020b4a71be2a5e9.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-ce42c020b4a71be2a5e9.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-ce42c020b4a71be2a5e9.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-ec759ec3608449a8be4a - Copia.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-ec759ec3608449a8be4a.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-ec759ec3608449a8be4a.js - Copia.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack-runtime-ec759ec3608449a8be4a.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.stats - Copia.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/webpack.stats.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-background-sync.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-background-sync.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-background-sync.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-background-sync.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-broadcast-cache-update.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-broadcast-cache-update.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-broadcast-cache-update.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-broadcast-cache-update.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-cache-expiration.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-cache-expiration.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-cache-expiration.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-cache-expiration.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-cacheable-response.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-cacheable-response.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-cacheable-response.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-cacheable-response.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-core.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-core.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-core.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-core.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-google-analytics.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-google-analytics.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-google-analytics.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-google-analytics.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-navigation-preload.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-navigation-preload.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-navigation-preload.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-navigation-preload.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-precaching.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-precaching.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-precaching.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-precaching.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-range-requests.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-range-requests.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-range-requests.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-range-requests.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-routing.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-routing.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-routing.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-routing.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-strategies.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-strategies.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-strategies.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-strategies.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-streams.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-streams.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-streams.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-streams.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-sw.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2 - Copia/workbox-sw.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-background-sync.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-background-sync.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-background-sync.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-background-sync.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-broadcast-cache-update.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-broadcast-cache-update.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-broadcast-cache-update.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-broadcast-cache-update.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-cache-expiration.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-cache-expiration.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-cache-expiration.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-cache-expiration.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-cacheable-response.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-cacheable-response.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-cacheable-response.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-cacheable-response.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-core.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-core.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-core.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-core.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-google-analytics.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-google-analytics.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-google-analytics.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-google-analytics.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-navigation-preload.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-navigation-preload.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-navigation-preload.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-navigation-preload.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-precaching.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-precaching.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-precaching.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-precaching.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-range-requests.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-range-requests.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-range-requests.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-range-requests.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-routing.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-routing.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-routing.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-routing.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-strategies.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-strategies.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-strategies.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-strategies.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-streams.dev.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-streams.dev.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-streams.prod.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-streams.prod.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-sw.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/workbox-v3.6.2/workbox-sw.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/index.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PUSH_AUTO_UPDATE" value="true" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2PYeV4A9zjau5Ykbyqc2daQi7P7" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/phbcampos/Documents/PredoCampos.github.io/PredoCampos.github.io/remake",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.sourceCode",
+    "settings.editor.splitter.proportion": "0.205",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\phbcampos\Documents\PredoCampos.github.io\PredoCampos.github.io\remake" />
+      <recent name="C:\Users\phbcampos\Documents\PredoCampos.github.io\PredoCampos.github.io\_remake" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\phbcampos\Documents\PredoCampos.github.io\PredoCampos.github.io" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ff20121b-e802-47d6-b8f7-6fa3a8495dc4" name="Changes" comment="" />
+      <created>1683638466823</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1683638466823</updated>
+      <workItem from="1683638491690" duration="22969000" />
+    </task>
+    <task id="LOCAL-00001" summary="Type Writer Update">
+      <created>1683643026688</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1683643026688</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Type Writer Update">
+      <created>1683643044937</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1683643044937</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Type Writer Update">
+      <created>1683643262431</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1683643262431</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Compress">
+      <created>1683718959292</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1683718959292</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Remake Start">
+      <created>1683729477885</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1683729477885</updated>
+    </task>
+    <task id="LOCAL-00006" summary="change">
+      <created>1683730381535</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1683730381536</updated>
+    </task>
+    <task id="LOCAL-00007" summary="changes teste">
+      <created>1683802563443</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1683802563443</updated>
+    </task>
+    <task id="LOCAL-00008" summary="New index.html">
+      <created>1683802775027</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1683802775027</updated>
+    </task>
+    <task id="LOCAL-00009" summary="New index.html changes">
+      <created>1683804169001</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1683804169001</updated>
+    </task>
+    <task id="LOCAL-00010" summary="New">
+      <created>1683804482660</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1683804482660</updated>
+    </task>
+    <task id="LOCAL-00011" summary="changes">
+      <created>1683805069021</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1683805069021</updated>
+    </task>
+    <task id="LOCAL-00012" summary="changes">
+      <created>1683805241803</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1683805241803</updated>
+    </task>
+    <task id="LOCAL-00013" summary="changes">
+      <created>1683805448713</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1683805448713</updated>
+    </task>
+    <task id="LOCAL-00014" summary="changes">
+      <created>1683810200973</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1683810200973</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="CUSTOM_BOOLEAN_PROPERTIES">
+                <map>
+                  <entry key="Show.Git.Branches" value="true" />
+                </map>
+              </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Type Writer Update" />
+    <MESSAGE value="Compress" />
+    <MESSAGE value="Remake Start" />
+    <MESSAGE value="change" />
+    <MESSAGE value="changes teste" />
+    <MESSAGE value="New index.html" />
+    <MESSAGE value="New index.html changes" />
+    <MESSAGE value="New" />
+    <MESSAGE value="changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes" />
+  </component>
+</project>
