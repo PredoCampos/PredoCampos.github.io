@@ -3,6 +3,36 @@
     accent-color: var(--color-primary);
 }
 
+.loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Cor de fundo do loader */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader:before {
+    content: "";
+    border: 4px solid #333; /* Cor da borda do loader */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite; /* Animação para girar o loader */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 html,
 body {
     display: grid;
@@ -10,6 +40,10 @@ body {
     width: 100%;
     place-items: center;
     font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
+}
+
+body.loading {
+    overflow: hidden;
 }
 
 img {
