@@ -5,49 +5,53 @@
     <meta charset="UTF-8">
     <meta name="author" content="Pedro Campos">
     <meta name="description" content="A personal site to showcase my talents as an indie game developer, pixel artist, and illustrator.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Predo Campos</title>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" integrity="sha256-46r060N2LrChLLb5zowXQ72/iKKNiw/lAmygmHExk/o=" crossorigin="anonymous"/>
     <script src="assets/js/script.js"></script>
+    <script src="https://unpkg.com/typed.js@2.0.16/dist/typed.umd.js"></script>
 </head>
 
 <body>
 
-<header>
-    <nav class="navbar">
-        <a class="navbar-link" href="pages/about.html">About</a>
-        <a class="navbar-link" href="pages/portfolio.html">Portfolio</a>
-        <a class="navbar-link" href="pages/projects.html">Projects</a>
-        <a class="navbar-link" href="pages/contact.html">Contact Me</a>
-    </nav>
+<header class="header">
+    <div class="header__inner">
+        <p>Logo</p>
+        <nav class="nav">
+            <ul>
+                <a class="navbar-link" href="pages/about.html">About</a>
+                <a class="navbar-link" href="pages/portfolio.html">Portfolio</a>
+                <a class="navbar-link" href="pages/projects.html">Projects</a>
+                <a class="navbar-link" href="pages/contact.html">Contact Me</a>
+            </ul>
+        </nav>
+    </div>
 </header>
-
-<section class="hero" id="parallax">
-    <div class="container">
-        <div class="row">
-            <h1>Olá! Sou o Pedro e sou  <span class="write">Dev</span></h1>
-        </div>
+<section class="hero">
+    <div class="hero__thumb">
+        <img src="https://images.unsplash.com/photo-1681068420510-cb528c65d595?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1331&q=80" alt="">
+    </div>
+    <div>
+        <h1>Olá! Sou o Pedro e sou <span id="element" class="write"></span></h1>
+        <p>Html + Css + Vanilla Js</p>
     </div>
 </section>
 
 <section class="about">
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-        cillum dolore eu fugiat nulla pariatur.</p>
-    <a href="/about">know more</a>
+    <p>Lorem ipsum dolor sit amet</p>
+    <a href="pages/about.html">know more</a>
 </section>
 
 <section class="education">
     <h2>Education</h2>
-
     <div>
         <div>
             <p>2015</p>
             <h4>Informática</h4>
             <p>Instituto Federal do Maranhão - IFMA</p>
         </div>
-    </div>
-
-    <div>
         <div>
             <p>2019</p>
             <h4>Ciência da Computação</h4>
@@ -73,19 +77,32 @@
 
 <footer>
     <p>Get Connected:</p>
-    <div class="social-buttons">
-        <a href="https://www.facebook.com/seu_perfil" target="_blank">Facebook</a>
-        <a href="https://twitter.com/predocampos_" target="_blank">Twitter</a>
-        <a href="https://www.instagram.com/seu_perfil" target="_blank">Instagram</a>
-        <a href="https://www.linkedin.com/in/predocampos" target="_blank">LinkedIn</a>
+    <div>
+        <ul class="wrapper">
+            <li class="icon github">
+                <span><i class="fab fa-github"></i></span>
+            </li>
+            <li class="icon linkedin">
+                <span><i class="fab fa-linkedin"></i></span>
+            </li>
+            <li class="icon twitter">
+                <span><i class="fab fa-twitter"></i></span>
+            </li>
+        </ul>
     </div>
     <p>&copy; 2023 Minha Página. Todos os direitos reservados.</p>
 </footer>
 
 <script>
-    const elemento = document.querySelector('.write');
-    const texto = ['Desenvolvedor', 'Pixel Artist', 'GameDev'];
-    loopTypeWriter(elemento, texto);
+    var typed = new Typed('#element', {
+        strings: ['Dev', 'Pixel', 'Ilust'],
+        backSpeed: 100,
+        backDelay: 1750,
+        typeSpeed: 125,
+        loop: true,
+        cursorChar: '▌',
+        autoInsertCss: true,
+    });
 </script>
 
 </body>

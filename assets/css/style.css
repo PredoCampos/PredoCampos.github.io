@@ -1,17 +1,54 @@
-/* Estilos para o header e footer */
-header, footer {
-    background-color: #f2f2f2;
-    padding: 20px;
-    text-align: center;
+:root {
+    --color-primary: purple;
+    accent-color: var(--color-primary);
 }
 
-/* Estilos para os botões do menu */
-.menu-button {
-    padding: 10px;
-    margin: 5px;
-    background-color: #ddd;
-    border: none;
-    cursor: pointer;
+html,
+body {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+    font-family: Inter, Roboto, "Helvetica Neue", "Arial Nova", "Nimbus Sans", Arial, sans-serif;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+    object-fit: cover;
+}
+
+h1 {
+    margin-block-end: 1rem;
+    font-size: 3rem;
+}
+
+/* Estilos para o header */
+.header {
+    padding: 2rem;
+    position: fixed;
+    inset: 0 0 auto 0;
+    transition: color 0.3s;
+    z-index: 10;
+    color: #fff;
+}
+
+.header__inner {
+    display: flex;
+}
+
+/* Estilos para a seção hero */
+.hero {
+    display: grid;
+    position: relative;
+    min-height: 500px;
+    background-color: #f9f9f9;
+}
+
+.hero__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 /* Estilos para as seções */
@@ -19,11 +56,6 @@ section {
     padding: 20px;
     margin-bottom: 20px;
     border: 2px solid #ccc;
-}
-
-/* Estilos para cada seção */
-.hero {
-    background-color: #f9f9f9;
 }
 
 .about {
@@ -46,27 +78,65 @@ section {
     background-color: #e8e8e8;
 }
 
+/* Estilos para a classe "wrapper" */
+.wrapper {
+    display: grid;
+    place-content: center;
+    display: inline-flex;
+    list-style: none;
+}
+
+.wrapper .icon {
+    position: relative;
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 15px;
+    margin: 10px;
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+/* Estilos para a classe "logo" */
+.logo {
+    mix-blend-mode: difference;
+    color: #000000;
+}
+
+/* Estilos para o header e footer */
+header,
+footer {
+    background-color: #f2f2f2;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Estilos para os botões do menu */
+.menu-button {
+    padding: 10px;
+    margin: 5px;
+    background-color: #ddd;
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilos para div */
 div {
     border: 2px solid #000;
     margin-bottom: 20px;
     padding: 10px;
-}
-
-h1::after {
-    content: '|';
-    opacity: 1;
-    margin-left: 5px;
-    display: inline-block;
-    animation: blink .7s infinite;
-}
-
-@keyframes blink {
-    0%,
-    100% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0;
-    }
 }
