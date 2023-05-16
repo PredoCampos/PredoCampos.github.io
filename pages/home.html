@@ -14,54 +14,18 @@
 
     <title>Predo Campos</title>
 
-    <?php include ('template/references.php') ?>
+    <!-- css -->
+    <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../assets/css/responsive.css">
 
-    <style>
-        body {
-            margin: 0px;
-            padding: 40px 0 400px 0;
-            background: #1b1d20;
-        }
+    <!-- js -->
+    <script src="../assets/js/script.js"></script>
 
-        h1, h2, a {
-            font-family: "Rubik", Helvetica, Arial, sans-serif;
-            color: white;
-            font-weight: normal;
-        }
+    <!-- original code by Matt Boldt - https://github.com/mattboldt/typed.js -->
+    <script src="../assets/plugins/typed/typed.js"></script>
 
-        h1 {
-            text-align: center;
-            margin-top: 100px;
-        }
-
-        p {
-            font-family: "IBM Plex Mono", Helvetica, Arial, sans-serif;
-            font-size: 1em;
-            line-height: 1.5em;
-            color: #b0b2b3;
-        }
-
-        section {
-            max-width: 600px;
-            margin: 80px auto;
-            padding: 0 20px;
-        }
-
-        h2::before {
-            content: '';
-            display: inline-block;
-            height: 18px;
-            width: 3px;
-            border-radius: 5px;
-            margin-right: 10px;
-            background-image: linear-gradient(#DDFF01, #2e0);
-        }
-
-        section > div {
-            margin: 0 20px;
-        }
-    </style>
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" crossorigin="anonymous"
+          rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD">
 
 </head>
 
@@ -69,19 +33,19 @@
 
 <?php include ('template/header.php') ?>
 
-<section class="hero">
-    <div>
+<section class="hero containerp">
+    <div class="presentation">
         <h1>Olá! Sou o Pedro e sou <span id="element" class="write"></span></h1>
         <a href="#about">know Me</a>
     </div>
 </section>
 
-<section id="about" class="about container">
+<section id="about" class="about containerp">
     <p>Lorem ipsum dolor sit amet</p>
     <a href="about.html">See More</a>
 </section>
 
-<section class="education  container">
+<section class="education  containerp">
     <h2>Education</h2>
     <div>
         <div>
@@ -97,17 +61,17 @@
     </div>
 </section>
 
-<section class="skills container">
+<section class="skills containerp">
     <h2>Skills</h2>
     <p>Esta é a seção de habilidades da página.</p>
 </section>
 
-<section class="projects container">
+<section class="projects containerp">
     <h2>Projetos</h2>
     <p>Esta é a seção de projetos da página.</p>
 </section>
 
-<section class="portfolio container">
+<section class="portfolio containerp">
     <h2>Portfolio</h2>
     <p>Esta é a seção de portfólio da página.</p>
 </section>

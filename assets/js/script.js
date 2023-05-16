@@ -1,65 +1,30 @@
-window.addEventListener('load', function() {
-    const loader = document.querySelector('.loader');
-    document.body.classList.remove('loading');
-    loader.style.display = 'none';
-});
-
-// Seu código JavaScript existente...
-
-// Após o carregamento completo do DOM
-document.addEventListener("DOMContentLoaded", function() {
-    // Seleciona o elemento do loader
-    const loader = document.querySelector(".loader");
-
-    // Função para remover a classe 'loading'
-    function removeLoadingClass() {
-        loader.classList.remove("loading");
-    }
-
-    // Simula um tempo de carregamento de 3 segundos
-    setTimeout(removeLoadingClass, 3000);
-});
-
 // =====================================================
+const menuLinks = document.querySelectorAll('.presentation a');
 
-// Identificar o clique no menu
-// Verificar o item que foi clicado e fazer referência com o alvo
-// Verificar a distância entre o alvo e o topo
-// Animar o scroll até o alvo
+console.log(menuLinks);
 
-const menuItems = document.querySelectorAll('.hero a[href^="#"]');
-
-function getScrollTopByHref(element) {
-    const id = element.getAttribute('href');
+function getDistanceFromTheTop(element) {
+    const id = element.getAttribute("href");
     return document.querySelector(id).offsetTop;
 }
 
-function scrollToPosition(to) {
-    // Caso queira o nativo apenas
-    // window.scroll({
-    // top: to,
-    // behavior: "smooth",
-    // })
-    smoothScrollTo(0, to);
-}
+// function nativeScroll(distanceFromTheTop) {
+//   window.scroll({
+//     top: distanceFromTheTop,
+//     behavior: "smooth",
+//   });
+// }
 
-function scrollToIdOnClick(event) {
+function scrollToSection(event) {
     event.preventDefault();
-    const to = getScrollTopByHref(event.currentTarget)- 80;
-    scrollToPosition(to);
+    const distanceFromTheTop = getDistanceFromTheTop(event.target) - 90;
+    smoothScrollTo(0, distanceFromTheTop);
 }
 
-menuItems.forEach(item => {
-    item.addEventListener('click', scrollToIdOnClick);
+menuLinks.forEach((link) => {
+    link.addEventListener("click", scrollToSection);
 });
 
-// Caso deseje suporte a browsers antigos / que não suportam scroll smooth nativo
-/**
- * Smooth scroll animation
- * @param {int} endX: destination x coordinate
- * @param {int) endY: destination y coordinate
- * @param {int} duration: animation duration in ms
- */
 function smoothScrollTo(endX, endY, duration) {
     const startX = window.scrollX || window.pageXOffset;
     const startY = window.scrollY || window.pageYOffset;
@@ -67,12 +32,12 @@ function smoothScrollTo(endX, endY, duration) {
     const distanceY = endY - startY;
     const startTime = new Date().getTime();
 
-    duration = typeof duration !== 'undefined' ? duration : 400;
+    duration = typeof duration !== "undefined" ? duration : 400;
 
-    // Easing function
     const easeInOutQuart = (time, from, distance, duration) => {
-        if ((time /= duration / 2) < 1) return distance / 2 * time * time * time * time + from;
-        return -distance / 2 * ((time -= 2) * time * time * time - 2) + from;
+        if ((time /= duration / 2) < 1)
+            return (distance / 2) * time * time * time * time + from;
+        return (-distance / 2) * ((time -= 2) * time * time * time - 2) + from;
     };
 
     const timer = setInterval(() => {
@@ -83,5 +48,5 @@ function smoothScrollTo(endX, endY, duration) {
             clearInterval(timer);
         }
         window.scroll(newX, newY);
-    }, 1000 / 60); // 60 fps
-};
+    }, 1000 / 60);
+}
