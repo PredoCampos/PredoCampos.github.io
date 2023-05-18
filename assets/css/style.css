@@ -1,45 +1,62 @@
 body {
-    margin: 0px;
-    padding: 40px 0 400px 0;
     background: #1b1d20;
 }
 
-h1, h2, a {
-    font-family: "Rubik", Helvetica, Arial, sans-serif;
+.container {
+    max-width: 1536px;
+    margin: 10px auto;
+    border: 1px solid white;
+}
+
+/* 2 xl */
+@media (max-width: 1536px) {
+    .container {
+        max-width: 1280px;
+    }
+}
+
+/* xl */
+@media (max-width: 1280px) {
+    .container {
+        max-width: 1024px;
+    }
+}
+
+/* lg */
+@media (max-width: 1024px) {
+    .container {
+        max-width: 768px;
+    }
+}
+
+/* md */
+@media (max-width: 768px) {
+    .container {
+        max-width: 640px;
+    }
+}
+
+/* sm */
+@media (max-width: 640px) {
+    .container {
+        max-width: 475px;
+    }
+}
+
+/* xs */
+@media (max-width: 475px) {
+    .container {
+        width: 100%;
+    }
+}
+
+h1, h2, h3, h4, p, a {
+    margin: auto;
     color: white;
-    font-weight: normal;
 }
 
-h1 {
-    text-align: center;
-    margin-top: 100px;
-}
-
-p {
-    font-family: "IBM Plex Mono", Helvetica, Arial, sans-serif;
-    font-size: 1em;
-    line-height: 1.5em;
-    color: #b0b2b3;
-}
-
-section {
-    max-width: 600px;
-    margin: 80px auto;
-    padding: 0 20px;
-}
-
-h2::before {
-    content: '';
-    display: inline-block;
-    height: 18px;
-    width: 3px;
-    border-radius: 5px;
-    margin-right: 10px;
-    background-image: linear-gradient(#DDFF01, #2e0);
-}
-
-section > div {
-    margin: 0 20px;
+.reveal{
+    visibility: hidden;
 }
 
 /* Estilos para as seções */
