@@ -13,7 +13,7 @@
 
     <title>Predo Campos</title>
 
-    <!-- css -->
+    <!-- Css -->
     <link rel="stylesheet" type="text/css" href="../assets/css/style.css">
 
     <!-- External Scripts -->
@@ -25,12 +25,22 @@
 
 <body>
 
-<?php include ('template/header.php') ?>
+<header id="header">
+    <a id="logo" href="">Logo</a>
+    <nav id="nav">
+        <ul id="menu">
+            <li><a class="reveal-menu" href="about.html">Sobre</a></li>
+            <li><a class="reveal-menu" href="projects.html">Projetos</a></li>
+            <li><a class="reveal-menu" href="portfolio.html">Portifolio</a></li>
+            <li><a class="reveal-menu" href="contact.html">Contato</a></li>
+        </ul>
+    </nav>
+</header>
 
 <section class="hero container">
     <div class="presentation">
         <h3>Hello World</h3>
-        <h1>Sou o Pedro e sou <span id="element" class="write"></span></h1>
+        <h1>Sou o Pedro e sou <span id="Typed" class="typed"></span></h1>
         <!-- <a href="#about">know Me</a> -->
     </div>
 </section>
@@ -75,7 +85,7 @@
 
 <?php include 'template/footer.php'; ?>
 
-<!-- js -->
+<!-- Js -->
 <script src="../assets/js/script.js"></script>
 
 </body>

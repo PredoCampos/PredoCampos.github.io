@@ -1,13 +1,5 @@
-body {
-    background: #1b1d20;
-}
 
-.container {
-    max-width: 1536px;
-    margin: 10px auto;
-    border: 1px solid white;
-}
-
+/* Another comment */
 /* 2 xl */
 @media (max-width: 1536px) {
     .container {
@@ -50,9 +42,55 @@ body {
     }
 }
 
+/* Another comment */
+
+body {
+    background: #1b1d20;
+}
+
+body, ul{
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1536px;
+    margin: 10px auto;
+    border: 1px solid white;
+}
+
+#header {
+    box-sizing: border-box;]
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #0c86ae;
+}
+
+#menu {
+    display: flex;
+    list-style: none;
+    gap: .5rem;
+}
+
+#menu a {
+    display: block;
+    padding: .5rem;
+}
+
+#logo {
+    margin: 0;
+}
+
 h1, h2, h3, h4, p, a {
     margin: auto;
     color: white;
+}
+
+a {
+    border: 1px solid red;
+    text-decoration: none;
 }
 
 .reveal{
