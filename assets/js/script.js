@@ -1,10 +1,10 @@
 // Scroll Reveal Section
 window.sr = ScrollReveal({reset: true});
 
-sr.reveal('.reveal', {
-    duration: 1000,
+ sr.reveal('.reveal', {
+    duration: 2000,
     interval: 350,
-    distance: '50px'
+    distance: '500px'
 });
 
 sr.reveal('.reveal-menu', {
