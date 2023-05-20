@@ -4,12 +4,12 @@
 <head>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <meta name="author" content="Pedro Campos"/>
-    <meta name="description" content="A personal site to showcase my talents as an junior developer, indie game developer, pixel artist, and illustrator."/>
-    <meta name="keywords" content="developer, dev, html, css, javascript, github, portfolio"/>
+    <meta name="author" content="Pedro Campos" />
+    <meta name="description" content="A personal site to showcase my talents as an junior developer, indie game developer, pixel artist, and illustrator." />
+    <meta name="keywords" content="developer, dev, html, css, javascript, github, portfolio" />
 
     <title>Predo Campos</title>
 
@@ -25,71 +25,80 @@
 
 <body>
 
-<header id="header">
-    <a id="logo" href="">Logo</a>
-    <nav id="nav">
-        <ul id="menu">
-            <li><a class="reveal-menu" href="about.html">Sobre</a></li>
-            <li><a class="reveal-menu" href="projects.html">Projetos</a></li>
-            <li><a class="reveal-menu" href="portfolio.html">Portifolio</a></li>
-            <li><a class="reveal-menu" href="contact.html">Contato</a></li>
-        </ul>
-    </nav>
-</header>
+    <div data-include="template/header.html"></div>
 
-<section class="hero">
-    <div class="presentation">
-        <h3>Hello World</h3>
-        <h1>Sou o Pedro e sou <span id="Typed" class="typed"></span></h1>
-    </div>
-</section>
-
-<section id="about" class="about reveal">
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        Morbi tincidunt augue interdum velit euismod in pellentesque. Dui id ornare arcu odio ut sem nulla pharetra. Tempus quam
-        pellentesque nec nam aliquam sem et tortor. Viverra vitae congue eu consequat ac felis donec et. Risus quis varius quam quisque.
-        Nibh cras pulvinar mattis nunc sed blandit libero. Sed risus ultricies tristique nulla aliquet enim. Eu lobortis elementum nibh tellus.
-        Egestas integer eget aliquet nibh. Egestas maecenas pharetra convallis posuere morbi leo.</p>
-    <a href="about.html">See More</a>
-</section>
-
-<section class="education reveal">
-    <h2>Education</h2>
-    <div>
-        <div>
-            <p>2015</p>
-            <h4>Informática</h4>
-            <p>Instituto Federal do Maranhão - IFMA</p>
+    <section id="section-hero" class="hero">
+        <div class="presentation">
+            <h3>Hello World</h3>
+            <h1>Sou o Pedro e sou <span id="Typed" class="typed"></span></h1>
         </div>
-        <div>
-            <p>2019</p>
-            <h4>Ciência da Computação</h4>
-            <p>Universidade Federal do Maranhão - UFMA</p>
+    </section>
+
+    <section id="section-about" class="container">
+        <div class="reveal">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                dolore magna aliqua.
+                Morbi tincidunt augue interdum velit euismod in pellentesque. Dui id ornare arcu odio ut sem nulla
+                pharetra. Tempus quam
+                pellentesque nec nam aliquam sem et tortor. Viverra vitae congue eu consequat ac felis donec et. Risus
+                quis varius quam quisque.
+                Nibh cras pulvinar mattis nunc sed blandit libero. Sed risus ultricies tristique nulla aliquet enim. Eu
+                lobortis elementum nibh tellus.
+                Egestas integer eget aliquet nibh. Egestas maecenas pharetra convallis posuere morbi leo.
+            </p>
+            <a href="about.html">See More</a>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="skills reveal">
-    <h2>Skills</h2>
-    <p>Esta é a seção de habilidades da página.</p>
-</section>
+    <section id="section-education" class="container">
+        <div class="reveal">
+            <h2>Education</h2>
+            <div>
+                <div>
+                    <p>2015</p>
+                    <h3>Informática</h3>
+                    <p>Instituto Federal do Maranhão - IFMA</p>
+                </div>
+                <div>
+                    <p>2019</p>
+                    <h3>Ciência da Computação</h3>
+                    <p>Universidade Federal do Maranhão - UFMA</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-<section class="projects reveal">
-    <h2>Projetos</h2>
-    <p>Esta é a seção de projetos da página.</p>
-    <a href="about.html">See More</a>
-</section>
+    <section id="section-skills" class="container">
+        <div class="reveal">
+            <h2>Skills</h2>
+            <p>Esta é a seção de habilidades da página.</p>
+        </div>
+    </section>
 
-<section class="portfolio reveal">
-    <h2>Portfolio</h2>
-    <p>Esta é a seção de portfólio da página.</p>
-    <a href="about.html">See More</a>
-</section>
+    <section id="section-projects" class="container">
+        <div class="reveal">
+            <h2>Projetos</h2>
+            <p>Esta é a seção de projetos da página.</p>
+            <a href="about.html">See More</a>
+        </div>
+    </section>
 
-<?php include 'template/footer.php'; ?>
+    <section id="section-portifolio" class="container">
+        <div class="reveal">
+            <h2>Portfolio</h2>
+            <p>Esta é a seção de portfólio da página.</p>
+            <a href="about.html">See More</a>
+        </div>
+    </section>
 
-<!-- Js -->
-<script src="../assets/js/script.js"></script>
+    <div data-include="template/footer.html"></div>
+
+    <!-- Js -->
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/typeMachine.js"></script>
+    <script src="../assets/js/includeComponet.js"></script>
 
 </body>
+
 </html>
