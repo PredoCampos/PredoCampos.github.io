@@ -1,0 +1,72 @@
+/* Reset básico para remover margens e paddings padrão */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Configuração do body para ocupar toda a viewport */
+body {
+    /* Altura total da viewport */
+    height: 100vh;
+    /* Remove scroll desnecessário */
+    overflow: hidden;
+    /* Font family padrão do sistema */
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Container principal que centraliza o canvas */
+.container {
+    /* Ocupa toda a altura e largura da tela */
+    width: 100vw;
+    height: 100vh;
+    
+    /* Centralização usando flexbox */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    /* Gradiente de fundo: cinza para branco (inferior esquerdo -> superior direito) */
+    background: linear-gradient(
+        45deg,                    /* Ângulo de 45° (inferior esquerdo para superior direito) */
+        #2b2929,                  /* Cinza no início */
+        #f0f0f0                   /* Branco muito sutil no final */
+    );
+}
+
+/* Estilização do canvas */
+#starCanvas {
+    /* Borda sutil para visualizar os limites (opcional) */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    
+    /* Sombra suave para dar profundidade */
+    box-shadow: 0 0 2vw rgba(0, 0, 0, 0.1);
+    
+    /* Bordas arredondadas responsivas */
+    border-radius: 1vw;
+    
+    /* Tamanho responsivo - 80% da menor dimensão da viewport */
+    width: min(80vw, 80vh);
+    height: min(80vw, 80vh);
+}
+
+/* Media query para telas menores (mobile) */
+@media (max-width: 48em) {
+    #starCanvas {
+        /* Em telas pequenas, usa 90% da tela */
+        width: min(90vw, 90vh);
+        height: min(90vw, 90vh);
+        
+        /* Bordas menos arredondadas em mobile */
+        border-radius: 2vw;
+    }
+}
+
+/* Media query para telas muito grandes */
+@media (min-width: 120em) {
+    #starCanvas {
+        /* Limita o tamanho máximo em telas muito grandes */
+        width: min(60vw, 60vh);
+        height: min(60vw, 60vh);
+    }
+}
