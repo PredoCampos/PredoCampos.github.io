@@ -56,12 +56,22 @@ footer {
     will-change: transform; /* Otimização de performance */
 }
 
+/* Container para animação contínua */
+.grid-section {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%; /* Altura dobrada para animação contínua */
+    will-change: transform; /* Otimização de performance */
+}
+
 /* Animação de movimento infinito - FLUIDA */
-@keyframes rise {
+@keyframes infiniteRise {
     0% {
-        transform: translateY(100vh) translateX(var(--start-x));
+        transform: translateY(0);
     }
     100% {
-        transform: translateY(-100vh) translateX(var(--start-x));
+        transform: translateY(-50%); /* Move metade da altura do container */
     }
 }

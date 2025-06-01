@@ -3,7 +3,6 @@ class ChessPattern {
         this.container = document.getElementById('infiniteGrid');
         this.tileSize = 0;
         this.animationDuration = 20; // Segundos para completar a animação
-        this.tiles = [];
         this.init();
     }
 
@@ -32,60 +31,62 @@ class ChessPattern {
     }
 
     /**
-     * Cria um tile individual
+     * Cria um tile individual na posição especificada
+     * @param {number} gridX - Posição horizontal no grid (em unidades de tile)
+     * @param {number} gridY - Posição vertical no grid (em unidades de tile)
      */
-    createTile() {
+    createTile(gridX, gridY) {
         const tile = document.createElement('div');
         tile.className = 'chess-square';
+        
+        // Calcula posição absoluta em pixels
+        const posX = gridX * this.tileSize;
+        const posY = gridY * this.tileSize;
+        
+        tile.style.left = `${posX}px`;
+        tile.style.top = `${posY}px`;
+        
         return tile;
     }
 
     /**
-     * Posiciona um tile e inicia sua animação
+     * Cria uma seção do grid com altura dobrada para animação contínua
      */
-    activateTile(tile) {
-        // Calcula quantas colunas cabem na tela
-        const columns = Math.ceil(window.innerWidth / this.tileSize);
+    createGridSection() {
+        const section = document.createElement('div');
+        section.className = 'grid-section';
         
-        // Escolhe uma coluna aleatória
-        const colIndex = Math.floor(Math.random() * columns);
+        // Aplica a animação
+        section.style.animation = `infiniteRise ${this.animationDuration}s linear infinite`;
         
-        // Calcula a posição horizontal centralizada na coluna
-        const startX = colIndex * this.tileSize + this.tileSize / 2;
+        // Calcula o alcance necessário para cobrir a tela com altura dobrada
+        const viewportWidth = window.innerWidth;
+        const viewportHeight = window.innerHeight * 2; // Dobro da altura
         
-        tile.style.setProperty('--start-x', `${startX}px`);
+        const horizontalTiles = Math.ceil(viewportWidth / this.tileSize) + 2;
+        const verticalTiles = Math.ceil(viewportHeight / this.tileSize) + 2;
         
-        // Configura animação
-        tile.style.animation = `rise ${this.animationDuration}s linear infinite`;
+        // Gera o padrão de xadrez para a seção
+        for (let x = 0; x < horizontalTiles; x++) {
+            for (let y = 0; y < verticalTiles; y++) {
+                // Padrão xadrez: alterna quadrados baseado na soma das coordenadas
+                if ((x + y) % 2 === 0) {
+                    const tile = this.createTile(x, y);
+                    section.appendChild(tile);
+                }
+            }
+        }
         
-        // Cria um delay aleatório entre 0 e a duração total
-        const delay = Math.random() * this.animationDuration;
-        tile.style.animationDelay = `-${delay}s`;
-        
-        // Posiciona inicialmente abaixo da tela
-        tile.style.left = `${startX}px`;
-        tile.style.top = `${window.innerHeight + this.tileSize}px`;
-        
-        this.container.appendChild(tile);
-        this.tiles.push(tile);
+        return section;
     }
 
     /**
      * Gera todo o padrão de xadrez animado
      */
     createPattern() {
-        // Limpa tiles existentes
-        this.tiles.forEach(tile => tile.remove());
-        this.tiles = [];
-        
-        // Calcula quantos tiles são necessários para preencher a tela
-        const tilesCount = Math.ceil((window.innerWidth * window.innerHeight) / (this.tileSize * this.tileSize * 2));
-        
-        // Cria e ativa os tiles
-        for (let i = 0; i < tilesCount * 2; i++) {
-            const tile = this.createTile();
-            this.activateTile(tile);
-        }
+        this.container.innerHTML = '';
+        const section = this.createGridSection();
+        this.container.appendChild(section);
     }
 
     /**
