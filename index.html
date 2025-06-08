@@ -1,29 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <title>Coming Soon</title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Operacional</title>
+    <link rel="stylesheet" href="../assets/css/so.css">
 </head>
 <body>
-    <div class="bg-g1 size1 flex-w flex-col-c-sb p-l-15 p-r-15 p-t-55 p-b-35 respon1">
-        <div class="flex-col-c p-t-50 p-b-50">
-            <h3 class="l1-txt1 txt-center p-b-10">
-                Coming Soon
-            </h3>
-            <p class="txt-center l1-txt2 p-b-60">
-                Our website is under construction
-            </p>
-
-            <!-- Botão para estrela -->
-            <a href="pages/star.html">
-                <button>Ver Estrela</button>
-            </a>
-
-            <!-- Botão para xadrez -->
-            <a href="pages/xadrez.html">
-                <button>Ver Xadrez</button>
-            </a>
+    <!-- Área de Trabalho -->
+    <div id="desktop" class="desktop">
+        <!-- Ícones da Área de Trabalho -->
+        <div class="desktop-icons">
+            <div class="desktop-icon" data-app="internet">
+                <div class="icon-image"></div>
+                <span class="icon-label">Internet</span>
+            </div>
+            
+            <div class="desktop-icon" data-app="arquivos">
+                <div class="icon-image"></div>
+                <span class="icon-label">Arquivos</span>
+            </div>
+            
+            <div class="desktop-icon" data-app="notas">
+                <div class="icon-image"></div>
+                <span class="icon-label">Notas</span>
+            </div>
+            
+            <div class="desktop-icon" data-app="calculadora">
+                <div class="icon-image"></div>
+                <span class="icon-label">Calculadora</span>
+            </div>
+            
+            <div class="desktop-icon" data-app="cobra">
+                <div class="icon-image"></div>
+                <span class="icon-label">Cobra</span>
+            </div>
+            
+            <div class="desktop-icon" data-app="lixo">
+                <div class="icon-image"></div>
+                <span class="icon-label">Lixo</span>
+            </div>
         </div>
     </div>
+
+    <!-- Container para Janelas -->
+    <div id="windows-container" class="windows-container"></div>
+
+    <!-- Barra de Tarefas -->
+    <div id="taskbar" class="taskbar">
+        <!-- Botão Menu -->
+        <button id="menu-button" class="menu-button">Menu</button>
+        
+        <!-- Aplicativos Abertos -->
+        <div id="taskbar-apps" class="taskbar-apps"></div>
+        
+        <!-- Relógio -->
+        <div id="taskbar-clock" class="taskbar-clock">00:00</div>
+    </div>
+
+    <script src="../assets/js/so.js"></script>
 </body>
 </html>

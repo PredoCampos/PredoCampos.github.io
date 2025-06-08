@@ -1,0 +1,250 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Tahoma', Arial, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    background: linear-gradient(45deg, #245EB3, #89CFF0);
+}
+
+/* === ÁREA DE TRABALHO === */
+.desktop {
+    width: 100vw;
+    height: calc(100vh - 40px);
+    position: relative;
+}
+
+.desktop-icons {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 400px;
+    height: calc(100vh - 100px);
+}
+
+/* === VISUALIZAÇÃO DO GRID === */
+.grid-cell {
+    position: absolute;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 1;
+    box-sizing: border-box;
+}
+
+.desktop-icon {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.desktop-icon:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.desktop-icon.selected {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.desktop-icon.dragging {
+    opacity: 0.7;
+    z-index: 1000;
+}
+
+.icon-image {
+    width: 48px;
+    height: 48px;
+    background-color: #ccc;
+    border: 2px solid #999;
+    margin-bottom: 5px;
+}
+
+.icon-label {
+    color: white;
+    font-size: 12px;
+    font-family: 'Tahoma', Arial, sans-serif;
+    font-weight: normal;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    word-wrap: break-word;
+    max-width: 70px;
+}
+
+/* === SISTEMA DE JANELAS === */
+.windows-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - 40px);
+    pointer-events: none;
+    z-index: 100;
+}
+
+.window {
+    position: absolute;
+    background: #ECE9D8;
+    border: 2px outset #D4D0C8;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    pointer-events: all;
+    min-width: 300px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.window.maximized {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 40px) !important;
+}
+
+.window.minimized {
+    display: none;
+}
+
+.window-header {
+    background: linear-gradient(to bottom, #0A56D6, #1F7AE8);
+    color: white;
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+}
+
+.window-title {
+    font-size: 12px;
+    font-family: 'Tahoma', Arial, sans-serif;
+    font-weight: bold;
+}
+
+.window-controls {
+    display: flex;
+    gap: 2px;
+}
+
+.window-control {
+    width: 18px;
+    height: 18px;
+    border: 1px outset #D4D0C8;
+    background: #D4D0C8;
+    cursor: pointer;
+    font-size: 10px;
+    font-family: 'Tahoma', Arial, sans-serif;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.window-control:hover {
+    background: #E4E0D8;
+}
+
+.window-control:active {
+    border: 1px inset #D4D0C8;
+}
+
+.window-content {
+    flex: 1;
+    padding: 10px;
+    background: white;
+    overflow: auto;
+    font-family: 'Tahoma', Arial, sans-serif;
+    font-size: 11px;
+}
+
+/* === BARRA DE TAREFAS === */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: 40px;
+    background: linear-gradient(to bottom, #2461C4, #1F5EB6);
+    border-top: 1px solid #1A4FA0;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 4px;
+    z-index: 1000;
+}
+
+.menu-button {
+    background: linear-gradient(to bottom, #4CAF50, #45A049);
+    color: white;
+    border: 1px outset #4CAF50;
+    padding: 6px 12px;
+    font-size: 12px;
+    font-family: 'Tahoma', Arial, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.menu-button:hover {
+    background: linear-gradient(to bottom, #5CBF60, #4CAF50);
+}
+
+.menu-button:active {
+    border: 1px inset #4CAF50;
+}
+
+.taskbar-apps {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+    margin-left: 8px;
+    overflow: hidden;
+}
+
+.taskbar-app {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px outset rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    font-size: 11px;
+    font-family: 'Tahoma', Arial, sans-serif;
+    font-weight: normal;
+    cursor: pointer;
+    border-radius: 2px;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.taskbar-app:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.taskbar-app.active {
+    background: rgba(255, 255, 255, 0.3);
+    border: 1px inset rgba(255, 255, 255, 0.2);
+}
+
+.taskbar-clock {
+    color: white;
+    font-size: 11px;
+    font-family: 'Tahoma', Arial, sans-serif;
+    font-weight: normal;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px inset rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    min-width: 50px;
+    text-align: center;
+}
