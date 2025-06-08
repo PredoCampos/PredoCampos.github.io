@@ -1,0 +1,6 @@
+/* ===== SISTEMA OPERACIONAL - CSS PRINCIPAL ===== */
+/* Importa todos os estilos do SO */
+
+@import 'base.css';
+@import 'desktop.css';
+@import 'mobile.css';
