@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Operacional - Simulador</title>
+    <title>Predo Campoz xp</title>
     <link rel="stylesheet" href="assets/css/so/index.css">
 </head>
 <body>
@@ -12,17 +12,17 @@
         <!-- Ícones da Área de Trabalho -->
         <div class="desktop-icons">
             <div class="desktop-icon" data-app="internet">
-                <div class="icon-image"></div>
+                <img src="assets/images/so/internet.png" alt="Internet" class="icon-image">
                 <span class="icon-label">Internet</span>
             </div>
             
             <div class="desktop-icon" data-app="arquivos">
-                <div class="icon-image"></div>
+                <img src="assets/images/so/explorer.png" alt="Arquivos" class="icon-image">
                 <span class="icon-label">Arquivos</span>
             </div>
             
             <div class="desktop-icon" data-app="notas">
-                <div class="icon-image"></div>
+                <img src="assets/images/so/notes.png" alt="Notas" class="icon-image">
                 <span class="icon-label">Notas</span>
             </div>
             
@@ -32,7 +32,7 @@
             </div>
             
             <div class="desktop-icon" data-app="cobra">
-                <div class="icon-image"></div>
+                <img src="assets/images/so/snake.png" alt="Cobra" class="icon-image">
                 <span class="icon-label">Cobra</span>
             </div>
             
@@ -48,14 +48,17 @@
 
     <!-- Barra de Tarefas -->
     <div id="taskbar" class="taskbar">
-        <!-- Botão Menu -->
+        <!-- Menu Iniciar -->
         <button id="menu-button" class="menu-button">Menu</button>
         
         <!-- Aplicativos Abertos -->
         <div id="taskbar-apps" class="taskbar-apps"></div>
         
-        <!-- Relógio -->
-        <div id="taskbar-clock" class="taskbar-clock">00:00</div>
+        <!-- Data & Hora -->
+        <div id="taskbar-info" class="taskbar-info">
+            <div id="taskbar-clock" class="taskbar-clock">00:00</div>
+            <div id="taskbar-data" class="taskbar-data">00/00/0000</div>
+        </div>
     </div>
 
     <script src="assets/js/so/index.js"></script>

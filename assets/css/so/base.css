@@ -1,5 +1,3 @@
-/* ===== BASE - ESTILOS FUNDAMENTAIS ===== */
-
 /* ===== IMPORTAÇÃO DE FONTES ===== */
 @font-face {
     font-family: 'Tahoma';
@@ -7,6 +5,8 @@
     font-weight: normal;
     font-display: swap;
 }
+
+/* ===== BASE - ESTILOS FUNDAMENTAIS ===== */
 
 /* Reset básico */
 * {
@@ -51,8 +51,8 @@ body {
     align-items: center;
     cursor: pointer;
     padding: 10px;
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     border-radius: 4px;
     transition: background-color 0.2s;
     -webkit-user-select: none;
@@ -78,29 +78,38 @@ body {
 }
 
 .icon-image {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 8px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* Para ícones que ainda são <div> (placeholder) */
+.icon-image:not(img) {
     background-color: #ccc;
     border: 2px solid #999;
-    margin-bottom: 5px;
 }
 
 .icon-label {
     color: white;
-    font-size: 12px;
+    font-size: 25px;
     font-family: 'Tahoma', Arial, sans-serif;
     font-weight: normal;
     text-align: center;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
     word-wrap: break-word;
-    max-width: 70px;
+    max-width: 90px;
+    line-height: 1.2;
 }
 
 /* === VISUALIZAÇÃO DO GRID === */
 .grid-cell {
     position: absolute;
-    border: 1px solid rgba(255, 0, 0, 0.3);
     pointer-events: none;
     z-index: 1;
     box-sizing: border-box;
+    /* Borda removida - grid está funcionando perfeitamente */
 }

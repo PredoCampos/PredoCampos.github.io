@@ -307,21 +307,21 @@ Object.assign(SistemaOperacional.prototype, {
         const coluna = Math.round((finalX - CONFIG.gridStartX) / CONFIG.gridSize);
         const linha = Math.round((finalY - CONFIG.gridStartY) / CONFIG.gridSize);
         
-        // Verifica se há colisão e move ícones em cascata vertical
+        // Verifica se há colisão e aplica a cascata correta
         const chaveDestino = `${coluna},${linha}`;
         if (this.gridOcupado.has(chaveDestino) && this.gridOcupado.get(chaveDestino) !== icone.dataset.app) {
             console.log(`Colisão detectada na posição ${coluna},${linha}`);
+            // CORREÇÃO: Chama a função principal que decide qual lógica usar
             this.moverIconesCascataVerticalNova(coluna, linha, icone);
         }
         
-        // Move o ícone para a posição desejada
-        icone.style.left = `${finalX}px`;
-        icone.style.top = `${finalY}px`;
-        
-        // Atualiza o grid com a nova posição do ícone movido
-        this.gridOcupado.set(chaveDestino, icone.dataset.app);
-        
-        console.log(`${icone.dataset.app} colocado na posição ${coluna},${linha}`);
+        // Move o ícone para a posição desejada (apenas se não houver colisão)
+        if (!this.gridOcupado.has(chaveDestino)) {
+            icone.style.left = `${finalX}px`;
+            icone.style.top = `${finalY}px`;
+            this.gridOcupado.set(chaveDestino, icone.dataset.app);
+            console.log(`${icone.dataset.app} colocado na posição ${coluna},${linha} (sem colisão)`);
+        }
     },
     
     encontrarChaveIcone(nomeApp) {
@@ -353,6 +353,212 @@ Object.assign(SistemaOperacional.prototype, {
     
     // === SISTEMA DE CASCATA ===
     moverIconesCascataVerticalNova(coluna, linha, iconeMovido) {
+        // Verifica se é última coluna
+        if (coluna === CONFIG.maxColunas - 1) {
+            console.log(`Aplicando regra especial para última coluna: posição ${coluna},${linha}`);
+            this.aplicarRegraUltimaColuna(coluna, linha, iconeMovido);
+        } else {
+            // Lógica original para outras colunas
+            console.log(`Aplicando regra normal: posição ${coluna},${linha}`);
+            this.moverCascataNormal(coluna, linha, iconeMovido);
+        }
+    },
+    
+    // Nova função para última coluna com lógica completa
+    aplicarRegraUltimaColuna(coluna, linha, iconeMovido) {
+        const ultimaLinha = CONFIG.maxLinhas - 1;
+        
+        // EXCEÇÃO: Se tentar ocupar última posição E ela estiver ocupada
+        if (linha === ultimaLinha && this.gridOcupado.has(`${coluna},${linha}`)) {
+            console.log('Exceção: última posição ocupada, indo para posição acima');
+            linha = ultimaLinha - 1; // Vai para posição imediatamente acima
+        }
+        
+        // Verifica se há espaço vazio entre posição desejada e fim da coluna
+        const temEspacoVazio = this.verificarEspacoVazio(coluna, linha, ultimaLinha);
+        
+        if (temEspacoVazio) {
+            console.log('Há espaço vazio: aplicando cascata para BAIXO');
+            this.cascataParaBaixo(coluna, linha, iconeMovido);
+        } else {
+            console.log('Tudo ocupado: empurrando para CIMA');
+            this.empurrarParaCima(coluna, linha, iconeMovido);
+        }
+    },
+    
+    // Verifica se há pelo menos uma posição vazia entre linha e fim da coluna
+    verificarEspacoVazio(coluna, linhaInicio, ultimaLinha) {
+        for (let l = linhaInicio; l <= ultimaLinha; l++) {
+            const chave = `${coluna},${l}`;
+            if (!this.gridOcupado.has(chave)) {
+                return true; // Encontrou espaço vazio
+            }
+        }
+        return false; // Tudo ocupado
+    },
+    
+    // Cascata para baixo (quando há espaço)
+    cascataParaBaixo(coluna, linha, iconeMovido) {
+        // Coleta ícones da posição para baixo
+        const iconesParaMover = [];
+        
+        for (let l = linha; l < CONFIG.maxLinhas; l++) {
+            const chave = `${coluna},${l}`;
+            if (this.gridOcupado.has(chave)) {
+                const nomeApp = this.gridOcupado.get(chave);
+                const icone = this.encontrarIconePorApp(nomeApp);
+                if (icone && icone !== iconeMovido) {
+                    iconesParaMover.push({
+                        icone: icone,
+                        nomeApp: nomeApp,
+                        linhaOriginal: l
+                    });
+                }
+            }
+        }
+        
+        // Remove ícones das posições atuais
+        iconesParaMover.forEach(item => {
+            this.gridOcupado.delete(`${coluna},${item.linhaOriginal}`);
+        });
+        
+        // Reposiciona ícones para baixo
+        iconesParaMover.forEach((item, index) => {
+            const novaLinha = linha + 1 + index; // Começam uma posição abaixo
+            
+            if (novaLinha < CONFIG.maxLinhas) {
+                const coordenadas = this.obterCoordenadaGrid(`${coluna},${novaLinha}`);
+                item.icone.style.left = `${coordenadas.x}px`;
+                item.icone.style.top = `${coordenadas.y}px`;
+                this.gridOcupado.set(`${coluna},${novaLinha}`, item.nomeApp);
+                console.log(`${item.nomeApp} desceu para ${coluna},${novaLinha}`);
+            }
+        });
+        
+        // Coloca novo ícone na posição desejada
+        const coordenadas = this.obterCoordenadaGrid(`${coluna},${linha}`);
+        iconeMovido.style.left = `${coordenadas.x}px`;
+        iconeMovido.style.top = `${coordenadas.y}px`;
+        this.gridOcupado.set(`${coluna},${linha}`, iconeMovido.dataset.app);
+        console.log(`${iconeMovido.dataset.app} assumiu posição ${coluna},${linha}`);
+    },
+    
+    // Empurra para cima (quando tudo ocupado)
+    empurrarParaCima(coluna, linha, iconeMovido) {
+        // CORREÇÃO: Coleta apenas ícones da posição desejada para CIMA (não para baixo)
+        const iconesParaSubir = [];
+        
+        for (let l = 0; l <= linha; l++) { // Da posição 0 ATÉ a posição desejada
+            const chave = `${coluna},${l}`;
+            if (this.gridOcupado.has(chave)) {
+                const nomeApp = this.gridOcupado.get(chave);
+                const icone = this.encontrarIconePorApp(nomeApp);
+                if (icone && icone !== iconeMovido) {
+                    iconesParaSubir.push({
+                        icone: icone,
+                        nomeApp: nomeApp,
+                        linhaOriginal: l
+                    });
+                }
+            }
+        }
+        
+        console.log(`Empurrando ${iconesParaSubir.length} ícones para cima (posições 0-${linha})`);
+        
+        // Remove ícones das posições atuais
+        iconesParaSubir.forEach(item => {
+            this.gridOcupado.delete(`${coluna},${item.linhaOriginal}`);
+        });
+        
+        // Reposiciona ícones: cada um sobe UMA casa
+        iconesParaSubir.forEach(item => {
+            const novaLinha = item.linhaOriginal - 1;
+            
+            if (novaLinha >= 0) {
+                // Se posição de destino ocupada, move esse ícone também
+                const chaveDestino = `${coluna},${novaLinha}`;
+                if (this.gridOcupado.has(chaveDestino)) {
+                    const iconeOcupante = this.encontrarIconePorApp(this.gridOcupado.get(chaveDestino));
+                    if (iconeOcupante) {
+                        // Move ocupante uma casa para cima recursivamente
+                        this.moverIconeUmaCasaParaCima(coluna, novaLinha, iconeOcupante);
+                    }
+                }
+                
+                const coordenadas = this.obterCoordenadaGrid(chaveDestino);
+                item.icone.style.left = `${coordenadas.x}px`;
+                item.icone.style.top = `${coordenadas.y}px`;
+                this.gridOcupado.set(chaveDestino, item.nomeApp);
+                console.log(`${item.nomeApp} subiu de ${item.linhaOriginal} para ${novaLinha}`);
+            } else {
+                // Se não cabe, vai para coluna anterior
+                this.moverParaColunaAnterior(item, coluna);
+            }
+        });
+        
+        // Coloca novo ícone na posição desejada
+        const coordenadas = this.obterCoordenadaGrid(`${coluna},${linha}`);
+        iconeMovido.style.left = `${coordenadas.x}px`;
+        iconeMovido.style.top = `${coordenadas.y}px`;
+        this.gridOcupado.set(`${coluna},${linha}`, iconeMovido.dataset.app);
+        console.log(`${iconeMovido.dataset.app} assumiu posição ${coluna},${linha}`);
+    },
+    
+    // Move ícone uma casa para cima (recursivo)
+    moverIconeUmaCasaParaCima(coluna, linha, icone) {
+        const novaLinha = linha - 1;
+        
+        if (novaLinha >= 0) {
+            const chaveDestino = `${coluna},${novaLinha}`;
+            
+            // Se posição ocupada, move esse ícone também
+            if (this.gridOcupado.has(chaveDestino)) {
+                const iconeOcupante = this.encontrarIconePorApp(this.gridOcupado.get(chaveDestino));
+                if (iconeOcupante) {
+                    this.moverIconeUmaCasaParaCima(coluna, novaLinha, iconeOcupante);
+                }
+            }
+            
+            // Remove da posição atual
+            this.gridOcupado.delete(`${coluna},${linha}`);
+            
+            // Move para nova posição
+            const coordenadas = this.obterCoordenadaGrid(chaveDestino);
+            icone.style.left = `${coordenadas.x}px`;
+            icone.style.top = `${coordenadas.y}px`;
+            this.gridOcupado.set(chaveDestino, icone.dataset.app);
+            console.log(`${icone.dataset.app} subiu recursivamente para ${coluna},${novaLinha}`);
+        } else {
+            // Se não cabe, vai para coluna anterior
+            this.gridOcupado.delete(`${coluna},${linha}`);
+            this.moverParaColunaAnterior({ icone: icone, nomeApp: icone.dataset.app }, coluna);
+        }
+    },
+    
+    // Move ícone para coluna anterior
+    moverParaColunaAnterior(item, colunaOriginal) {
+        const colunaAnterior = Math.max(0, colunaOriginal - 1);
+        
+        if (colunaAnterior !== colunaOriginal) {
+            const linhaDestino = CONFIG.maxLinhas - 1;
+            const chaveDestino = `${colunaAnterior},${linhaDestino}`;
+            
+            // Se posição ocupada, aplica regra da última coluna recursivamente
+            if (this.gridOcupado.has(chaveDestino)) {
+                this.aplicarRegraUltimaColuna(colunaAnterior, linhaDestino, item.icone);
+            } else {
+                // Posição livre
+                const coordenadas = this.obterCoordenadaGrid(chaveDestino);
+                item.icone.style.left = `${coordenadas.x}px`;
+                item.icone.style.top = `${coordenadas.y}px`;
+                this.gridOcupado.set(chaveDestino, item.nomeApp);
+                console.log(`${item.nomeApp} voltou para coluna ${colunaAnterior}`);
+            }
+        }
+    },
+    
+    // Lógica original para posições normais (mantida inalterada)
+    moverCascataNormal(coluna, linha, iconeMovido) {
         // Coleta todos os ícones da coluna a partir da posição de inserção
         const iconesParaMover = [];
         
@@ -371,7 +577,7 @@ Object.assign(SistemaOperacional.prototype, {
             }
         }
         
-        console.log(`Movendo ${iconesParaMover.length} ícones da coluna ${coluna}`);
+        console.log(`Movendo ${iconesParaMover.length} ícones da coluna ${coluna} (cascata normal)`);
         
         // Remove todos os ícones da coluna que serão movidos
         iconesParaMover.forEach(item => {
@@ -386,7 +592,7 @@ Object.assign(SistemaOperacional.prototype, {
             
             // Se ultrapassou o limite da coluna atual, vai para próxima coluna
             if (novaLinha >= CONFIG.maxLinhas) {
-                // NOVA REGRA: Se não há próxima coluna, empurra para cima
+                // REGRA ORIGINAL: Se não há próxima coluna, empurra para cima
                 if (coluna >= CONFIG.maxColunas - 1) {
                     // Encontra posição livre empurrando para cima
                     const posicaoLivre = this.encontrarPosicaoEmpurrandoParaCima(coluna, linha);
