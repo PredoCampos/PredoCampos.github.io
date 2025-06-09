@@ -181,32 +181,46 @@ Object.assign(SistemaOperacional.prototype, {
         janela.id = windowId;
         janela.style.zIndex = ++this.zIndexAtual;
         
+        // Ajusta tamanho da janela para mobile
+        let larguraJanela = CONFIG.windowDefaultWidth;
+        let alturaJanela = CONFIG.windowDefaultHeight;
+        
+        if (CONFIG.isMobile) {
+            // Mobile: janela ocupa quase toda a tela
+            larguraJanela = Math.min(CONFIG.windowDefaultWidth, window.innerWidth - 40);
+            alturaJanela = Math.min(CONFIG.windowDefaultHeight, window.innerHeight - CONFIG.taskbarHeight - 60);
+        }
+        
         // Posicionamento inteligente
         let x, y;
         if (this.contadorAppsAbertos === 0) {
             // Centro da tela
-            x = (window.innerWidth - CONFIG.windowDefaultWidth) / 2;
-            y = (window.innerHeight - CONFIG.taskbarHeight - CONFIG.windowDefaultHeight) / 2;
+            x = (window.innerWidth - larguraJanela) / 2;
+            y = (window.innerHeight - CONFIG.taskbarHeight - alturaJanela) / 2;
         } else {
             // Offset proporcional
             const offset = this.contadorAppsAbertos * CONFIG.windowOffsetIncrement;
-            x = ((window.innerWidth - CONFIG.windowDefaultWidth) / 2) + offset;
-            y = ((window.innerHeight - CONFIG.taskbarHeight - CONFIG.windowDefaultHeight) / 2) + offset;
+            x = ((window.innerWidth - larguraJanela) / 2) + offset;
+            y = ((window.innerHeight - CONFIG.taskbarHeight - alturaJanela) / 2) + offset;
             
             // Evita sair da tela
-            const maxX = window.innerWidth - CONFIG.windowDefaultWidth - 20;
-            const maxY = window.innerHeight - CONFIG.taskbarHeight - CONFIG.windowDefaultHeight - 20;
+            const maxX = window.innerWidth - larguraJanela - 20;
+            const maxY = window.innerHeight - CONFIG.taskbarHeight - alturaJanela - 20;
             
             if (x > maxX || y > maxY) {
-                x = 50;
-                y = 50;
+                x = 20; // Mobile: margem menor
+                y = 20;
             }
         }
         
+        // Garante que não sai da tela (correção adicional)
+        x = Math.max(10, Math.min(x, window.innerWidth - larguraJanela - 10));
+        y = Math.max(10, Math.min(y, window.innerHeight - CONFIG.taskbarHeight - alturaJanela - 10));
+        
         janela.style.left = `${x}px`;
         janela.style.top = `${y}px`;
-        janela.style.width = `${CONFIG.windowDefaultWidth}px`;
-        janela.style.height = `${CONFIG.windowDefaultHeight}px`;
+        janela.style.width = `${larguraJanela}px`;
+        janela.style.height = `${alturaJanela}px`;
         
         this.contadorAppsAbertos++;
         
