@@ -156,15 +156,37 @@
     border: 1px inset rgba(255, 255, 255, 0.2);
 }
 
-.taskbar-clock {
-    color: white;
-    font-size: 13px;
-    font-family: 'Tahoma', Arial, sans-serif;
-    font-weight: normal;
-    padding: 4px 8px;
+.taskbar-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background: rgba(0, 0, 0, 0.1);
     border: 1px inset rgba(255, 255, 255, 0.1);
     border-radius: 2px;
-    min-width: 50px;
+    padding: 2px 8px;
+    min-width: 90px;
+    height: 100%;
+    margin: 2px 0;
+}
+
+.taskbar-clock {
+    color: white;
+    font-size: 15px;
+    font-family: 'Tahoma', Arial, sans-serif;
+    font-weight: bold;
     text-align: center;
+    line-height: 1;
+}
+
+.taskbar-data {
+    color: white !important;
+    font-size: 13px !important;
+    font-family: 'Tahoma', Arial, sans-serif !important;
+    font-weight: normal !important;
+    text-align: center !important;
+    line-height: 1 !important;
+    margin-top: 2px !important;
+    display: block !important;
+    visibility: visible !important;
 }

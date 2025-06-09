@@ -70,4 +70,18 @@
     .taskbar-app {
         max-width: 100px;
     }
+    
+    .taskbar-info {
+        min-width: 75px;
+        padding: 1px 6px;
+        margin: 1px 0;
+    }
+    
+    .taskbar-clock {
+        font-size: 13px;
+    }
+    
+    .taskbar-data {
+        font-size: 11px;
+    }
 }

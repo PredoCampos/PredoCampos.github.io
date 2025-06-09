@@ -15,7 +15,7 @@ function loadScript(src) {
 // Inicialização do sistema
 document.addEventListener('DOMContentLoaded', async () => {
     try {
-        console.log('Carregando Sistema Operacional...');
+        console.log('🚀 Carregando Sistema Operacional...');
         
         // Carrega módulos em sequência
         await loadScript('assets/js/so/core.js');
@@ -24,12 +24,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         console.log('✅ Módulos carregados com sucesso');
         
-        // Inicializa o sistema operacional
-        window.SO = new SistemaOperacional();
-        
-        console.log('Sistema Operacional inicializado!');
+        // Aguarda um pouco mais para garantir que tudo está pronto
+        setTimeout(() => {
+            // Inicializa o sistema operacional
+            window.SO = new SistemaOperacional();
+            
+            console.log('🎯 Sistema Operacional inicializado!');
+            
+            // Debug adicional - verificar se elementos existem
+            setTimeout(() => {
+                const relogio = document.getElementById('taskbar-clock');
+                const data = document.getElementById('taskbar-data');
+                console.log('Elementos encontrados:', {
+                    relogio: !!relogio,
+                    data: !!data,
+                    relogioTexto: relogio?.textContent,
+                    dataTexto: data?.textContent
+                });
+            }, 1000);
+            
+        }, 200);
         
     } catch (error) {
-        console.error('Erro ao carregar o Sistema Operacional:', error);
+        console.error('❌ Erro ao carregar o Sistema Operacional:', error);
     }
 });
