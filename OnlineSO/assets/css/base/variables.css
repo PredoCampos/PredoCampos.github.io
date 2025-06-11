@@ -1,0 +1,46 @@
+/* assets/css/base/variables.css
+ * Define variáveis CSS (Custom Properties) para cores, tamanhos, etc.
+ */
+ :root {
+    /* Cores do Sistema Operacional (Windows 9x-like) */
+    --color-blue-dark: #245EB3;
+    --color-blue-light: #89CFF0;
+    --color-window-bg: #ECE9D8;
+    --color-window-border-outset: #D4D0C8;
+    --color-window-header-gradient-start: #0A56D6;
+    --color-window-header-gradient-end: #1F7AE8;
+    --color-taskbar-bg-gradient-start: #2461C4;
+    --color-taskbar-bg-gradient-end: #1F5EB6;
+    --color-taskbar-border-top: #1A4FA0;
+    --color-menu-button-bg-gradient-start: #4CAF50;
+    --color-menu-button-bg-gradient-end: #45A049;
+    --color-menu-button-border: #4CAF50;
+    --color-text-light: white;
+    --color-text-dark: black;
+    --color-shadow: rgba(0, 0, 0, 0.3);
+    --color-desktop-icon-hover: rgba(255, 255, 255, 0.1);
+    --color-desktop-icon-selected: rgba(255, 255, 255, 0.2);
+    --color-desktop-icon-dragging: rgba(255, 255, 255, 0.3);
+    --color-taskbar-app-bg: rgba(255, 255, 255, 0.1);
+    --color-taskbar-app-border: rgba(255, 255, 255, 0.2);
+    --color-taskbar-app-active-bg: rgba(255, 255, 255, 0.3);
+    --color-taskbar-app-active-border: rgba(255, 255, 255, 0.2);
+    --color-taskbar-info-bg: rgba(0, 0, 0, 0.1);
+    --color-taskbar-info-border: rgba(255, 255, 255, 0.1);
+
+    /* Tamanhos e Espaçamentos */
+    --taskbar-height: 40px; /* Será atualizado via JS pelo GridManager */
+    --icon-size: 64px; /* Tamanho padrão do ícone */
+    --icon-label-font-size: 15px;
+    --window-header-height: 36px;
+    --window-control-size: 20px;
+
+    /* Fontes */
+    --font-family-system: 'Tahoma', Arial, sans-serif;
+    --font-weight-normal: normal;
+    --font-weight-bold: bold;
+
+    /* Transições */
+    --transition-speed-fast: 0.2s;
+    --transition-speed-normal: 0.3s;
+}

@@ -1,0 +1,13 @@
+/* assets/css/components/grid-visualization.css
+ * Estilos para as células de visualização do grid no desktop.
+ * Geralmente invisíveis, usadas para depuração.
+ */
+
+ .grid-cell {
+    position: absolute;
+    pointer-events: none; /* Garante que não interfere com cliques no desktop */
+    z-index: 1; /* Abaixo dos ícones e janelas */
+    box-sizing: border-box;
+    /* Para depuração: descomente a linha abaixo para ver as células do grid */
+    /* border: 1px dashed rgba(255, 255, 255, 0.2); */
+}

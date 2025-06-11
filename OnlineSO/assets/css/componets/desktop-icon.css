@@ -1,0 +1,88 @@
+/* assets/css/components/desktop-icon.css
+ * Estilos para os ícones da área de trabalho.
+ */
+
+ .desktop-icon {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px; /* Padding para a área de clique/seleção */
+    width: 90px; /* Largura padrão */
+    height: 90px; /* Altura padrão */
+    border-radius: 4px;
+    transition: background-color var(--transition-speed-fast);
+    text-align: center; /* Garante que o texto fique centralizado dentro do ícone */
+}
+
+.desktop-icon:hover {
+    background-color: var(--color-desktop-icon-hover);
+}
+
+.desktop-icon.selected {
+    background-color: var(--color-desktop-icon-selected);
+    /* Opcional: Adicionar uma borda para melhor feedback visual */
+    /* border: 1px dashed rgba(255, 255, 255, 0.5); */
+}
+
+.desktop-icon.dragging {
+    opacity: 0.7;
+    z-index: var(--max-z-index-dragging, 1000); /* Z-index alto para ícones arrastando */
+    transform: scale(1.1);
+    background-color: var(--color-desktop-icon-dragging);
+    box-shadow: 0 4px 12px var(--color-shadow); /* Sombra para indicar que está "flutuando" */
+}
+
+.icon-image {
+    width: var(--icon-size); /* Usa a variável CSS do tamanho do ícone */
+    height: var(--icon-size);
+    margin-bottom: 8px;
+    object-fit: contain;
+    /* Garante o "pixel-perfect" para as imagens de ícones */
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+}
+
+/* Para ícones que ainda são <div> (placeholder), se aplicável */
+.icon-image:not(img) {
+    background-color: #ccc;
+    border: 2px solid #999;
+}
+
+.icon-label {
+    color: var(--color-text-light);
+    font-size: var(--icon-label-font-size);
+    font-weight: var(--font-weight-normal);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    word-wrap: break-word;
+    max-width: 90px; /* Limita a largura do texto para quebrar linha */
+    line-height: 1.2;
+    overflow: hidden; /* Garante que o texto não "vaze" se for muito longo */
+    text-overflow: ellipsis; /* Adiciona reticências se o texto for cortado */
+    white-space: normal; /* Permite que o texto quebre linha */
+}
+
+/* ===== ADAPTAÇÕES PARA MOBILE ===== */
+@media (max-width: 768px) {
+    .desktop-icon {
+        width: 80px; /* Ícones menores no mobile */
+        height: 80px;
+        padding: 8px;
+    }
+    
+    .icon-image {
+        width: 56px; /* Imagens menores no mobile */
+        height: 56px;
+    }
+    
+    .icon-label {
+        font-size: 12px; /* Fonte menor no mobile */
+        max-width: 70px;
+    }
+    
+    .desktop-icon.dragging {
+        transform: scale(1.2); /* Um pouco maior ao arrastar no mobile */
+    }
+}
