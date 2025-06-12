@@ -1,7 +1,7 @@
 /**
  * @file DesktopInteractions.js
- * @description Lida com interações de mouse, com um sistema de detecção de
- * duplo clique manual para maior confiabilidade.
+ * @description Lida com interações de mouse, agora impedindo que janelas
+ * sejam arrastadas para fora da área visível.
  */
 export class DesktopInteractions {
     constructor(soInstance) {
@@ -16,46 +16,31 @@ export class DesktopInteractions {
         this._observeNewWindows();
     }
     
-    /**
-     * @private
-     * Reescrito com um detector de duplo clique manual para ser mais robusto.
-     */
     _setupIconListeners(icon) {
         const appName = icon.dataset.app;
         
-        // Variáveis para controlar a detecção de clique/duplo clique
         let clickTimer = null;
         let clickCount = 0;
-        const dblClickSpeed = 300; // Tempo em ms para considerar um duplo clique
+        const dblClickSpeed = 300; 
 
-        // Substitui os listeners de 'click' e 'dblclick' por um único listener inteligente
         icon.addEventListener('click', (e) => {
             e.stopPropagation();
-
-            // Se um arraste acabou de acontecer, ignora o evento de clique residual
             if (this.so.state.ui.isDragging) return;
 
             clickCount++;
 
             if (clickCount === 1) {
-                // No primeiro clique, inicia um temporizador.
                 clickTimer = setTimeout(() => {
-                    // Se o tempo esgotar, foi um clique simples.
-                    // Ação de clique simples: selecionar o ícone.
                     this._selectIcon(icon);
-                    clickCount = 0; // Reseta a contagem
+                    clickCount = 0;
                 }, dblClickSpeed);
             } else if (clickCount === 2) {
-                // Se o segundo clique chegar antes do tempo esgotar, é um duplo clique.
-                clearTimeout(clickTimer); // Cancela a ação de clique simples
-                
-                // Ação de duplo clique: interagir com o app (abrir/minimizar/restaurar).
+                clearTimeout(clickTimer);
                 this.wm.interact(appName);
-                clickCount = 0; // Reseta a contagem
+                clickCount = 0;
             }
         });
         
-        // A lógica de clique longo para arrastar continua a mesma
         this._makeIconDraggable(icon, icon, {
             onDragEnd: (el) => this.gm.snapToGrid(el)
         });
@@ -86,16 +71,12 @@ export class DesktopInteractions {
         const onMouseDown = (e) => {
             if (e.button !== 0) return;
             e.preventDefault();
-
             longPressActivated = false;
             isDragging = false;
-            
             offsetX = e.clientX - targetEl.offsetLeft;
             offsetY = e.clientY - targetEl.offsetTop;
-
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp, { once: true });
-
             longPressTimer = setTimeout(() => {
                 longPressActivated = true;
                 targetEl.classList.add('dragging'); 
@@ -107,11 +88,9 @@ export class DesktopInteractions {
                 clearTimeout(longPressTimer);
                 longPressTimer = null;
             }
-
             if (longPressActivated) {
                 isDragging = true;
                 this.so.state.ui.isDragging = true;
-                
                 targetEl.style.left = `${e.clientX - offsetX}px`;
                 targetEl.style.top = `${e.clientY - offsetY}px`;
             }
@@ -121,11 +100,9 @@ export class DesktopInteractions {
             clearTimeout(longPressTimer);
             document.removeEventListener('mousemove', onMouseMove);
             targetEl.classList.remove('dragging');
-
             if (isDragging && options.onDragEnd) {
                 options.onDragEnd(targetEl);
             }
-            
             setTimeout(() => {
                 this.so.state.ui.isDragging = false;
                 isDragging = false;
@@ -135,6 +112,10 @@ export class DesktopInteractions {
         handleEl.addEventListener('mousedown', onMouseDown);
     }
     
+    /**
+     * @private
+     * Lógica de arrastar para JANELAS, agora com verificação de limites.
+     */
     _makeWindowDraggable(targetEl, handleEl, options = {}) {
         let offsetX, offsetY;
         let isDragging = false;
@@ -161,8 +142,23 @@ export class DesktopInteractions {
                 targetEl.classList.add('dragging');
             }
             
-            targetEl.style.left = `${e.clientX - offsetX}px`;
-            targetEl.style.top = `${e.clientY - offsetY}px`;
+            // --- MUDANÇA AQUI: Lógica de verificação de limites ---
+            
+            // 1. Calcula a nova posição ideal
+            let newLeft = e.clientX - offsetX;
+            let newTop = e.clientY - offsetY;
+
+            // 2. Define os limites da área de trabalho
+            const maxLeft = window.innerWidth - targetEl.offsetWidth;
+            const maxTop = window.innerHeight - this.so.state.grid.taskbarHeight - targetEl.offsetHeight;
+
+            // 3. Garante que a nova posição não ultrapasse os limites
+            newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+            newTop = Math.max(0, Math.min(newTop, maxTop));
+            
+            // 4. Aplica a posição corrigida
+            targetEl.style.left = `${newLeft}px`;
+            targetEl.style.top = `${newTop}px`;
         };
 
         const onMouseUp = () => {
