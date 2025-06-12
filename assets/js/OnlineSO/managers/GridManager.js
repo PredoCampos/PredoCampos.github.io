@@ -1,7 +1,7 @@
 /**
  * @file GridManager.js
- * @description Versão definitiva do gerenciador de grid, com a lógica de cascata
- * e colisão 100% fiel à implementação original.
+ * @description Versão corrigida para que a altura da taskbar seja lida do CSS,
+ * e não calculada dinamicamente.
  */
 export class GridManager {
     constructor(soInstance) {
@@ -21,6 +21,57 @@ export class GridManager {
         this.createVisualization();
         this.repositionAllIcons();
     }
+
+    // ... (outros métodos públicos como initializeIconPositions, snapToGrid, etc. permanecem iguais) ...
+
+
+    // --- LÓGICA DE CÁLCULO E MÉTODOS PRIVADOS ---
+
+    /**
+     * @private
+     * Lógica de cálculo de dimensões APRIMORADA.
+     */
+    _calculateDimensions() {
+        const { grid: gridConfig } = this.config;
+        const { device, grid: gridState } = this.state;
+        
+        const screenW = window.innerWidth;
+        const screenH = window.innerHeight;
+
+        // --- MUDANÇA PRINCIPAL AQUI ---
+        // Em vez de calcular a altura da taskbar, vamos LER o valor definido no CSS.
+        // Isso nos dá controle total pelo arquivo theme.css.
+        const taskbarElement = document.querySelector(this.config.selectors.taskbar);
+        const taskbarStyle = getComputedStyle(taskbarElement);
+        // Usamos parseInt para pegar apenas o número (ex: "32px" -> 32)
+        gridState.taskbarHeight = parseInt(taskbarStyle.height, 10);
+        // --- FIM DA MUDANÇA ---
+
+        const marginPercentage = device.isMobile ? gridConfig.marginPercentageMobile : gridConfig.marginPercentage;
+        const iconSize = device.isMobile ? gridConfig.iconBaseSizeMobile : gridConfig.iconBaseSize;
+
+        gridState.margin = Math.floor(Math.min(screenW, screenH) * marginPercentage);
+
+        const availableW = screenW - (gridState.margin * 2);
+        const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2);
+
+        const idealCellSize = iconSize + 20;
+        gridState.cols = Math.max(2, Math.floor(availableW / idealCellSize));
+        gridState.rows = Math.max(2, Math.floor(availableH / idealCellSize));
+
+        gridState.cellSize = Math.min(Math.floor(availableW / gridState.cols), Math.floor(availableH / gridState.rows));
+
+        gridState.width = gridState.cols * gridState.cellSize;
+        gridState.height = gridState.rows * gridState.cellSize;
+
+        const leftoverW = availableW - gridState.width;
+        const leftoverH = availableH - gridState.height;
+        gridState.startX = gridState.margin + Math.floor(leftoverW / 2);
+        gridState.startY = gridState.margin + Math.floor(leftoverH / 2);
+    }
+    
+    // O restante do arquivo continua exatamente como na última versão que te enviei.
+    // Para garantir, aqui está o código completo.
 
     initializeIconPositions() {
         const { grid: gridState } = this.state;
@@ -69,9 +120,7 @@ export class GridManager {
             this._placeIconAt(icon, col, row);
         }
     }
-
-    // --- LÓGICA DE CASCATA (Tradução Fiel 1:1 do Original) ---
-
+    
     _moverIconesCascataVerticalNova(coluna, linha, iconeMovido) {
         if (coluna === this.state.grid.cols - 1) {
             this._aplicarRegraUltimaColuna(coluna, linha, iconeMovido);
@@ -145,7 +194,7 @@ export class GridManager {
     
     _moverParaColunaAnterior(icone, colunaOriginal) {
         const colunaAnterior = colunaOriginal - 1;
-        if (colunaAnterior < 0) return; // Não há para onde ir
+        if (colunaAnterior < 0) return;
         
         let linhaDestino = this.state.grid.rows - 1;
 
@@ -191,8 +240,6 @@ export class GridManager {
             l++;
         }
     }
-    
-    // --- MÉTODOS AUXILIARES ---
 
     _placeIconAt(icon, col, row) {
         const key = `${col},${row}`;
@@ -213,35 +260,10 @@ export class GridManager {
         });
     }
 
-    _calculateDimensions() {
-        const { grid: gridConfig } = this.config;
-        const { device, grid: gridState } = this.state;
-        const screenW = window.innerWidth;
-        const screenH = window.innerHeight;
-        const shorterSide = Math.min(screenW, screenH);
-        const marginPercentage = device.isMobile ? gridConfig.marginPercentageMobile : gridConfig.marginPercentage;
-        const iconSize = device.isMobile ? gridConfig.iconBaseSizeMobile : gridConfig.iconBaseSize;
-        gridState.taskbarHeight = Math.floor(shorterSide * gridConfig.taskbarPercentage);
-        gridState.margin = Math.floor(shorterSide * marginPercentage);
-        const availableW = screenW - (gridState.margin * 2);
-        const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2);
-        const idealCellSize = iconSize + 20;
-        gridState.cols = Math.max(2, Math.floor(availableW / idealCellSize));
-        gridState.rows = Math.max(2, Math.floor(availableH / idealCellSize));
-        gridState.cellSize = Math.min(Math.floor(availableW / gridState.cols), Math.floor(availableH / gridState.rows));
-        gridState.width = gridState.cols * gridState.cellSize;
-        gridState.height = gridState.rows * gridState.cellSize;
-        const leftoverW = availableW - gridState.width;
-        const leftoverH = availableH - gridState.height;
-        gridState.startX = gridState.margin + Math.floor(leftoverW / 2);
-        gridState.startY = gridState.margin + Math.floor(leftoverH / 2);
-    }
-    
     _updateLayoutCSS() {
         const { selectors } = this.config;
         const taskbarHeight = `${this.state.grid.taskbarHeight}px`;
         const desktopHeight = `calc(100vh - ${taskbarHeight})`;
-        document.querySelector(selectors.taskbar).style.height = taskbarHeight;
         document.querySelector(selectors.desktop).style.height = desktopHeight;
         document.querySelector(selectors.windowsContainer).style.height = desktopHeight;
     }
@@ -267,7 +289,7 @@ export class GridManager {
     _getCoordsFromGridKey(key) {
         const { grid } = this.state;
         const [col, row] = key.split(',').map(Number);
-        return { x: grid.startX + (col * grid.cellSize), y: grid.startY + (row * grid.cellSize) };
+        return { x: grid.startX + (col * grid.cellSize), y: grid.startY + (row * grid. cellSize) };
     }
 
     _findKeyForApp(appName) {

@@ -13,7 +13,7 @@
 .window {
     position: absolute;
     background-color: var(--color-window-bg);
-    border: 2px outset var(--color-window-border);
+    border: 2px outset var(--color-win98-grey);
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
     pointer-events: all;
     min-width: 300px;
@@ -28,6 +28,7 @@
     width: 100vw !important;
     height: calc(100vh - var(--size-taskbar-height)) !important;
     box-sizing: border-box !important;
+    border: none;
 }
 
 .window.minimized { 
@@ -35,9 +36,9 @@
 }
 
 .window-header {
-    background: linear-gradient(to bottom, var(--color-window-header-start), var(--color-window-header-end));
+    background: var(--color-win98-header-blue);
     color: var(--color-text-primary);
-    padding: 8px;
+    padding: 4px 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -57,14 +58,15 @@
 .window-control {
     width: 20px;
     height: 20px;
-    border: 1px outset var(--color-window-border);
-    background: var(--color-window-border);
+    border: 2px outset var(--color-win98-grey);
+    background: var(--color-win98-grey);
     cursor: pointer;
     font-size: 12px;
     font-weight: bold;
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-bottom: 2px;
 }
 
 .window-control:hover { 
@@ -78,9 +80,11 @@
 .window-content {
     flex: 1;
     padding: 10px;
-    background: var(--color-text-primary);
+    background: var(--color-win98-grey);
+    border-top: 2px solid var(--color-win98-shadow);
     overflow: auto;
     font-size: 13px;
+    color: var(--color-win98-text);
 }
 
 /* --- Adaptações para mobile --- */

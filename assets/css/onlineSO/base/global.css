@@ -2,7 +2,6 @@
 
 @font-face {
     font-family: 'Tahoma';
-    /* O caminho foi ajustado para sair de 'base', 'onlineSO' e 'css' */
     src: url('../../../fonts/Tahoma.otf') format('opentype');
     font-weight: normal;
     font-display: swap;
@@ -22,7 +21,7 @@ body {
     font-family: var(--font-primary);
     overflow: hidden;
     height: 100vh;
-    background: linear-gradient(45deg, var(--color-background-gradient-start), var(--color-background-gradient-end));
+    background-color: var(--color-win98-desktop);
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: none;
 }

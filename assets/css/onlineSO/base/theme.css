@@ -3,29 +3,33 @@
 :root {
     /* Cores */
     --color-text-primary: #FFFFFF;
-    --color-background-gradient-start: #245EB3;
-    --color-background-gradient-end: #89CFF0;
+
+    /* --- NOVAS CORES WIN98 --- */
+    --color-win98-desktop: #008080;
+    --color-win98-grey: #C0C0C0;
+    --color-win98-shadow: #808080;
+    --color-win98-highlight: #FFFFFF;
+    --color-win98-text: #000000;
+    --color-win98-header-blue: #000080;
+
+    /* --- Cores mantidas ou adaptadas --- */
     --color-icon-hover-bg: rgba(255, 255, 255, 0.1);
     --color-icon-selected-bg: rgba(255, 255, 255, 0.2);
     --color-icon-dragging-bg: rgba(255, 255, 255, 0.3);
     --color-text-shadow: rgba(0, 0, 0, 0.8);
-    --color-window-bg: #ECE9D8;
+    --color-window-bg: #C0C0C0;
     --color-window-border: #D4D0C8;
-    --color-window-header-start: #0A56D6;
-    --color-window-header-end: #1F7AE8;
-    --color-taskbar-bg-start: #2461C4;
-    --color-taskbar-bg-end: #1F5EB6;
-    --color-menu-button-bg-start: #4CAF50;
-    --color-menu-button-bg-end: #45A049;
-
+    --color-window-header-start: var(--color-win98-header-blue);
+    --color-window-header-end: var(--color-win98-header-blue);
+    
     /* Tipografia */
     --font-primary: 'Tahoma', Arial, sans-serif;
-    --font-size-label: 25px;
+    --font-size-label: 21px;
 
     /* Tamanhos e Dimensões */
-    --size-taskbar-height: 40px;
-    --size-icon-wrapper: 90px;
-    --size-icon-image: 64px;
+    --size-taskbar-height: 48px;
+    --size-icon-wrapper: 96px;
+    --size-icon-image: 80px;
     
     /* Efeitos */
     --transition-duration-fast: 0.2s;
