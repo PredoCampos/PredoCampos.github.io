@@ -1,0 +1,32 @@
+/* Arquivo: assets/css/onlineSO/base/theme.css */
+
+:root {
+    /* Cores */
+    --color-text-primary: #FFFFFF;
+    --color-background-gradient-start: #245EB3;
+    --color-background-gradient-end: #89CFF0;
+    --color-icon-hover-bg: rgba(255, 255, 255, 0.1);
+    --color-icon-selected-bg: rgba(255, 255, 255, 0.2);
+    --color-icon-dragging-bg: rgba(255, 255, 255, 0.3);
+    --color-text-shadow: rgba(0, 0, 0, 0.8);
+    --color-window-bg: #ECE9D8;
+    --color-window-border: #D4D0C8;
+    --color-window-header-start: #0A56D6;
+    --color-window-header-end: #1F7AE8;
+    --color-taskbar-bg-start: #2461C4;
+    --color-taskbar-bg-end: #1F5EB6;
+    --color-menu-button-bg-start: #4CAF50;
+    --color-menu-button-bg-end: #45A049;
+
+    /* Tipografia */
+    --font-primary: 'Tahoma', Arial, sans-serif;
+    --font-size-label: 25px;
+
+    /* Tamanhos e Dimensões */
+    --size-taskbar-height: 40px;
+    --size-icon-wrapper: 90px;
+    --size-icon-image: 64px;
+    
+    /* Efeitos */
+    --transition-duration-fast: 0.2s;
+}

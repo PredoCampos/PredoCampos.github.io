@@ -1,0 +1,13 @@
+/* Arquivo: assets/css/onlineSO/index.css */
+
+/* 1. Importa o tema (variáveis) para que esteja disponível para todos. */
+@import url('base/theme.css');
+
+/* 2. Importa os estilos globais e o reset. */
+@import url('base/global.css');
+
+/* 3. Importa cada componente da interface. */
+@import url('components/desktop.css');
+@import url('components/icons.css');
+@import url('components/window.css');
+@import url('components/taskbar.css');

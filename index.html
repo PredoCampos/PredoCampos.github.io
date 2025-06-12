@@ -4,62 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Predo Campoz xp</title>
-    <link rel="stylesheet" href="assets/css/so/index.css">
+    <link rel="stylesheet" href="assets/css/onlineSO/index.css">
 </head>
 <body>
-    <!-- Área de Trabalho -->
-    <div id="desktop" class="desktop">
-        <!-- Ícones da Área de Trabalho -->
-        <div class="desktop-icons">
-            <div class="desktop-icon" data-app="internet">
-                <img src="assets/images/so/internet.png" alt="Internet" class="icon-image">
-                <span class="icon-label">Internet</span>
-            </div>
-            
-            <div class="desktop-icon" data-app="arquivos">
-                <img src="assets/images/so/explorer.png" alt="Arquivos" class="icon-image">
-                <span class="icon-label">Arquivos</span>
-            </div>
-            
-            <div class="desktop-icon" data-app="notas">
-                <img src="assets/images/so/notes.png" alt="Notas" class="icon-image">
-                <span class="icon-label">Notas</span>
-            </div>
-            
-            <div class="desktop-icon" data-app="calculadora">
-                <img src="assets/images/so/calculadora.png" alt="Calculadora" class="icon-image">
-                <span class="icon-label">Calculadora</span>
-            </div>
-            
-            <div class="desktop-icon" data-app="cobra">
-                <img src="assets/images/so/snake.png" alt="Cobra" class="icon-image">
-                <span class="icon-label">Cobra</span>
-            </div>
-            
-            <div class="desktop-icon" data-app="lixo">
-                <img src="assets/images/so/lixo.png" alt="Lixo" class="icon-image">
-                <span class="icon-label">Lixo</span>
-            </div>
-        </div>
-    </div>
 
-    <!-- Container para Janelas -->
-    <div id="windows-container" class="windows-container"></div>
+    <main id="desktop" class="desktop">
+        
+        <ul class="desktop-icons">
+            <li>
+                <button class="desktop-icon" data-app="internet">
+                    <img src="assets/images/so/internet.png" alt="Abrir aplicativo de Internet" class="icon-image">
+                    <span class="icon-label">Internet</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="arquivos">
+                    <img src="assets/images/so/explorer.png" alt="Abrir gerenciador de Arquivos" class="icon-image">
+                    <span class="icon-label">Arquivos</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="notas">
+                    <img src="assets/images/so/notes.png" alt="Abrir aplicativo de Notas" class="icon-image">
+                    <span class="icon-label">Notas</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="calculadora">
+                    <img src="assets/images/so/calculadora.png" alt="Abrir Calculadora" class="icon-image">
+                    <span class="icon-label">Calculadora</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="cobra">
+                    <img src="assets/images/so/snake.png" alt="Abrir jogo da Cobra" class="icon-image">
+                    <span class="icon-label">Cobra</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="lixo">
+                    <img src="assets/images/so/lixo.png" alt="Abrir Lixeira" class="icon-image">
+                    <span class="icon-label">Lixo</span>
+                </button>
+            </li>
+        </ul>
+        
+        <div id="windows-container" class="windows-container"></div>
 
-    <!-- Barra de Tarefas -->
-    <div id="taskbar" class="taskbar">
-        <!-- Menu Iniciar -->
+    </main>
+
+    <footer id="taskbar" class="taskbar">
         <button id="menu-button" class="menu-button">Menu</button>
         
-        <!-- Aplicativos Abertos -->
         <div id="taskbar-apps" class="taskbar-apps"></div>
         
-        <!-- Data & Hora -->
         <div id="taskbar-info" class="taskbar-info">
-            <div id="taskbar-clock" class="taskbar-clock">00:00</div>
+            <time id="taskbar-clock" class="taskbar-clock">00:00</time>
             <div id="taskbar-data" class="taskbar-data"></div>
         </div>
-    </div>
+    </footer>
 
     <script src="assets/js/so/index.js"></script>
 </body>

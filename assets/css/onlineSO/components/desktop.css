@@ -1,0 +1,26 @@
+/* Arquivo: assets/css/onlineSO/components/desktop.css */
+
+.desktop {
+    width: 100vw;
+    height: calc(100vh - var(--size-taskbar-height));
+    position: relative;
+}
+
+.desktop-icons {
+    /* --- ADICIONADO: Remove os marcadores de lista (pontos pretos) --- */
+    list-style: none;
+    /* ----------------------------------------------------------------- */
+    
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 400px;
+    height: calc(100vh - 100px);
+}
+
+.grid-cell {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    box-sizing: border-box;
+}

@@ -1,0 +1,104 @@
+/* Arquivo: assets/css/onlineSO/components/taskbar.css */
+
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    height: var(--size-taskbar-height);
+    background: linear-gradient(to bottom, var(--color-taskbar-bg-start), var(--color-taskbar-bg-end));
+    border-top: 1px solid #1A4FA0;
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 4px;
+    z-index: 1000;
+}
+
+.menu-button {
+    background: linear-gradient(to bottom, var(--color-menu-button-bg-start), var(--color-menu-button-bg-end));
+    color: var(--color-text-primary);
+    border: 1px outset var(--color-menu-button-bg-start);
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+.menu-button:hover { 
+    filter: brightness(1.1); 
+}
+
+.menu-button:active { 
+    border-style: inset; 
+}
+
+.taskbar-apps {
+    flex: 1;
+    display: flex;
+    gap: 2px;
+    overflow: hidden;
+}
+
+.taskbar-app {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--color-text-primary);
+    border: 1px outset rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    font-size: 13px;
+    cursor: pointer;
+    border-radius: 2px;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.taskbar-app:hover { 
+    background: rgba(255, 255, 255, 0.2); 
+}
+
+.taskbar-app.active {
+    background: rgba(255, 255, 255, 0.3);
+    border-style: inset;
+}
+
+.taskbar-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.1);
+    border: 1px inset rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+}
+
+.taskbar-clock { 
+    font-size: 15px; 
+    font-weight: bold; 
+}
+
+.taskbar-data { 
+    font-size: 13px; 
+}
+
+/* --- Adaptações para mobile --- */
+@media (max-width: 768px) {
+    .taskbar-app { 
+        max-width: 100px; 
+    }
+    
+    .taskbar-info {
+        min-width: 75px;
+        padding: 1px 6px;
+    }
+    
+    .taskbar-clock { 
+        font-size: 13px; 
+    }
+    
+    .taskbar-data { 
+        font-size: 11px; 
+    }
+}

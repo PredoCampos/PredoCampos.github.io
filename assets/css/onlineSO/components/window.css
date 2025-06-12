@@ -1,0 +1,93 @@
+/* Arquivo: assets/css/onlineSO/components/window.css */
+
+.windows-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - var(--size-taskbar-height));
+    pointer-events: none;
+    z-index: 100;
+}
+
+.window {
+    position: absolute;
+    background-color: var(--color-window-bg);
+    border: 2px outset var(--color-window-border);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    pointer-events: all;
+    min-width: 300px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.window.maximized {
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - var(--size-taskbar-height)) !important;
+    box-sizing: border-box !important;
+}
+
+.window.minimized { 
+    display: none; 
+}
+
+.window-header {
+    background: linear-gradient(to bottom, var(--color-window-header-start), var(--color-window-header-end));
+    color: var(--color-text-primary);
+    padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+}
+
+.window-title { 
+    font-size: 14px; 
+    font-weight: bold; 
+}
+
+.window-controls { 
+    display: flex; 
+    gap: 2px; 
+}
+
+.window-control {
+    width: 20px;
+    height: 20px;
+    border: 1px outset var(--color-window-border);
+    background: var(--color-window-border);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.window-control:hover { 
+    filter: brightness(1.05); 
+}
+
+.window-control:active { 
+    border-style: inset; 
+}
+
+.window-content {
+    flex: 1;
+    padding: 10px;
+    background: var(--color-text-primary);
+    overflow: auto;
+    font-size: 13px;
+}
+
+/* --- Adaptações para mobile --- */
+@media (max-width: 768px) {
+    .window {
+        min-width: 280px;
+        width: calc(100vw - 20px);
+        max-width: calc(100vw - 20px);
+    }
+}

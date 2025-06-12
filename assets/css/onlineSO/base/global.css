@@ -1,0 +1,40 @@
+/* Arquivo: assets/css/onlineSO/base/global.css */
+
+@font-face {
+    font-family: 'Tahoma';
+    /* O caminho foi ajustado para sair de 'base', 'onlineSO' e 'css' */
+    src: url('../../../fonts/Tahoma.otf') format('opentype');
+    font-weight: normal;
+    font-display: swap;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+body {
+    font-family: var(--font-primary);
+    overflow: hidden;
+    height: 100vh;
+    background: linear-gradient(45deg, var(--color-background-gradient-start), var(--color-background-gradient-end));
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+}
+
+/* Otimizações mobile que antes estavam no mobile.css */
+@media (max-width: 768px) {
+    html {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+    }
+    * {
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+    }
+}
