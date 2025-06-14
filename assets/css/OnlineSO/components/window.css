@@ -1,0 +1,116 @@
+/* Arquivo: assets/css/onlineSO/components/window.css */
+
+.windows-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - var(--size-taskbar-height));
+    pointer-events: none;
+    z-index: 100;
+}
+
+.window {
+    position: absolute;
+    background-color: var(--color-window-bg);
+    border: 2px outset var(--color-win98-grey);
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+    pointer-events: all;
+    min-width: 300px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+
+.window-animated {
+    transition: all 0.35s ease-in-out;
+}
+
+.window.dragging {
+    transition: none;
+}
+
+.window.maximized {
+    top: 0;
+    left: 0;
+    width: 100%; /* MUDANÇA: de 100vw para 100% para corrigir bug no mobile */
+    height: calc(100vh - var(--size-taskbar-height));
+    box-sizing: border-box;
+    border: none;
+}
+
+.window.minimized { 
+    opacity: 0;
+    pointer-events: none;
+}
+
+.window-header {
+    background: var(--color-win98-header-blue);
+    color: var(--color-text-primary);
+    padding: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: move;
+}
+
+.window-header-title-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.window-header-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.window-title { 
+    font-size: 14px; 
+    font-weight: bold; 
+}
+
+.window-controls { 
+    display: flex; 
+    gap: 2px; 
+}
+
+.window-control {
+    width: 20px;
+    height: 20px;
+    border: 2px outset var(--color-win98-grey);
+    background: var(--color-win98-grey);
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 2px;
+}
+
+.window-control:hover { 
+    filter: brightness(1.05); 
+}
+
+.window-control:active { 
+    border-style: inset; 
+}
+
+.window-content {
+    flex: 1;
+    padding: 10px;
+    background: var(--color-win98-grey);
+    border-top: 2px solid var(--color-win98-shadow);
+    overflow: auto;
+    font-size: 13px;
+    color: var(--color-win98-text);
+}
+
+@media (max-width: 768px) {
+    .window {
+        min-width: 280px;
+        width: calc(100vw - 20px);
+        max-width: calc(100vw - 20px);
+    }
+}

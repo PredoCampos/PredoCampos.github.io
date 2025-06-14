@@ -1,0 +1,21 @@
+/* Arquivo: assets/css/onlineSO/components/desktop.css */
+
+.desktop {
+    width: 100vw;
+    height: calc(100vh - var(--size-taskbar-height));
+    position: relative;
+}
+
+.desktop-icons {
+    /* MUDANÇA: As propriedades de posicionamento e tamanho foram removidas.
+       O JavaScript agora tem controle total sobre a posição de cada ícone
+       individualmente, garantindo a centralização correta do grid. */
+    list-style: none;
+}
+
+.grid-cell {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+    box-sizing: border-box;
+}
