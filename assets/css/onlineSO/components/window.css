@@ -20,13 +20,8 @@
     min-height: 200px;
     display: flex;
     flex-direction: column;
-    
-    /* MUDANÇA: A transição foi removida daqui para ser controlada por uma classe específica. */
 }
 
-/* * NOVA CLASSE: Esta classe agora é a única responsável por aplicar a animação.
- * O JavaScript irá adicioná-la e removê-la conforme necessário.
- */
 .window-animated {
     transition: all 0.35s ease-in-out;
 }
@@ -36,10 +31,9 @@
 }
 
 .window.maximized {
-    /* MUDANÇA: As flags !important foram removidas para permitir animações controladas por JS */
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%; /* MUDANÇA: de 100vw para 100% para corrigir bug no mobile */
     height: calc(100vh - var(--size-taskbar-height));
     box-sizing: border-box;
     border: none;

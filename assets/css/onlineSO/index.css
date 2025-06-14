@@ -12,4 +12,5 @@
 @import url('components/window.css');
 @import url('components/taskbar.css');
 @import url('components/menu.css');
-@import url('components/boot.css'); /* <<< ADICIONADO: Importa os estilos da tela de boot */
+@import url('components/boot.css');
+@import url('components/ui.css'); /* <<< MUDANÇA: Importa os estilos para pequenos componentes de UI */

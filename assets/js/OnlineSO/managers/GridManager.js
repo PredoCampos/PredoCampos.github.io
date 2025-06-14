@@ -1,7 +1,7 @@
 /**
  * @file GridManager.js
  * @description Gerencia o grid, com a lógica de animação dos ícones separada
- * para ser chamada sob demanda.
+ * e com cálculos de dimensão ajustados para mobile.
  */
 export class GridManager {
     constructor(soInstance) {
@@ -245,8 +245,10 @@ export class GridManager {
 
         gridState.margin = Math.floor(Math.min(screenW, screenH) * marginPercentage);
 
+        // MUDANÇA (BUG #7): Adiciona uma margem de segurança no fundo
+        const safetyMarginBottom = 15; // px de espaço extra acima da taskbar
         const availableW = screenW - (gridState.margin * 2);
-        const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2);
+        const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2) - safetyMarginBottom;
 
         const idealCellSize = iconSize + 20;
         gridState.cols = Math.max(2, Math.floor(availableW / idealCellSize));
@@ -263,7 +265,8 @@ export class GridManager {
         let initialStartX = gridState.margin + Math.floor(leftoverW / 2);
         let initialStartY = gridState.margin + Math.floor(leftoverH / 2);
 
-        initialStartX -= 20;
+        // MUDANÇA (BUG #8): Remove o deslocamento fixo que causava assimetria
+        // initialStartX -= 20; 
         initialStartY += 10;
         
         gridState.startX = Math.max(gridState.margin, initialStartX);

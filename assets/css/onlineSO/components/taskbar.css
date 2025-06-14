@@ -39,7 +39,7 @@
 
 .menu-button:active { 
     border-style: inset; 
-    padding: 6px 15px 4px 17px; 
+    /* MUDANÇA: A alteração de padding foi removida para evitar que o botão mude de tamanho e empurre outros elementos. */
 }
 
 .taskbar-separator {
@@ -101,13 +101,13 @@
     font-size: 20px; 
 }
 
-/*.taskbar-clock {
+.taskbar-clock {
     /* Estilos específicos da hora (se houver) */
-/*}
+}
 
-/*.taskbar-data { 
+.taskbar-data { 
     /* Estilos específicos da data (se houver) */
-/*}
+}
 
 
 /* --- Adaptações para mobile --- */

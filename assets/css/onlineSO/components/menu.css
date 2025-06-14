@@ -114,3 +114,11 @@
     width: 16px;
     height: 16px;
 }
+
+/* --- MUDANÇA: Adaptação para mobile --- */
+@media (max-width: 768px) {
+    .start-menu {
+        /* A taskbar no mobile tem 40px de altura. Ajustamos o posicionamento. */
+        bottom: 40px;
+    }
+}

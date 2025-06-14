@@ -7,15 +7,10 @@
 }
 
 .desktop-icons {
-    /* --- ADICIONADO: Remove os marcadores de lista (pontos pretos) --- */
+    /* MUDANÇA: As propriedades de posicionamento e tamanho foram removidas.
+       O JavaScript agora tem controle total sobre a posição de cada ícone
+       individualmente, garantindo a centralização correta do grid. */
     list-style: none;
-    /* ----------------------------------------------------------------- */
-    
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 400px;
-    height: calc(100vh - 100px);
 }
 
 .grid-cell {
