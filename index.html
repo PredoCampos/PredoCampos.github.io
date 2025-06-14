@@ -4,9 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Predo Campoz xp</title>
-    <link rel="stylesheet" href="assets/css/onlineSO/index.css">
+    <link rel="icon" type="image/png" href="assets/images/so/windows-icon.png">
+    <link rel="stylesheet" href="assets/css/OnlineSO/index.css">
 </head>
 <body>
+
+    <div id="boot-screen">
+        <img src="assets/images/so/logo-boot.png" alt="Logo" class="boot-logo">
+        <div class="boot-loader-bar">
+            <div class="boot-loader-progress"></div>
+        </div>
+        <p class="boot-copyright">Copyright © Microsoft Corporation</p>
+    </div>
 
     <main id="desktop" class="desktop">
         
@@ -71,10 +80,54 @@
         <div class="taskbar-separator"></div>
 
         <div id="taskbar-info" class="taskbar-info">
-            <time id="taskbar-clock" class="taskbar-clock">00:00</time>
-            <div id="taskbar-data" class="taskbar-data"></div>
+            <time id="taskbar-clock" class="taskbar-clock">16:02</time>
+            <div id="taskbar-data" class="taskbar-data">14/06/2025</div>
         </div>
     </footer>
+
+    <div id="start-menu" class="start-menu hidden">
+        <div class="start-menu-sidebar">
+            <span class="sidebar-text">Online SO</span>
+        </div>
+        <ul class="start-menu-items">
+            <li class="start-menu-item" data-app="programs">
+                <img src="assets/images/so/programs-icon.png" alt="Programas">
+                <span>Programas</span>
+                <span class="submenu-arrow"></span>
+                <ul class="start-menu-submenu">
+                    <li class="start-menu-item" data-app="internet">
+                        <img src="assets/images/so/internet-small.png" alt="Internet">
+                        <span>Internet</span>
+                    </li>
+                    <li class="start-menu-item" data-app="notas">
+                        <img src="assets/images/so/notes-small.png" alt="Notas">
+                        <span>Notas</span>
+                    </li>
+                    <li class="start-menu-item" data-app="cobra">
+                        <img src="assets/images/so/snake-small.png" alt="Cobra">
+                        <span>Cobra</span>
+                    </li>
+                    <li class="start-menu-item" data-app="calculadora">
+                        <img src="assets/images/so/calculadora-small.png" alt="Calculadora">
+                        <span>Calculadora</span>
+                    </li>
+                    <li class="start-menu-item" data-app="cmd">
+                        <img src="assets/images/so/cmd-small.png" alt="CMD">
+                        <span>CMD</span>
+                    </li>
+                </ul>
+            </li>
+            <li class="start-menu-item" data-app="arquivos">
+                <img src="assets/images/so/explorer-small.png" alt="Arquivos">
+                <span>Arquivos</span>
+            </li>
+            <li class="separator"></li>
+            <li class="start-menu-item" data-app="help">
+                <img src="assets/images/so/help-small.png" alt="Help">
+                <span>Help</span>
+            </li>
+        </ul>
+    </div>
 
     <script type="module" src="assets/js/OnlineSO/index.js"></script>
 </body>

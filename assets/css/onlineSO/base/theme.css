@@ -4,7 +4,7 @@
     /* Cores */
     --color-text-primary: #FFFFFF;
 
-    /* --- NOVAS CORES WIN98 --- */
+    /* --- CORES WIN98 --- */
     --color-win98-desktop: #008080;
     --color-win98-grey: #C0C0C0;
     --color-win98-shadow: #808080;
@@ -27,7 +27,8 @@
     --font-size-label: 21px;
 
     /* Tamanhos e Dimensões */
-    --size-taskbar-height: 48px;
+    /* MUDANÇA: Altura da barra de tarefas aumentada para acomodar fontes maiores */
+    --size-taskbar-height: 56px;
     --size-icon-wrapper: 96px;
     --size-icon-image: 80px;
     

@@ -1,9 +1,10 @@
 /**
  * @file TaskManager.js
- * @description Gerencia a adição, remoção e atualização dos ícones de
- * aplicativos na barra de tarefas.
+ * @description Gerencia a barra de tarefas, agora usando os ícones pequenos
+ * dos aplicativos.
  */
 import { capitalize } from '../utils.js';
+import { APP_ICONS } from '../config.js';
 
 export class TaskManager {
     constructor(soInstance) {
@@ -13,14 +14,18 @@ export class TaskManager {
     }
 
     /**
-     * Adiciona o botão de um aplicativo à barra de tarefas.
+     * Adiciona o botão de um aplicativo (com ícone) à barra de tarefas.
      * @param {string} appName
      */
     add(appName) {
         const button = document.createElement('button');
         button.className = 'taskbar-app';
         button.dataset.app = appName;
-        button.textContent = capitalize(appName);
+        button.title = capitalize(appName);
+
+        // Pega o caminho do ícone PEQUENO e o insere no botão como uma imagem
+        const iconPath = (APP_ICONS[appName] || APP_ICONS.default).small;
+        button.innerHTML = `<img src="${iconPath}" alt="${capitalize(appName)}" class="taskbar-app-icon">`;
         
         button.addEventListener('click', () => {
             this.so.windowManager.interact(appName);

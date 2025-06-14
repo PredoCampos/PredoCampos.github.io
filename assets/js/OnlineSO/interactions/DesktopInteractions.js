@@ -1,19 +1,28 @@
 /**
  * @file DesktopInteractions.js
- * @description Lida com interações de mouse, agora impedindo que janelas
- * sejam arrastadas para fora da área visível.
+ * @description Lida com interações de mouse, com lógicas de arraste separadas
+ * para ícones (clique longo) e janelas (instantâneo).
  */
 export class DesktopInteractions {
     constructor(soInstance) {
         this.so = soInstance;
         this.wm = soInstance.windowManager;
         this.gm = soInstance.gridManager;
+        this.mm = soInstance.menuManager; 
     }
 
     initialize() {
         document.querySelectorAll('.desktop-icon').forEach(icon => this._setupIconListeners(icon));
         document.querySelector(this.so.config.selectors.desktop).addEventListener('click', () => this._clearIconSelection());
         this._observeNewWindows();
+
+        const startButton = document.querySelector(this.so.config.selectors.menuButton);
+        if (startButton) {
+            startButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.mm.toggle();
+            });
+        }
     }
     
     _setupIconListeners(icon) {
@@ -26,9 +35,7 @@ export class DesktopInteractions {
         icon.addEventListener('click', (e) => {
             e.stopPropagation();
             if (this.so.state.ui.isDragging) return;
-
             clickCount++;
-
             if (clickCount === 1) {
                 clickTimer = setTimeout(() => {
                     this._selectIcon(icon);
@@ -41,6 +48,7 @@ export class DesktopInteractions {
             }
         });
         
+        // Esta função é para ÍCONES e tem o atraso intencional
         this._makeIconDraggable(icon, icon, {
             onDragEnd: (el) => this.gm.snapToGrid(el)
         });
@@ -57,11 +65,14 @@ export class DesktopInteractions {
         windowEl.querySelector('.maximize-btn').addEventListener('click', (e) => { e.stopPropagation(); this.wm.toggleMaximize(appName); });
         header.addEventListener('dblclick', () => this.wm.toggleMaximize(appName));
         
+        // MUDANÇA: Garantindo que a função de arraste para JANELAS seja chamada corretamente
         this._makeWindowDraggable(windowEl, header, {
              canDrag: () => !this.so.state.windows.abertas.get(appName)?.maximized
         });
     }
 
+    // LÓGICA DE ARRASTE PARA ÍCONES (COM DELAY)
+    // Utiliza um setTimeout para simular um "clique longo" antes de arrastar.
     _makeIconDraggable(targetEl, handleEl, options = {}) {
         let longPressTimer = null;
         let isDragging = false;
@@ -77,6 +88,8 @@ export class DesktopInteractions {
             offsetY = e.clientY - targetEl.offsetTop;
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp, { once: true });
+            
+            // É ESTE TIMER QUE CAUSA O ATRASO (correto para ícones)
             longPressTimer = setTimeout(() => {
                 longPressActivated = true;
                 targetEl.classList.add('dragging'); 
@@ -112,18 +125,19 @@ export class DesktopInteractions {
         handleEl.addEventListener('mousedown', onMouseDown);
     }
     
-    /**
-     * @private
-     * Lógica de arrastar para JANELAS, agora com verificação de limites.
-     */
+    // LÓGICA DE ARRASTE PARA JANELAS (INSTANTÂNEO)
+    // Inicia o arraste imediatamente no mousedown, sem setTimeout.
     _makeWindowDraggable(targetEl, handleEl, options = {}) {
         let offsetX, offsetY;
         let isDragging = false;
-        const dragThreshold = 5;
 
         const onMouseDown = (e) => {
             if (e.button !== 0 || (options.canDrag && !options.canDrag())) return;
             
+            isDragging = true;
+            this.so.state.ui.isDragging = true;
+            targetEl.classList.add('dragging');
+
             offsetX = e.clientX - targetEl.offsetLeft;
             offsetY = e.clientY - targetEl.offsetTop;
             
@@ -132,46 +146,34 @@ export class DesktopInteractions {
         };
 
         const onMouseMove = (e) => {
-            if (!isDragging) {
-                const deltaX = Math.abs(e.clientX - (targetEl.offsetLeft + offsetX));
-                const deltaY = Math.abs(e.clientY - (targetEl.offsetTop + offsetY));
-                if (deltaX < dragThreshold && deltaY < dragThreshold) return;
+            // A verificação `if (isDragging)` garante que o movimento só ocorra
+            // após o mousedown, de forma instantânea.
+            if (isDragging) {
+                let newLeft = e.clientX - offsetX;
+                let newTop = e.clientY - offsetY;
+
+                const maxLeft = window.innerWidth - targetEl.offsetWidth;
+                const maxTop = window.innerHeight - this.so.state.grid.taskbarHeight - targetEl.offsetHeight;
+
+                newLeft = Math.max(0, Math.min(newLeft, maxLeft));
+                newTop = Math.max(0, Math.min(newTop, maxTop));
                 
-                isDragging = true;
-                this.so.state.ui.isDragging = true;
-                targetEl.classList.add('dragging');
+                targetEl.style.left = `${newLeft}px`;
+                targetEl.style.top = `${newTop}px`;
             }
-            
-            // --- MUDANÇA AQUI: Lógica de verificação de limites ---
-            
-            // 1. Calcula a nova posição ideal
-            let newLeft = e.clientX - offsetX;
-            let newTop = e.clientY - offsetY;
-
-            // 2. Define os limites da área de trabalho
-            const maxLeft = window.innerWidth - targetEl.offsetWidth;
-            const maxTop = window.innerHeight - this.so.state.grid.taskbarHeight - targetEl.offsetHeight;
-
-            // 3. Garante que a nova posição não ultrapasse os limites
-            newLeft = Math.max(0, Math.min(newLeft, maxLeft));
-            newTop = Math.max(0, Math.min(newTop, maxTop));
-            
-            // 4. Aplica a posição corrigida
-            targetEl.style.left = `${newLeft}px`;
-            targetEl.style.top = `${newTop}px`;
         };
 
         const onMouseUp = () => {
-            document.removeEventListener('mousemove', onMouseMove);
-            
             if (isDragging) {
                 targetEl.classList.remove('dragging');
-            }
-            
-            setTimeout(() => {
                 isDragging = false;
-                this.so.state.ui.isDragging = false;
-            }, 50);
+                
+                // O timeout aqui é só para evitar conflito com eventos de clique
+                setTimeout(() => {
+                    this.so.state.ui.isDragging = false;
+                }, 50);
+            }
+            document.removeEventListener('mousemove', onMouseMove);
         };
 
         handleEl.addEventListener('mousedown', onMouseDown);

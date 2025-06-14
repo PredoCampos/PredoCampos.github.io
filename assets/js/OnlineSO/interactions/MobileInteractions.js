@@ -1,26 +1,42 @@
 /**
  * @file MobileInteractions.js
- * @description Lida com interações de toque, agora com restrição de limites
- * para o arraste de janelas, garantindo consistência com o desktop.
+ * @description Lida com interações de toque, agora com a funcionalidade do
+ * botão 'Start' para abrir o menu.
  */
 export class MobileInteractions {
     constructor(soInstance) {
         this.so = soInstance;
         this.wm = soInstance.windowManager;
         this.gm = soInstance.gridManager;
+        // MUDANÇA: Adiciona um atalho para o MenuManager
+        this.mm = soInstance.menuManager;
     }
 
     initialize() {
+        // Configura eventos para ícones existentes
         document.querySelectorAll('.desktop-icon').forEach(icon => this._setupIconListeners(icon));
+        
+        // Listener para limpar seleção
         document.querySelector(this.so.config.selectors.desktop).addEventListener('touchstart', () => this._clearIconSelection());
-        this._observeNewWindows();
-    }
 
+        // Observador para novas janelas
+        this._observeNewWindows();
+
+        // --- MUDANÇA AQUI: Conecta o botão Start para mobile ---
+        const startButton = document.querySelector(this.so.config.selectors.menuButton);
+        if (startButton) {
+            // Usamos o evento 'click' que funciona bem para botões simples no mobile.
+            // O 'touchend' também seria uma opção.
+            startButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.mm.toggle(); // Chama a mesma função de abrir/fechar do desktop
+            });
+        }
+    }
+    
     _setupIconListeners(icon) {
         const appName = icon.dataset.app;
         
-        // Listener de toque para interagir com o app (abrir/minimizar/restaurar)
-        // Usamos um método que combina detecção de toque simples e evita conflito com o arraste
         let touchStartTime = 0;
         let startPos = null;
 
@@ -40,7 +56,6 @@ export class MobileInteractions {
                 const deltaX = Math.abs(endPos.x - startPos.x);
                 const deltaY = Math.abs(endPos.y - startPos.y);
 
-                // Considera um "toque" se durou pouco e não moveu muito
                 if (touchDuration < 200 && deltaX < 10 && deltaY < 10) {
                      if (!this.so.state.ui.isDragging) {
                         e.preventDefault();
@@ -51,7 +66,6 @@ export class MobileInteractions {
             }
         });
         
-        // A lógica de clique longo para arrastar continua a mesma
         this._makeIconDraggable(icon, icon, {
             onDragEnd: (el) => this.gm.snapToGrid(el)
         });
@@ -75,7 +89,6 @@ export class MobileInteractions {
         setupTouchendListener('.minimize-btn', () => this.wm.minimize(appName));
         setupTouchendListener('.maximize-btn', () => this.wm.toggleMaximize(appName));
         
-        // Adiciona o arraste com limite de borda para as janelas
         this._makeWindowDraggable(windowEl, header, {
             canDrag: () => !this.so.state.windows.abertas.get(appName)?.maximized
         });
@@ -146,7 +159,6 @@ export class MobileInteractions {
     _makeWindowDraggable(targetEl, handleEl, options = {}) {
         let offsetX, offsetY;
         let isDragging = false;
-        const dragThreshold = 10; // Um pouco maior para toque
 
         const onTouchStart = (e) => {
             if (e.touches.length !== 1 || (options.canDrag && !options.canDrag())) return;
@@ -169,7 +181,6 @@ export class MobileInteractions {
             
             const touch = e.touches[0];
             
-            // --- MUDANÇA AQUI: Lógica de verificação de limites para toque ---
             let newLeft = touch.clientX - offsetX;
             let newTop = touch.clientY - offsetY;
 

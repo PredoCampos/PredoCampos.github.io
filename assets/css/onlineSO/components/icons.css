@@ -10,7 +10,8 @@
     cursor: pointer;
     padding: 10px;
     width: var(--size-icon-wrapper);
-    height: var(--size-icon-wrapper);
+    /* MUDANÇA: Altura fixa removida para que o contêiner se ajuste ao texto */
+    /* height: var(--size-icon-wrapper); */
     border-radius: 4px;
     transition: background-color var(--transition-duration-fast);
 }
@@ -46,9 +47,13 @@
     font-family: var(--font-primary);
     text-align: center;
     text-shadow: 1px 1px 2px var(--color-text-shadow);
-    word-wrap: break-word;
     max-width: 100%;
     line-height: 1.2;
+
+    /* MUDANÇA: Garante que nomes longos sejam cortados com '...' */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* --- Adaptações para mobile --- */

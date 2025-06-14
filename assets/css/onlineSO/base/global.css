@@ -37,3 +37,9 @@ body {
         -webkit-touch-callout: none;
     }
 }
+
+/* NOVO: Estilo para o cursor de carregamento */
+body.app-loading * {
+    /* O !important garante que este cursor sobreponha todos os outros (como a mãozinha do botão) */
+    cursor: wait !important;
+}

@@ -1,7 +1,7 @@
 /**
  * @file GridManager.js
- * @description Versão corrigida para que a altura da taskbar seja lida do CSS,
- * e não calculada dinamicamente.
+ * @description Gerencia o grid, com a lógica de animação dos ícones separada
+ * para ser chamada sob demanda.
  */
 export class GridManager {
     constructor(soInstance) {
@@ -10,69 +10,9 @@ export class GridManager {
         this.state = soInstance.state;
     }
 
-    // --- MÉTODOS PÚBLICOS ---
-
-    recalculate() {
-        this._calculateDimensions();
-        this._updateLayoutCSS();
-        if (this.state.grid.visualizer) {
-            this.state.grid.visualizer.remove();
-        }
-        this.createVisualization();
-        this.repositionAllIcons();
-    }
-
-    // ... (outros métodos públicos como initializeIconPositions, snapToGrid, etc. permanecem iguais) ...
-
-
-    // --- LÓGICA DE CÁLCULO E MÉTODOS PRIVADOS ---
-
     /**
-     * @private
-     * Lógica de cálculo de dimensões APRIMORADA.
+     * Posiciona os ícones na sua devida posição, mas os mantém invisíveis.
      */
-    _calculateDimensions() {
-        const { grid: gridConfig } = this.config;
-        const { device, grid: gridState } = this.state;
-        
-        const screenW = window.innerWidth;
-        const screenH = window.innerHeight;
-
-        // --- MUDANÇA PRINCIPAL AQUI ---
-        // Em vez de calcular a altura da taskbar, vamos LER o valor definido no CSS.
-        // Isso nos dá controle total pelo arquivo theme.css.
-        const taskbarElement = document.querySelector(this.config.selectors.taskbar);
-        const taskbarStyle = getComputedStyle(taskbarElement);
-        // Usamos parseInt para pegar apenas o número (ex: "32px" -> 32)
-        gridState.taskbarHeight = parseInt(taskbarStyle.height, 10);
-        // --- FIM DA MUDANÇA ---
-
-        const marginPercentage = device.isMobile ? gridConfig.marginPercentageMobile : gridConfig.marginPercentage;
-        const iconSize = device.isMobile ? gridConfig.iconBaseSizeMobile : gridConfig.iconBaseSize;
-
-        gridState.margin = Math.floor(Math.min(screenW, screenH) * marginPercentage);
-
-        const availableW = screenW - (gridState.margin * 2);
-        const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2);
-
-        const idealCellSize = iconSize + 20;
-        gridState.cols = Math.max(2, Math.floor(availableW / idealCellSize));
-        gridState.rows = Math.max(2, Math.floor(availableH / idealCellSize));
-
-        gridState.cellSize = Math.min(Math.floor(availableW / gridState.cols), Math.floor(availableH / gridState.rows));
-
-        gridState.width = gridState.cols * gridState.cellSize;
-        gridState.height = gridState.rows * gridState.cellSize;
-
-        const leftoverW = availableW - gridState.width;
-        const leftoverH = availableH - gridState.height;
-        gridState.startX = gridState.margin + Math.floor(leftoverW / 2);
-        gridState.startY = gridState.margin + Math.floor(leftoverH / 2);
-    }
-    
-    // O restante do arquivo continua exatamente como na última versão que te enviei.
-    // Para garantir, aqui está o código completo.
-
     initializeIconPositions() {
         const { grid: gridState } = this.state;
         gridState.ocupado.clear();
@@ -85,7 +25,9 @@ export class GridManager {
             'lixo': { col: gridState.cols - 1, row: gridState.rows - 1 }
         };
 
-        document.querySelectorAll('.desktop-icon').forEach(icon => {
+        const icons = document.querySelectorAll('.desktop-icon');
+
+        icons.forEach(icon => {
             const appName = icon.dataset.app;
             let pos = iconOrder[appName];
 
@@ -93,10 +35,37 @@ export class GridManager {
                 pos = this._findFirstFreePosition();
             }
             
+            // Apenas posiciona o ícone. Ele começará invisível devido ao CSS.
             this._placeIconAt(icon, pos.col, pos.row);
         });
     }
 
+    /**
+     * Inicia a animação de aparição dos ícones em cascata.
+     */
+    startIconAnimation() {
+        const icons = document.querySelectorAll('.desktop-icon');
+        const staggerDelay = 75; // Atraso de 75ms entre cada ícone
+
+        console.log('Iniciando animação de carregamento dos ícones...');
+        icons.forEach((icon, index) => {
+            // Agenda a sua aparição com um atraso
+            setTimeout(() => {
+                icon.classList.add('visible');
+            }, index * staggerDelay);
+        });
+    }
+
+    recalculate() {
+        this._calculateDimensions();
+        this._updateLayoutCSS();
+        if (this.state.grid.visualizer) {
+            this.state.grid.visualizer.remove();
+        }
+        this.createVisualization();
+        this.repositionAllIcons();
+    }
+    
     snapToGrid(icon) {
         const { grid } = this.state;
         const appName = icon.dataset.app;
@@ -260,6 +229,47 @@ export class GridManager {
         });
     }
 
+    _calculateDimensions() {
+        const { grid: gridConfig } = this.config;
+        const { device, grid: gridState } = this.state;
+        
+        const screenW = window.innerWidth;
+        const screenH = window.innerHeight;
+
+        const taskbarElement = document.querySelector(this.config.selectors.taskbar);
+        const taskbarStyle = getComputedStyle(taskbarElement);
+        gridState.taskbarHeight = parseInt(taskbarStyle.height, 10);
+        
+        const marginPercentage = device.isMobile ? gridConfig.marginPercentageMobile : gridConfig.marginPercentage;
+        const iconSize = device.isMobile ? gridConfig.iconBaseSizeMobile : gridConfig.iconBaseSize;
+
+        gridState.margin = Math.floor(Math.min(screenW, screenH) * marginPercentage);
+
+        const availableW = screenW - (gridState.margin * 2);
+        const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2);
+
+        const idealCellSize = iconSize + 20;
+        gridState.cols = Math.max(2, Math.floor(availableW / idealCellSize));
+        gridState.rows = Math.max(2, Math.floor(availableH / idealCellSize));
+
+        gridState.cellSize = Math.min(Math.floor(availableW / gridState.cols), Math.floor(availableH / gridState.rows));
+
+        gridState.width = gridState.cols * gridState.cellSize;
+        gridState.height = gridState.rows * gridState.cellSize;
+
+        const leftoverW = availableW - gridState.width;
+        const leftoverH = availableH - gridState.height;
+        
+        let initialStartX = gridState.margin + Math.floor(leftoverW / 2);
+        let initialStartY = gridState.margin + Math.floor(leftoverH / 2);
+
+        initialStartX -= 20;
+        initialStartY += 10;
+        
+        gridState.startX = Math.max(gridState.margin, initialStartX);
+        gridState.startY = Math.max(gridState.margin, initialStartY);
+    }
+    
     _updateLayoutCSS() {
         const { selectors } = this.config;
         const taskbarHeight = `${this.state.grid.taskbarHeight}px`;

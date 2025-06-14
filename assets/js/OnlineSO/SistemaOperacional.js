@@ -1,7 +1,7 @@
 /**
  * @file SistemaOperacional.js
  * @description Classe principal que orquestra todo o sistema operacional,
- * inicializando e conectando todos os gerenciadores e serviços.
+ * agora integrando o novo MenuManager.
  */
 
 import { STATIC_CONFIG } from './config.js';
@@ -10,6 +10,8 @@ import { GridManager } from './managers/GridManager.js';
 import { WindowManager } from './managers/WindowManager.js';
 import { TaskManager } from './managers/TaskManager.js';
 import { AppRunner } from './managers/AppRunner.js';
+// MUDANÇA: Importa o novo gerenciador do menu
+import { MenuManager } from './managers/MenuManager.js';
 import { DesktopInteractions } from './interactions/DesktopInteractions.js';
 import { MobileInteractions } from './interactions/MobileInteractions.js';
 
@@ -45,15 +47,18 @@ export class SistemaOperacional {
             applyMobileFixes();
         }
 
+        // Inicializa todos os gerenciadores
         this.gridManager = new GridManager(this);
         this.windowManager = new WindowManager(this);
         this.taskManager = new TaskManager(this);
         this.appRunner = new AppRunner(this);
+        // MUDANÇA: Cria a instância do novo MenuManager
+        this.menuManager = new MenuManager(this);
 
         this.gridManager.recalculate();
         this.gridManager.initializeIconPositions();
 
-        this._startClock(); // <-- A função que vamos alterar está aqui
+        this._startClock();
 
         if (this.state.device.isMobile) {
             this.interactions = new MobileInteractions(this);
@@ -65,16 +70,10 @@ export class SistemaOperacional {
         this._setupEventListeners();
     }
 
-    /**
-     * @private
-     * Inicia o relógio E A DATA da barra de tarefas.
-     */
     _startClock() {
-        // Seleciona os dois elementos: relógio e data
         const clockElement = document.querySelector(this.config.selectors.taskbarClock);
         const dateElement = document.querySelector(this.config.selectors.taskbarData);
 
-        // Se um deles não for encontrado, a função para.
         if (!clockElement || !dateElement) {
             console.warn("Elementos de relógio ou data não encontrados na taskbar.");
             return;
@@ -82,22 +81,17 @@ export class SistemaOperacional {
 
         const updateDateTime = () => {
             const now = new Date();
-
-            // Lógica para o relógio (horas e minutos)
             const hours = now.getHours().toString().padStart(2, '0');
             const minutes = now.getMinutes().toString().padStart(2, '0');
             clockElement.textContent = `${hours}:${minutes}`;
 
-            // Lógica para a data (DD/MM/AAAA)
             const day = now.getDate().toString().padStart(2, '0');
-            const month = (now.getMonth() + 1).toString().padStart(2, '0'); // getMonth() é base 0
+            const month = (now.getMonth() + 1).toString().padStart(2, '0');
             const year = now.getFullYear();
             dateElement.textContent = `${day}/${month}/${year}`;
         };
 
-        // Chama a função uma vez para exibir imediatamente
         updateDateTime();
-        // E configura para atualizar a cada 10 segundos
         setInterval(updateDateTime, 10000);
     }
 
@@ -110,8 +104,11 @@ export class SistemaOperacional {
             }, 250);
         });
 
-        document.querySelector(this.config.selectors.menuButton).addEventListener('click', () => {
-            console.log('Menu clicado - funcionalidade futura.');
-        });
+        // O listener do botão de menu será movido para DesktopInteractions,
+        // mas mantemos este aqui para o placeholder.
+        const menuButton = document.querySelector(this.config.selectors.menuButton);
+        if (menuButton) {
+            // A lógica real de clique será adicionada no DesktopInteractions
+        }
     }
 }
