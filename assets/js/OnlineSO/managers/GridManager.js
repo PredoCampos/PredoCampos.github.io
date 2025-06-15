@@ -50,7 +50,7 @@ export class GridManager {
 
     recalculate() {
         this._calculateDimensions();
-        this._updateLayoutCSS(); // Função restaurada
+        this._updateLayoutCSS();
         if (this.state.grid.visualizer) {
             this.state.grid.visualizer.remove();
         }
@@ -242,7 +242,8 @@ export class GridManager {
         const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2) - safetyMarginBottom;
 
         const idealCellWidth = iconBaseSize + 20;
-        const idealCellHeight = iconBaseSize + 45; 
+        // MUDANÇA: O espaçamento vertical foi reduzido de 45 para 38.
+        const idealCellHeight = iconBaseSize + 38; 
 
         gridState.cols = Math.max(1, Math.floor(availableW / idealCellWidth));
         gridState.rows = Math.max(1, Math.floor(availableH / idealCellHeight));

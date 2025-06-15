@@ -47,10 +47,8 @@
     text-shadow: 1px 1px 2px var(--color-text-shadow);
     max-width: 100%;
     line-height: 1.2;
-
-    /* MUDANÇA: Permite a quebra de linha para nomes longos */
     white-space: normal;
-    word-wrap: break-word; /* Garante a quebra de palavras muito longas */
+    word-wrap: break-word;
 }
 
 /* --- Adaptações para mobile --- */
@@ -64,7 +62,8 @@
         height: 56px;
     }
     .icon-label {
-        font-size: 12px;
+        /* MUDANÇA: A fonte foi ligeiramente aumentada para melhor leitura. */
+        font-size: 13px;
         max-width: 70px;
     }
     .desktop-icon.dragging {

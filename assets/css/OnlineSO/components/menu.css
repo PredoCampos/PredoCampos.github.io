@@ -130,3 +130,26 @@
         display: block;
     }
 }
+
+/* --- MUDANÇAS PARA O MENU EM DISPOSITIVOS MÓVEIS --- */
+@media (max-width: 768px) {
+    /* 1. Layout Responsivo (50/50) */
+    .start-menu {
+        width: 50vw; /* Menu principal ocupa metade da tela */
+    }
+
+    .start-menu-submenu {
+        width: 50vw; /* Submenu ocupa a outra metade */
+        /* 2. Alinhamento Vertical Perfeito */
+        top: 0; /* Remove o gap entre o menu e o submenu */
+    }
+
+    /* 3. Fontes Maiores para Legibilidade */
+    .start-menu-item > span { /* O seletor '>' garante que estamos pegando apenas o texto do item principal */
+        font-size: 14px;
+    }
+
+    .start-menu-submenu .start-menu-item > span {
+        font-size: 13px; /* Um pouco menor, como solicitado */
+    }
+}
