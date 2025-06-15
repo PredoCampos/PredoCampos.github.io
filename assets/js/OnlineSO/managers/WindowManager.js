@@ -1,6 +1,7 @@
 /**
  * @file WindowManager.js
- * @description Gerencia o ciclo de vida das janelas com a lógica de animação estável.
+ * @description Gerencia o ciclo de vida das janelas, com a animação de
+ * minimizar/restaurar e com gerenciamento de foco automático.
  */
 import { capitalize } from '../utils.js';
 import { APP_ICONS } from '../config.js';
@@ -60,71 +61,94 @@ export class WindowManager {
             this.state.windows.abertas.delete(appName);
             this.so.taskManager.remove(appName);
             console.log(`Aplicativo '${appName}' fechado.`);
+
+            // MUDANÇA: Chama a função para gerenciar o foco
+            this._manageFocusAfterStateChange();
         }
     }
 
     minimize(appName) {
         const app = this.state.windows.abertas.get(appName);
         if (!app || app.status === 'loading' || app.minimized || app.isAnimating) return;
-
+    
         app.isAnimating = true;
-        
         const winEl = app.element;
+    
+        const windowRect = winEl.getBoundingClientRect();
+        app.originalRect = {
+            top: `${windowRect.top}px`,
+            left: `${windowRect.left}px`,
+            width: `${windowRect.width}px`,
+            height: `${windowRect.height}px`,
+        };
+    
         winEl.classList.add('window-animated');
-
-        if (!app.maximized) {
-            const windowRect = winEl.getBoundingClientRect();
-            app.originalRect = {
-                top: `${windowRect.top}px`,
-                left: `${windowRect.left}px`,
-                width: `${windowRect.width}px`,
-                height: `${windowRect.height}px`,
-            };
-        }
-
         winEl.classList.add('minimized');
+    
+        const taskbarButton = document.querySelector(`.taskbar-app[data-app="${appName}"]`);
+        if (taskbarButton) {
+            const buttonRect = taskbarButton.getBoundingClientRect();
+            winEl.style.top = `${buttonRect.top + buttonRect.height / 2}px`;
+            winEl.style.left = `${buttonRect.left + buttonRect.width / 2}px`;
+            winEl.style.width = `0px`;
+            winEl.style.height = `0px`;
+        } else {
+            winEl.style.width = `0px`;
+            winEl.style.height = `0px`;
+        }
+    
         winEl.classList.remove('focused');
-        app.minimized = true;
-
+        
         setTimeout(() => {
             winEl.style.display = 'none';
-            winEl.classList.remove('window-animated');
+            app.minimized = true;
             app.isAnimating = false;
+            winEl.classList.remove('window-animated');
+            winEl.style.top = winEl.style.left = winEl.style.width = winEl.style.height = '';
+            
+            // MUDANÇA: Chama a função para gerenciar o foco
+            this._manageFocusAfterStateChange();
         }, this.animationDuration);
-
+    
         this.so.taskManager.updateState();
     }
 
     restore(appName) {
         const app = this.state.windows.abertas.get(appName);
         if (!app || app.status === 'loading' || !app.minimized || app.isAnimating) return;
-
+    
         app.isAnimating = true;
-        
         const winEl = app.element;
+        
+        const taskbarButton = document.querySelector(`.taskbar-app[data-app="${appName}"]`);
+        if (taskbarButton) {
+            const buttonRect = taskbarButton.getBoundingClientRect();
+            winEl.style.top = `${buttonRect.top + buttonRect.height / 2}px`;
+            winEl.style.left = `${buttonRect.left + buttonRect.width / 2}px`;
+            winEl.style.width = `0px`;
+            winEl.style.height = `0px`;
+        }
+        
         winEl.style.display = 'flex';
         app.minimized = false;
-
+    
         setTimeout(() => {
             winEl.classList.add('window-animated');
             winEl.classList.remove('minimized');
             
-            if (app.maximized) {
-                winEl.classList.add('maximized');
-            } else if (app.originalRect) {
+            if (app.originalRect) {
                 winEl.style.top = app.originalRect.top;
                 winEl.style.left = app.originalRect.left;
                 winEl.style.width = app.originalRect.width;
                 winEl.style.height = app.originalRect.height;
             }
             this.focus(appName);
-
+    
             setTimeout(() => {
                 winEl.classList.remove('window-animated');
                 app.isAnimating = false;
             }, this.animationDuration);
-
-        }, 20); 
+        }, 20);
     }
     
     interact(appName) {
@@ -199,6 +223,28 @@ export class WindowManager {
             winEl.classList.remove('window-animated');
             app.isAnimating = false;
         }, this.animationDuration);
+    }
+
+    /**
+     * MUDANÇA: Nova função auxiliar para gerenciar o foco.
+     */
+    _manageFocusAfterStateChange() {
+        // Converte o Map de janelas abertas em um array
+        const openWindows = Array.from(this.state.windows.abertas.values());
+
+        // Filtra para encontrar apenas as janelas que não estão minimizadas
+        const visibleWindows = openWindows.filter(app => app.status === 'loaded' && !app.minimized);
+
+        // Se sobrar exatamente uma janela visível, ela recebe o foco.
+        if (visibleWindows.length === 1) {
+            const appToFocus = visibleWindows[0];
+            const appNameToFocus = appToFocus.element.dataset.app;
+            console.log(`Foco automático direcionado para: ${appNameToFocus}`);
+            this.focus(appNameToFocus);
+        } else if (visibleWindows.length === 0) {
+            // Se não houver janelas visíveis, atualiza a taskbar para remover qualquer estado 'active'
+            this.so.taskManager.updateState();
+        }
     }
 
     _createWindowElement(appName) {
