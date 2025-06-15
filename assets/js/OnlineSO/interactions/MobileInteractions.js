@@ -1,35 +1,29 @@
 /**
  * @file MobileInteractions.js
- * @description Lida com interações de toque, agora com a funcionalidade do
- * botão 'Start' para abrir o menu.
+ * @description Lida com interações de toque, incluindo o toque no botão Start.
  */
 export class MobileInteractions {
     constructor(soInstance) {
         this.so = soInstance;
         this.wm = soInstance.windowManager;
         this.gm = soInstance.gridManager;
-        // MUDANÇA: Adiciona um atalho para o MenuManager
         this.mm = soInstance.menuManager;
     }
 
     initialize() {
-        // Configura eventos para ícones existentes
         document.querySelectorAll('.desktop-icon').forEach(icon => this._setupIconListeners(icon));
-        
-        // Listener para limpar seleção
-        document.querySelector(this.so.config.selectors.desktop).addEventListener('touchstart', () => this._clearIconSelection());
 
-        // Observador para novas janelas
+        // MUDANÇA: Adicionado { passive: true } para resolver o aviso do navegador e melhorar a performance.
+        document.querySelector(this.so.config.selectors.desktop).addEventListener('touchstart', () => this._clearIconSelection(), { passive: true });
+        
         this._observeNewWindows();
 
-        // --- MUDANÇA AQUI: Conecta o botão Start para mobile ---
         const startButton = document.querySelector(this.so.config.selectors.menuButton);
         if (startButton) {
-            // Usamos o evento 'click' que funciona bem para botões simples no mobile.
-            // O 'touchend' também seria uma opção.
-            startButton.addEventListener('click', (e) => {
+            startButton.addEventListener('touchend', (e) => {
+                e.preventDefault();
                 e.stopPropagation();
-                this.mm.toggle(); // Chama a mesma função de abrir/fechar do desktop
+                this.mm.toggle();
             });
         }
     }

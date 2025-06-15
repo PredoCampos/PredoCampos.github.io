@@ -1,7 +1,6 @@
 /**
  * @file DesktopInteractions.js
- * @description Lida com interações de mouse, com lógicas de arraste separadas
- * para ícones (clique longo) e janelas (instantâneo).
+ * @description Lida com interações de mouse, incluindo o clique no botão Start.
  */
 export class DesktopInteractions {
     constructor(soInstance) {
@@ -16,6 +15,7 @@ export class DesktopInteractions {
         document.querySelector(this.so.config.selectors.desktop).addEventListener('click', () => this._clearIconSelection());
         this._observeNewWindows();
 
+        // MUDANÇA: O listener do botão Start foi restaurado aqui, no local correto.
         const startButton = document.querySelector(this.so.config.selectors.menuButton);
         if (startButton) {
             startButton.addEventListener('click', (e) => {
@@ -48,7 +48,6 @@ export class DesktopInteractions {
             }
         });
         
-        // Esta função é para ÍCONES e tem o atraso intencional
         this._makeIconDraggable(icon, icon, {
             onDragEnd: (el) => this.gm.snapToGrid(el)
         });
@@ -65,14 +64,11 @@ export class DesktopInteractions {
         windowEl.querySelector('.maximize-btn').addEventListener('click', (e) => { e.stopPropagation(); this.wm.toggleMaximize(appName); });
         header.addEventListener('dblclick', () => this.wm.toggleMaximize(appName));
         
-        // MUDANÇA: Garantindo que a função de arraste para JANELAS seja chamada corretamente
         this._makeWindowDraggable(windowEl, header, {
              canDrag: () => !this.so.state.windows.abertas.get(appName)?.maximized
         });
     }
 
-    // LÓGICA DE ARRASTE PARA ÍCONES (COM DELAY)
-    // Utiliza um setTimeout para simular um "clique longo" antes de arrastar.
     _makeIconDraggable(targetEl, handleEl, options = {}) {
         let longPressTimer = null;
         let isDragging = false;
@@ -89,7 +85,6 @@ export class DesktopInteractions {
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp, { once: true });
             
-            // É ESTE TIMER QUE CAUSA O ATRASO (correto para ícones)
             longPressTimer = setTimeout(() => {
                 longPressActivated = true;
                 targetEl.classList.add('dragging'); 
@@ -125,8 +120,6 @@ export class DesktopInteractions {
         handleEl.addEventListener('mousedown', onMouseDown);
     }
     
-    // LÓGICA DE ARRASTE PARA JANELAS (INSTANTÂNEO)
-    // Inicia o arraste imediatamente no mousedown, sem setTimeout.
     _makeWindowDraggable(targetEl, handleEl, options = {}) {
         let offsetX, offsetY;
         let isDragging = false;
@@ -146,8 +139,6 @@ export class DesktopInteractions {
         };
 
         const onMouseMove = (e) => {
-            // A verificação `if (isDragging)` garante que o movimento só ocorra
-            // após o mousedown, de forma instantânea.
             if (isDragging) {
                 let newLeft = e.clientX - offsetX;
                 let newTop = e.clientY - offsetY;
@@ -168,7 +159,6 @@ export class DesktopInteractions {
                 targetEl.classList.remove('dragging');
                 isDragging = false;
                 
-                // O timeout aqui é só para evitar conflito com eventos de clique
                 setTimeout(() => {
                     this.so.state.ui.isDragging = false;
                 }, 50);

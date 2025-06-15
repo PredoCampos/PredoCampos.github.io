@@ -1,7 +1,7 @@
 /**
  * @file GridManager.js
- * @description Gerencia o grid, com a lógica de animação dos ícones separada
- * e com cálculos de dimensão ajustados para mobile.
+ * @description Gerencia o grid com lógica de células não-quadradas e centralização
+ * correta do bloco de ícones para um layout responsivo e preciso.
  */
 export class GridManager {
     constructor(soInstance) {
@@ -10,9 +10,6 @@ export class GridManager {
         this.state = soInstance.state;
     }
 
-    /**
-     * Posiciona os ícones na sua devida posição, mas os mantém invisíveis.
-     */
     initializeIconPositions() {
         const { grid: gridState } = this.state;
         gridState.ocupado.clear();
@@ -35,21 +32,16 @@ export class GridManager {
                 pos = this._findFirstFreePosition();
             }
             
-            // Apenas posiciona o ícone. Ele começará invisível devido ao CSS.
             this._placeIconAt(icon, pos.col, pos.row);
         });
     }
 
-    /**
-     * Inicia a animação de aparição dos ícones em cascata.
-     */
     startIconAnimation() {
         const icons = document.querySelectorAll('.desktop-icon');
-        const staggerDelay = 75; // Atraso de 75ms entre cada ícone
+        const staggerDelay = 75;
 
         console.log('Iniciando animação de carregamento dos ícones...');
         icons.forEach((icon, index) => {
-            // Agenda a sua aparição com um atraso
             setTimeout(() => {
                 icon.classList.add('visible');
             }, index * staggerDelay);
@@ -58,7 +50,7 @@ export class GridManager {
 
     recalculate() {
         this._calculateDimensions();
-        this._updateLayoutCSS();
+        this._updateLayoutCSS(); // Função restaurada
         if (this.state.grid.visualizer) {
             this.state.grid.visualizer.remove();
         }
@@ -75,8 +67,8 @@ export class GridManager {
             grid.ocupado.delete(oldKey);
         }
 
-        let col = Math.round((parseInt(icon.style.left) - grid.startX) / grid.cellSize);
-        let row = Math.round((parseInt(icon.style.top) - grid.startY) / grid.cellSize);
+        let col = Math.round((parseInt(icon.style.left) - grid.startX) / grid.cellWidth);
+        let row = Math.round((parseInt(icon.style.top) - grid.startY) / grid.cellHeight);
 
         col = Math.max(0, Math.min(col, grid.cols - 1));
         row = Math.max(0, Math.min(row, grid.rows - 1));
@@ -241,68 +233,64 @@ export class GridManager {
         gridState.taskbarHeight = parseInt(taskbarStyle.height, 10);
         
         const marginPercentage = device.isMobile ? gridConfig.marginPercentageMobile : gridConfig.marginPercentage;
-        const iconSize = device.isMobile ? gridConfig.iconBaseSizeMobile : gridConfig.iconBaseSize;
+        const iconBaseSize = device.isMobile ? gridConfig.iconBaseSizeMobile : gridConfig.iconBaseSize;
 
         gridState.margin = Math.floor(Math.min(screenW, screenH) * marginPercentage);
 
-        // MUDANÇA (BUG #7): Adiciona uma margem de segurança no fundo
-        const safetyMarginBottom = 15; // px de espaço extra acima da taskbar
+        const safetyMarginBottom = 15;
         const availableW = screenW - (gridState.margin * 2);
         const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2) - safetyMarginBottom;
 
-        const idealCellSize = iconSize + 20;
-        gridState.cols = Math.max(2, Math.floor(availableW / idealCellSize));
-        gridState.rows = Math.max(2, Math.floor(availableH / idealCellSize));
+        const idealCellWidth = iconBaseSize + 20;
+        const idealCellHeight = iconBaseSize + 45; 
 
-        gridState.cellSize = Math.min(Math.floor(availableW / gridState.cols), Math.floor(availableH / gridState.rows));
+        gridState.cols = Math.max(1, Math.floor(availableW / idealCellWidth));
+        gridState.rows = Math.max(1, Math.floor(availableH / idealCellHeight));
 
-        gridState.width = gridState.cols * gridState.cellSize;
-        gridState.height = gridState.rows * gridState.cellSize;
-
-        const leftoverW = availableW - gridState.width;
-        const leftoverH = availableH - gridState.height;
+        gridState.cellWidth = Math.floor(availableW / gridState.cols);
+        gridState.cellHeight = Math.floor(availableH / gridState.rows);
         
-        let initialStartX = gridState.margin + Math.floor(leftoverW / 2);
-        let initialStartY = gridState.margin + Math.floor(leftoverH / 2);
-
-        // MUDANÇA (BUG #8): Remove o deslocamento fixo que causava assimetria
-        // initialStartX -= 20; 
-        initialStartY += 10;
+        const totalGridWidth = gridState.cols * gridState.cellWidth;
+        const leftoverW = availableW - totalGridWidth;
         
-        gridState.startX = Math.max(gridState.margin, initialStartX);
-        gridState.startY = Math.max(gridState.margin, initialStartY);
+        gridState.startX = gridState.margin + Math.floor(leftoverW / 2);
+        gridState.startY = gridState.margin;
     }
     
     _updateLayoutCSS() {
         const { selectors } = this.config;
-        const taskbarHeight = `${this.state.grid.taskbarHeight}px`;
-        const desktopHeight = `calc(100vh - ${taskbarHeight})`;
-        document.querySelector(selectors.desktop).style.height = desktopHeight;
-        document.querySelector(selectors.windowsContainer).style.height = desktopHeight;
-    }
+        const taskbarHeight = this.state.grid.taskbarHeight;
+        
+        const desktopHeight = window.innerHeight - taskbarHeight;
+        const desktopWidth = window.innerWidth;
 
-    _verificarEspacoVazio(coluna, linhaInicio, ultimaLinha) {
-        for (let l = linhaInicio; l <= ultimaLinha; l++) {
-            if (!this.state.grid.ocupado.has(`${coluna},${l}`)) {
-                return true;
-            }
-        }
-        return false;
-    }
+        const desktopElement = document.querySelector(selectors.desktop);
+        const windowsContainerElement = document.querySelector(selectors.windowsContainer);
 
-    _findFirstFreePosition() {
-        for (let c = 0; c < this.state.grid.cols; c++) {
-            for (let r = 0; r < this.state.grid.rows; r++) {
-                if (!this.state.grid.ocupado.has(`${c},${r}`)) return { col: c, row: r };
-            }
+        if (desktopElement) {
+            desktopElement.style.height = `${desktopHeight}px`;
+            desktopElement.style.width = `${desktopWidth}px`;
         }
-        return { col: 0, row: 0 };
+        if (windowsContainerElement) {
+            windowsContainerElement.style.height = `${desktopHeight}px`;
+            windowsContainerElement.style.width = `${desktopWidth}px`;
+        }
     }
 
     _getCoordsFromGridKey(key) {
         const { grid } = this.state;
         const [col, row] = key.split(',').map(Number);
-        return { x: grid.startX + (col * grid.cellSize), y: grid.startY + (row * grid. cellSize) };
+
+        let iconWrapperWidth;
+        if (this.so.state.device.isMobile) {
+            iconWrapperWidth = 80;
+        } else {
+            iconWrapperWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--size-icon-wrapper'));
+        }
+        
+        const x = grid.startX + (col * grid.cellWidth) + (grid.cellWidth - iconWrapperWidth) / 2;
+        const y = grid.startY + (row * grid.cellHeight);
+        return { x, y };
     }
 
     _findKeyForApp(appName) {
@@ -330,5 +318,23 @@ export class GridManager {
         visualizer.style.zIndex = '1';
         this.state.grid.visualizer = visualizer;
         document.querySelector(desktop).appendChild(visualizer);
+    }
+    
+    _findFirstFreePosition() {
+        for (let c = 0; c < this.state.grid.cols; c++) {
+            for (let r = 0; r < this.state.grid.rows; r++) {
+                if (!this.state.grid.ocupado.has(`${c},${r}`)) return { col: c, row: r };
+            }
+        }
+        return { col: 0, row: 0 };
+    }
+
+    _verificarEspacoVazio(coluna, linhaInicio, ultimaLinha) {
+        for (let l = linhaInicio; l <= ultimaLinha; l++) {
+            if (!this.state.grid.ocupado.has(`${coluna},${l}`)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

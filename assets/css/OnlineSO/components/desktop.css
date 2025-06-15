@@ -1,15 +1,14 @@
 /* Arquivo: assets/css/onlineSO/components/desktop.css */
 
 .desktop {
-    width: 100vw;
+    /* Revertido para a abordagem original. A altura e largura são
+       controladas pelo CSS e/ou JS (_updateLayoutCSS) e não pela técnica de esticar. */
+    width: 100%;
     height: calc(100vh - var(--size-taskbar-height));
     position: relative;
 }
 
 .desktop-icons {
-    /* MUDANÇA: As propriedades de posicionamento e tamanho foram removidas.
-       O JavaScript agora tem controle total sobre a posição de cada ícone
-       individualmente, garantindo a centralização correta do grid. */
     list-style: none;
 }
 

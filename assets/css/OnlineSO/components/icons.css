@@ -10,8 +10,6 @@
     cursor: pointer;
     padding: 10px;
     width: var(--size-icon-wrapper);
-    /* MUDANÇA: Altura fixa removida para que o contêiner se ajuste ao texto */
-    /* height: var(--size-icon-wrapper); */
     border-radius: 4px;
     transition: background-color var(--transition-duration-fast);
 }
@@ -50,17 +48,15 @@
     max-width: 100%;
     line-height: 1.2;
 
-    /* MUDANÇA: Garante que nomes longos sejam cortados com '...' */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    /* MUDANÇA: Permite a quebra de linha para nomes longos */
+    white-space: normal;
+    word-wrap: break-word; /* Garante a quebra de palavras muito longas */
 }
 
 /* --- Adaptações para mobile --- */
 @media (max-width: 768px) {
     .desktop-icon {
         width: 80px;
-        height: 80px;
         padding: 8px;
     }
     .icon-image {
