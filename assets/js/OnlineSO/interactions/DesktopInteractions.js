@@ -1,21 +1,22 @@
 /**
  * @file DesktopInteractions.js
- * @description Lida com interações de mouse, incluindo o clique no botão Start.
+ * @description Lida com interações de mouse, incluindo o clique direito para o menu de contexto.
  */
 export class DesktopInteractions {
     constructor(soInstance) {
         this.so = soInstance;
         this.wm = soInstance.windowManager;
         this.gm = soInstance.gridManager;
-        this.mm = soInstance.menuManager; 
+        this.mm = soInstance.menuManager;
+        this.contextMenu = document.getElementById('context-menu');
+        this.desktopEl = document.querySelector(this.so.config.selectors.desktop);
     }
 
     initialize() {
         document.querySelectorAll('.desktop-icon').forEach(icon => this._setupIconListeners(icon));
-        document.querySelector(this.so.config.selectors.desktop).addEventListener('click', () => this._clearIconSelection());
+        this.desktopEl.addEventListener('click', () => this._clearIconSelection());
         this._observeNewWindows();
 
-        // MUDANÇA: O listener do botão Start foi restaurado aqui, no local correto.
         const startButton = document.querySelector(this.so.config.selectors.menuButton);
         if (startButton) {
             startButton.addEventListener('click', (e) => {
@@ -23,6 +24,74 @@ export class DesktopInteractions {
                 this.mm.toggle();
             });
         }
+
+        if (this.contextMenu) {
+            this._setupContextMenuListeners();
+        }
+    }
+
+    /**
+     * Configura todos os eventos do menu de contexto.
+     */
+    _setupContextMenuListeners() {
+        // 1. Listener para ABRIR o menu com o clique direito
+        this.desktopEl.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.mm.close();
+
+            this.contextMenu.targetElement = e.target;
+
+            const menuWidth = this.contextMenu.offsetWidth;
+            const menuHeight = this.contextMenu.offsetHeight;
+            const screenWidth = window.innerWidth;
+            const screenHeight = window.innerHeight;
+
+            let x = e.clientX;
+            let y = e.clientY;
+
+            if (x + menuWidth > screenWidth) {
+                x = screenWidth - menuWidth - 5;
+            }
+            if (y + menuHeight > screenHeight) {
+                y = screenHeight - menuHeight - 5;
+            }
+
+            this.contextMenu.style.top = `${y}px`;
+            this.contextMenu.style.left = `${x}px`;
+            this.contextMenu.classList.remove('hidden');
+        });
+
+        // 2. Listener para FECHAR o menu ao clicar em qualquer outro lugar
+        document.addEventListener('click', e => {
+            if (this.contextMenu && !this.contextMenu.classList.contains('hidden')) {
+                if (!this.contextMenu.contains(e.target)) {
+                    this.contextMenu.classList.add('hidden');
+                }
+            }
+        });
+
+        // 3. Listener para EXECUTAR as ações dos itens do menu
+        this.contextMenu.addEventListener('click', e => {
+            const actionItem = e.target.closest('.context-menu-item[data-action]');
+            if (!actionItem) return;
+
+            const action = actionItem.dataset.action;
+
+            switch(action) {
+                case 'refresh':
+                    window.location.reload();
+                    break;
+                case 'open-cmd':
+                    this.so.windowManager.open('cmd');
+                    break;
+                case 'inspect':
+                    console.log('Elemento Inspecionado:', this.contextMenu.targetElement);
+                    break;
+            }
+
+            this.contextMenu.classList.add('hidden');
+        });
     }
     
     _setupIconListeners(icon) {

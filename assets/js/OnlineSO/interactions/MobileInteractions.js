@@ -1,6 +1,6 @@
 /**
  * @file MobileInteractions.js
- * @description Lida com interações de toque, incluindo o toque no botão Start.
+ * @description Lida com interações de toque, incluindo o toque longo para o menu de contexto.
  */
 export class MobileInteractions {
     constructor(soInstance) {
@@ -8,14 +8,12 @@ export class MobileInteractions {
         this.wm = soInstance.windowManager;
         this.gm = soInstance.gridManager;
         this.mm = soInstance.menuManager;
+        this.contextMenu = document.getElementById('context-menu');
+        this.desktopEl = document.querySelector(this.so.config.selectors.desktop);
     }
 
     initialize() {
         document.querySelectorAll('.desktop-icon').forEach(icon => this._setupIconListeners(icon));
-
-        // MUDANÇA: Adicionado { passive: true } para resolver o aviso do navegador e melhorar a performance.
-        document.querySelector(this.so.config.selectors.desktop).addEventListener('touchstart', () => this._clearIconSelection(), { passive: true });
-        
         this._observeNewWindows();
 
         const startButton = document.querySelector(this.so.config.selectors.menuButton);
@@ -26,6 +24,112 @@ export class MobileInteractions {
                 this.mm.toggle();
             });
         }
+        
+        if (this.contextMenu) {
+            this._setupContextMenuListeners();
+        }
+    }
+
+    /**
+     * Configura o "toque longo" para abrir o menu de contexto no mobile.
+     */
+    _setupContextMenuListeners() {
+        let longPressTimer = null;
+        let touchStartX, touchStartY;
+        const LONG_PRESS_DURATION = 500;
+        const MOVE_THRESHOLD = 15;
+
+        // MUDANÇA: Adicionado um listener para cancelar o menu de contexto nativo do navegador.
+        this.desktopEl.addEventListener('contextmenu', e => {
+            e.preventDefault();
+        });
+
+        this.desktopEl.addEventListener('touchstart', e => {
+            if (e.touches.length !== 1 || e.target !== this.desktopEl) {
+                return;
+            }
+
+            this._clearIconSelection();
+            this.mm.close();
+            this.contextMenu.classList.add('hidden');
+
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+
+            longPressTimer = setTimeout(() => {
+                e.preventDefault();
+                this._openContextMenu(touchStartX, touchStartY, e.target);
+                longPressTimer = null;
+            }, LONG_PRESS_DURATION);
+        });
+
+        this.desktopEl.addEventListener('touchmove', e => {
+            if (!longPressTimer) return;
+
+            const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+            const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+
+            if (deltaX > MOVE_THRESHOLD || deltaY > MOVE_THRESHOLD) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+            }
+        });
+
+        this.desktopEl.addEventListener('touchend', e => {
+            if (longPressTimer) {
+                clearTimeout(longPressTimer);
+                longPressTimer = null;
+            }
+        });
+        
+        this.contextMenu.addEventListener('touchend', e => {
+            e.preventDefault();
+            const actionItem = e.target.closest('.context-menu-item[data-action]');
+            if (!actionItem) return;
+
+            const action = actionItem.dataset.action;
+
+            switch(action) {
+                case 'refresh':
+                    window.location.reload();
+                    break;
+                case 'open-cmd':
+                    this.so.windowManager.open('cmd');
+                    break;
+                case 'inspect':
+                    console.log('Elemento Inspecionado:', this.contextMenu.targetElement);
+                    break;
+            }
+            this.contextMenu.classList.add('hidden');
+        });
+
+        document.addEventListener('touchstart', e => {
+             if (!this.contextMenu.classList.contains('hidden')) {
+                if (!this.contextMenu.contains(e.target)) {
+                    this.contextMenu.classList.add('hidden');
+                }
+            }
+        }, { passive: true });
+    }
+
+    _openContextMenu(x, y, target) {
+        this.contextMenu.targetElement = target;
+
+        const menuWidth = this.contextMenu.offsetWidth;
+        const menuHeight = this.contextMenu.offsetHeight;
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+
+        if (x + menuWidth > screenWidth) {
+            x = screenWidth - menuWidth - 5;
+        }
+        if (y + menuHeight > screenHeight) {
+            y = screenHeight - menuHeight - 5;
+        }
+
+        this.contextMenu.style.top = `${y}px`;
+        this.contextMenu.style.left = `${x}px`;
+        this.contextMenu.classList.remove('hidden');
     }
     
     _setupIconListeners(icon) {
