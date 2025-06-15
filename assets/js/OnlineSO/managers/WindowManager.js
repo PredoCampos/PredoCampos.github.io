@@ -1,7 +1,6 @@
 /**
  * @file WindowManager.js
- * @description Gerencia o ciclo de vida das janelas, com lógica de trava
- * para prevenir dupla instância e com feedback visual de carregamento.
+ * @description Gerencia o ciclo de vida das janelas com a lógica de animação estável.
  */
 import { capitalize } from '../utils.js';
 import { APP_ICONS } from '../config.js';
@@ -12,38 +11,27 @@ export class WindowManager {
         this.config = soInstance.config;
         this.state = soInstance.state;
         this.animationDuration = 350;
-        // MUDANÇA: Cache do elemento indicador para melhor performance
         this.loadIndicator = document.getElementById('app-load-indicator');
     }
 
     open(appName) {
-        // MUDANÇA: Lógica de verificação e trava movida para o topo
         const existingApp = this.state.windows.abertas.get(appName);
         if (existingApp) {
-            // Se o app já existe (mesmo que carregando ou minimizado),
-            // a função interact decide o que fazer (focar, restaurar, etc).
-            // Se estiver carregando, a `interact` não fará nada.
             this.interact(appName);
             return;
         }
 
-        // --- Início do Processo de Abertura ---
-
-        // 1. Trava o app, registrando-o como "carregando" para impedir dupla instância
         this.state.windows.abertas.set(appName, { status: 'loading' });
 
-        // 2. Mostra o feedback visual de carregamento
         if (this.loadIndicator) this.loadIndicator.classList.remove('hidden');
-        document.body.classList.add('app-loading'); // Mantém o cursor de espera
+        document.body.classList.add('app-loading');
 
         const randomDelay = Math.random() * (1500 - 500) + 500;
 
         setTimeout(() => {
-            // 3. Esconde o feedback visual
             if (this.loadIndicator) this.loadIndicator.classList.add('hidden');
             document.body.classList.remove('app-loading');
 
-            // 4. Cria a janela e os dados completos do app
             const windowEl = this._createWindowElement(appName);
             const appData = {
                 id: windowEl.id,
@@ -52,13 +40,11 @@ export class WindowManager {
                 maximized: false,
                 originalRect: null,
                 isAnimating: false,
-                status: 'loaded' // MUDANÇA: Define o status como carregado
+                status: 'loaded'
             };
 
-            // 5. Atualiza o app no mapa de estado com seus dados completos
             this.state.windows.abertas.set(appName, appData);
 
-            // 6. Continua com o fluxo normal
             this.so.taskManager.add(appName);
             this.so.appRunner.run(appName, windowEl.querySelector('.window-content'));
             this.focus(appName);
@@ -82,12 +68,12 @@ export class WindowManager {
         if (!app || app.status === 'loading' || app.minimized || app.isAnimating) return;
 
         app.isAnimating = true;
-        app.element.classList.add('window-animated');
-
-        const taskbarButton = document.querySelector(`.taskbar-app[data-app="${appName}"]`);
         
+        const winEl = app.element;
+        winEl.classList.add('window-animated');
+
         if (!app.maximized) {
-            const windowRect = app.element.getBoundingClientRect();
+            const windowRect = winEl.getBoundingClientRect();
             app.originalRect = {
                 top: `${windowRect.top}px`,
                 left: `${windowRect.left}px`,
@@ -96,21 +82,13 @@ export class WindowManager {
             };
         }
 
-        if (taskbarButton) {
-            const buttonRect = taskbarButton.getBoundingClientRect();
-            app.element.style.top = `${buttonRect.top + (buttonRect.height / 2)}px`;
-            app.element.style.left = `${buttonRect.left + (buttonRect.width / 2)}px`;
-            app.element.style.width = `0px`;
-            app.element.style.height = `0px`;
-        }
-
-        app.element.classList.add('minimized');
-        app.element.classList.remove('focused');
+        winEl.classList.add('minimized');
+        winEl.classList.remove('focused');
         app.minimized = true;
 
         setTimeout(() => {
-            app.element.style.display = 'none';
-            app.element.classList.remove('window-animated');
+            winEl.style.display = 'none';
+            winEl.classList.remove('window-animated');
             app.isAnimating = false;
         }, this.animationDuration);
 
@@ -124,25 +102,14 @@ export class WindowManager {
         app.isAnimating = true;
         
         const winEl = app.element;
-        winEl.classList.add('window-animated');
-
-        const taskbarButton = document.querySelector(`.taskbar-app[data-app="${appName}"]`);
-        if (taskbarButton) {
-            const buttonRect = taskbarButton.getBoundingClientRect();
-            winEl.style.top = `${buttonRect.top + (buttonRect.height / 2)}px`;
-            winEl.style.left = `${buttonRect.left + (buttonRect.width / 2)}px`;
-            winEl.style.width = `0px`;
-            winEl.style.height = `0px`;
-        }
-        
         winEl.style.display = 'flex';
         app.minimized = false;
 
         setTimeout(() => {
+            winEl.classList.add('window-animated');
             winEl.classList.remove('minimized');
-
+            
             if (app.maximized) {
-                winEl.style.top = winEl.style.left = winEl.style.width = winEl.style.height = '';
                 winEl.classList.add('maximized');
             } else if (app.originalRect) {
                 winEl.style.top = app.originalRect.top;
@@ -167,7 +134,6 @@ export class WindowManager {
             return;
         }
 
-        // MUDANÇA: Verifica o status de carregando ou animando
         if (app.status === 'loading' || app.isAnimating) {
             return;
         }
@@ -221,7 +187,10 @@ export class WindowManager {
                 height: `${windowRect.height}px`
             };
             
-            winEl.style.top = winEl.style.left = winEl.style.width = winEl.style.height = '';
+            winEl.style.top = '';
+            winEl.style.left = '';
+            winEl.style.width = '';
+            winEl.style.height = '';
             app.maximized = true;
             winEl.classList.add('maximized');
         }

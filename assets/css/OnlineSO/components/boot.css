@@ -15,57 +15,55 @@
     z-index: 9999;
     font-family: 'Tahoma', sans-serif;
     opacity: 1;
-    /* MUDANÇA: Duração da transição diminuída de 0.5s para 0.2s para ser mais abrupta */
     transition: opacity 0.2s ease-out;
 }
 
-/* Classe para esconder a tela de boot */
 #boot-screen.hidden {
     opacity: 0;
     pointer-events: none;
 }
 
 .boot-logo {
+    width: 70%;
     max-width: 400px;
     margin-bottom: 30px;
 }
 
+/* MUDANÇA: Novo estilo para o texto da porcentagem */
+.boot-percentage {
+    color: #AAAAAA;
+    font-size: 16px;
+    margin-bottom: 8px;
+    height: 20px; /* Garante que o layout não pule quando o texto mudar */
+    font-family: 'Perfect DOS VGA', monospace; /* Fonte mais nostálgica */
+}
+
 .boot-loader-bar {
     width: 300px;
-    height: 20px;
-    background-color: #1a1a1a;
-    border: 1px solid #555555;
-    border-radius: 2px;
+    height: 24px;
+    background-color: var(--color-win98-grey);
+    border: 2px inset var(--color-win98-grey);
     padding: 3px;
     box-sizing: border-box;
 }
 
 .boot-loader-progress {
-    width: 100%;
+    /* MUDANÇA: Animação CSS removida. A largura agora é 100% controlada pelo JavaScript. */
+    width: 0%; /* Começa vazia */
     height: 100%;
-    background: repeating-linear-gradient(
-        90deg, 
-        #3876CC, 
-        #3876CC 15px, 
-        transparent 15px, 
-        transparent 20px
-    );
-    animation: bootProgressAnimation 1s linear infinite;
+    background-color: var(--color-win98-header-blue);
+    /* Adiciona uma transição suave para a propriedade 'width' para que o preenchimento não seja "duro" */
+    transition: width 0.1s linear;
 }
 
-@keyframes bootProgressAnimation {
-    from {
-        background-position: 0 0;
-    }
-    to {
-        background-position: -40px 0;
-    }
-}
+/* A animação @keyframes foi removida pois não é mais necessária */
 
 .boot-copyright {
     position: absolute;
-    bottom: 20px;
-    left: 20px;
-    font-size: 12px;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px; 
     color: #AAAAAA;
+    white-space: nowrap;
 }
