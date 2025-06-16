@@ -1,6 +1,6 @@
 /**
  * @file MobileInteractions.js
- * @description Lida com interações de toque, incluindo o toque longo para o menu de contexto.
+ * @description Lida com interações de toque, com tolerância de movimento para o arraste de ícones.
  */
 export class MobileInteractions {
     constructor(soInstance) {
@@ -30,9 +30,6 @@ export class MobileInteractions {
         }
     }
 
-    /**
-     * Configura o "toque longo" para abrir o menu de contexto no mobile.
-     */
     _setupContextMenuListeners() {
         let longPressTimer = null;
         let touchStartX, touchStartY;
@@ -142,8 +139,6 @@ export class MobileInteractions {
         let startPos = null;
 
         icon.addEventListener('touchstart', (e) => {
-            // Este listener é passivo e não deve parar a propagação,
-            // permitindo que o listener de fechar menu no documento funcione.
             touchStartTime = Date.now();
             if (e.touches.length === 1) {
                 startPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -162,8 +157,6 @@ export class MobileInteractions {
                 if (touchDuration < 200 && deltaX < 10 && deltaY < 10) {
                      if (!this.so.state.ui.isDragging) {
                         e.preventDefault();
-
-                        // MUDANÇA: Garante que o menu de contexto feche ao abrir um app.
                         if (this.contextMenu) this.contextMenu.classList.add('hidden');
                         
                         this._selectIcon(icon);
@@ -201,20 +194,28 @@ export class MobileInteractions {
         });
     }
 
+    /**
+     * MUDANÇA: Lógica de arrastar ícones agora tem tolerância de movimento.
+     */
     _makeIconDraggable(targetEl, handleEl, options = {}) {
         let longPressTimer = null;
         let isDragging = false;
         let longPressActivated = false;
+        let touchStartX, touchStartY;
         let offsetX, offsetY;
+        const MOVE_THRESHOLD = 15;
 
         const onTouchStart = (e) => {
             if (e.touches.length !== 1) return;
             e.preventDefault();
+            e.stopPropagation(); // Impede que o toque no ícone feche o menu de contexto
 
             longPressActivated = false;
             isDragging = false;
             
             const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
             offsetX = touch.clientX - targetEl.offsetLeft;
             offsetY = touch.clientY - targetEl.offsetTop;
 
@@ -230,11 +231,8 @@ export class MobileInteractions {
 
         const onTouchMove = (e) => {
             e.preventDefault();
-            if (longPressTimer) {
-                clearTimeout(longPressTimer);
-                longPressTimer = null;
-            }
-
+            
+            // Se o timer já disparou (long press ativado), move o ícone
             if (longPressActivated) {
                 isDragging = true;
                 this.so.state.ui.isDragging = true;
@@ -242,6 +240,15 @@ export class MobileInteractions {
                 const touch = e.touches[0];
                 targetEl.style.left = `${touch.clientX - offsetX}px`;
                 targetEl.style.top = `${touch.clientY - offsetY}px`;
+            } else if (longPressTimer) {
+                // Se o timer ainda não disparou, verifica se o movimento excedeu o limite
+                const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+                const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+
+                if (deltaX > MOVE_THRESHOLD || deltaY > MOVE_THRESHOLD) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
+                }
             }
         };
 
