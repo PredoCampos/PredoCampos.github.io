@@ -1,6 +1,7 @@
 /**
  * @file AppRunner.js
- * @description Lida com a execução do conteúdo de um aplicativo dentro de sua janela.
+ * @description Lida com o carregamento dinâmico e a execução de aplicativos
+ * modulares sob demanda.
  */
 import { capitalize } from '../utils.js';
 
@@ -10,33 +11,47 @@ export class AppRunner {
     }
 
     /**
-     * "Executa" um aplicativo, injetando seu conteúdo e disparando um evento.
-     * @param {string} appName
-     * @param {HTMLElement} contentContainer
+     * Carrega e executa um aplicativo dinamicamente a partir de seu arquivo de módulo.
+     * @param {string} appName - O nome do aplicativo a ser executado.
+     * @param {HTMLElement} contentContainer - O elemento onde o app será renderizado.
      */
-    run(appName, contentContainer) {
-        const appList = {
-            'notas': 'Editor de texto simples',
-            'calculadora': 'Calculadora básica',
-            'internet': 'Navegador web',
-            'lixo': 'Lixeira do sistema',
-            'arquivos': 'Explorador de arquivos'
-        };
+    async run(appName, contentContainer) {
+        // Limpa o conteúdo anterior e reseta estilos básicos
+        contentContainer.innerHTML = '';
+        contentContainer.style.backgroundColor = 'var(--color-win98-grey)';
+        contentContainer.style.fontFamily = 'var(--font-primary)';
+        contentContainer.style.color = 'var(--color-win98-text)';
+        contentContainer.style.padding = '10px';
 
-        const description = appList[appName] || 'Aplicativo desconhecido';
+        try {
+            // MUDANÇA: O caminho agora sobe um diretório ('../') para encontrar a pasta 'apps'.
+            const appPath = `../apps/${appName}.app.js`;
+            console.log(`Carregando módulo do aplicativo: ${appPath}`);
 
-        contentContainer.innerHTML = `
-            <div style="text-align: center; padding: 20px;">
-                <h3>${capitalize(appName)}</h3>
-                <p>${description}</p>
-                <br>
-                <p><em>Funcionalidade a ser implementada...</em></p>
-            </div>
-        `;
+            const module = await import(appPath);
 
-        // Dispara um evento para que módulos externos possam injetar lógica real
-        window.dispatchEvent(new CustomEvent('app-opened', {
-            detail: { appName, container: contentContainer }
-        }));
+            const AppClass = module.default;
+            if (!AppClass) {
+                throw new Error(`O arquivo do aplicativo '${appName}' não tem uma exportação padrão (default export).`);
+            }
+
+            const appInstance = new AppClass(contentContainer, this.so);
+
+            if (typeof appInstance.init === 'function') {
+                appInstance.init();
+            } else {
+                throw new Error(`A classe do aplicativo '${appName}' não tem um método init().`);
+            }
+
+        } catch (error) {
+            console.error(`Falha ao carregar ou executar o aplicativo '${appName}':`, error);
+            contentContainer.innerHTML = `
+                <div style="padding: 20px; text-align: center;">
+                    <h3>Erro ao abrir ${capitalize(appName)}</h3>
+                    <p>Não foi possível carregar o aplicativo.</p>
+                    <p style="font-size: 11px; color: #555; margin-top: 15px;">Verifique o console para detalhes técnicos.</p>
+                </div>
+            `;
+        }
     }
 }

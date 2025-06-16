@@ -8,12 +8,12 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.1); /* Fundo leve para indicar bloqueio */
-    z-index: 8000; /* Z-index alto para ficar sobre tudo, exceto o boot */
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 8000;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: wait; /* Usa o mesmo cursor de espera do sistema */
+    cursor: wait;
 }
 
 #app-load-indicator.hidden {
@@ -21,9 +21,9 @@
 }
 
 .hourglass-icon {
-    width: 32px; /* Tamanho clássico de ícone de cursor */
+    width: 32px;
     height: 32px;
-    image-rendering: pixelated; /* Mantém a estética pixel art */
+    image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
     animation: rotate-hourglass 1.5s linear infinite;
@@ -39,7 +39,7 @@
 }
 
 
-/* --- MUDANÇA: Estilos para o Menu de Contexto (Clique Direito) --- */
+/* --- Menu de Contexto (Clique Direito) --- */
 
 .context-menu {
     position: absolute;
@@ -79,5 +79,30 @@
     background-color: var(--color-win98-shadow);
     border-bottom: 1px solid var(--color-win98-highlight);
     margin: 4px 2px;
-    padding: 0;
+}
+
+/* --- Estilos para o App CMD --- */
+
+/* Contêiner da linha de input para alinhar o ">" e o campo de texto */
+.cmd-input-line {
+    display: flex;
+}
+
+.cmd-input {
+    /* Remove a aparência de caixa */
+    background: transparent;
+    border: none;
+    
+    /* Estilo do texto e do cursor */
+    color: white;
+    caret-color: white; /* Cor da barrinha piscando */
+    font-family: inherit; /* Herda a fonte monoespaçada do contêiner */
+    font-size: inherit;
+
+    /* Faz o input ocupar todo o espaço restante na linha */
+    flex-grow: 1;
+}
+
+.cmd-input:focus {
+    outline: none; /* Remove o contorno de foco do navegador */
 }
