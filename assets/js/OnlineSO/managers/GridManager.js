@@ -1,7 +1,7 @@
 /**
  * @file GridManager.js
- * @description Gerencia o grid com lógica de células não-quadradas e centralização
- * correta do bloco de ícones para um layout responsivo e preciso.
+ * @description Gerencia o grid com lógica de células não-quadradas para acomodar
+ * nomes de ícones com múltiplas linhas.
  */
 export class GridManager {
     constructor(soInstance) {
@@ -12,28 +12,34 @@ export class GridManager {
 
     initializeIconPositions() {
         const { grid: gridState } = this.state;
-        gridState.ocupado.clear();
         
-        const iconOrder = {
-            'internet': { col: 0, row: 0 },
-            'arquivos': { col: 0, row: 1 },
-            'notas': { col: 0, row: 2 },
-            'calculadora': { col: 0, row: 3 },
-            'lixo': { col: gridState.cols - 1, row: gridState.rows - 1 }
-        };
-
-        const icons = document.querySelectorAll('.desktop-icon');
-
-        icons.forEach(icon => {
-            const appName = icon.dataset.app;
-            let pos = iconOrder[appName];
-
-            if (!pos || pos.col >= gridState.cols || pos.row >= gridState.rows) {
-                pos = this._findFirstFreePosition();
-            }
-            
-            this._placeIconAt(icon, pos.col, pos.row);
-        });
+        if (gridState.ocupado.size > 0) {
+            console.log("Layout de ícones carregado. Reposicionando...");
+            this.repositionAllIcons();
+        } else {
+            console.log("Nenhum layout salvo. Usando posições padrão.");
+            const iconOrder = {
+                'internet': { col: 0, row: 0 },
+                'arquivos': { col: 0, row: 1 },
+                'notas': { col: 0, row: 2 },
+                'calculadora': { col: 0, row: 3 },
+                'lixo': { col: gridState.cols - 1, row: gridState.rows - 1 }
+            };
+    
+            const icons = document.querySelectorAll('.desktop-icon');
+    
+            icons.forEach(icon => {
+                const appName = icon.dataset.app;
+                let pos = iconOrder[appName];
+    
+                if (!pos || pos.col >= gridState.cols || pos.row >= gridState.rows) {
+                    pos = this._findFirstFreePosition();
+                }
+                
+                this._placeIconAt(icon, pos.col, pos.row, true);
+            });
+            this._saveIconPositions();
+        }
     }
 
     startIconAnimation() {
@@ -202,12 +208,16 @@ export class GridManager {
         }
     }
 
-    _placeIconAt(icon, col, row) {
+    _placeIconAt(icon, col, row, isInitializing = false) {
         const key = `${col},${row}`;
         const coords = this._getCoordsFromGridKey(key);
         icon.style.left = `${coords.x}px`;
         icon.style.top = `${coords.y}px`;
         this.state.grid.ocupado.set(key, icon.dataset.app);
+
+        if (!isInitializing) {
+            this._saveIconPositions();
+        }
     }
     
     repositionAllIcons() {
@@ -219,6 +229,11 @@ export class GridManager {
                  icon.style.top = `${coords.y}px`;
             }
         });
+    }
+
+    _saveIconPositions() {
+        const iconPositions = Array.from(this.state.grid.ocupado.entries());
+        this.so.persistenceManager.save({ iconPositions: iconPositions });
     }
 
     _calculateDimensions() {
@@ -241,9 +256,9 @@ export class GridManager {
         const availableW = screenW - (gridState.margin * 2);
         const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2) - safetyMarginBottom;
 
+        // MUDANÇA: Lógica de cálculo para células não-quadradas, com espaçamento vertical mais conservador.
         const idealCellWidth = iconBaseSize + 20;
-        // MUDANÇA: O espaçamento vertical foi reduzido de 45 para 38.
-        const idealCellHeight = iconBaseSize + 38; 
+        const idealCellHeight = iconBaseSize + 30; // Aumento menor para um espaçamento mais justo
 
         gridState.cols = Math.max(1, Math.floor(availableW / idealCellWidth));
         gridState.rows = Math.max(1, Math.floor(availableH / idealCellHeight));
@@ -260,28 +275,16 @@ export class GridManager {
     
     _updateLayoutCSS() {
         const { selectors } = this.config;
-        const taskbarHeight = this.state.grid.taskbarHeight;
-        
-        const desktopHeight = window.innerHeight - taskbarHeight;
-        const desktopWidth = window.innerWidth;
-
-        const desktopElement = document.querySelector(selectors.desktop);
-        const windowsContainerElement = document.querySelector(selectors.windowsContainer);
-
-        if (desktopElement) {
-            desktopElement.style.height = `${desktopHeight}px`;
-            desktopElement.style.width = `${desktopWidth}px`;
-        }
-        if (windowsContainerElement) {
-            windowsContainerElement.style.height = `${desktopHeight}px`;
-            windowsContainerElement.style.width = `${desktopWidth}px`;
-        }
+        const taskbarHeight = `${this.state.grid.taskbarHeight}px`;
+        const desktopHeight = `calc(100vh - ${taskbarHeight})`;
+        document.querySelector(selectors.desktop).style.height = desktopHeight;
+        document.querySelector(selectors.windowsContainer).style.height = desktopHeight;
     }
 
     _getCoordsFromGridKey(key) {
         const { grid } = this.state;
         const [col, row] = key.split(',').map(Number);
-
+        
         let iconWrapperWidth;
         if (this.so.state.device.isMobile) {
             iconWrapperWidth = 80;
@@ -289,6 +292,7 @@ export class GridManager {
             iconWrapperWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--size-icon-wrapper'));
         }
         
+        // Centraliza o ícone no meio da sua célula de grid
         const x = grid.startX + (col * grid.cellWidth) + (grid.cellWidth - iconWrapperWidth) / 2;
         const y = grid.startY + (row * grid.cellHeight);
         return { x, y };

@@ -34,7 +34,6 @@ export class DesktopInteractions {
      * Configura todos os eventos do menu de contexto.
      */
     _setupContextMenuListeners() {
-        // 1. Listener para ABRIR o menu com o clique direito
         this.desktopEl.addEventListener('contextmenu', e => {
             e.preventDefault();
             e.stopPropagation();
@@ -62,7 +61,6 @@ export class DesktopInteractions {
             this.contextMenu.classList.remove('hidden');
         });
 
-        // 2. Listener para FECHAR o menu ao clicar em qualquer outro lugar
         document.addEventListener('click', e => {
             if (this.contextMenu && !this.contextMenu.classList.contains('hidden')) {
                 if (!this.contextMenu.contains(e.target)) {
@@ -71,15 +69,19 @@ export class DesktopInteractions {
             }
         });
 
-        // 3. Listener para EXECUTAR as ações dos itens do menu
         this.contextMenu.addEventListener('click', e => {
             const actionItem = e.target.closest('.context-menu-item[data-action]');
             if (!actionItem) return;
 
             const action = actionItem.dataset.action;
 
+            // MUDANÇA: Adicionado o case para a ação 'reset-layout'
             switch(action) {
                 case 'refresh':
+                    window.location.reload();
+                    break;
+                case 'reset-layout':
+                    this.so.persistenceManager.clear();
                     window.location.reload();
                     break;
                 case 'open-cmd':

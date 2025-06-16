@@ -39,7 +39,6 @@ export class MobileInteractions {
         const LONG_PRESS_DURATION = 500;
         const MOVE_THRESHOLD = 15;
 
-        // MUDANÇA: Adicionado um listener para cancelar o menu de contexto nativo do navegador.
         this.desktopEl.addEventListener('contextmenu', e => {
             e.preventDefault();
         });
@@ -89,8 +88,13 @@ export class MobileInteractions {
 
             const action = actionItem.dataset.action;
 
+            // MUDANÇA: Adicionado o case para a ação 'reset-layout'
             switch(action) {
                 case 'refresh':
+                    window.location.reload();
+                    break;
+                case 'reset-layout':
+                    this.so.persistenceManager.clear();
                     window.location.reload();
                     break;
                 case 'open-cmd':
