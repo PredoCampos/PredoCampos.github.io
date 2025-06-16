@@ -61,7 +61,9 @@ export class DesktopInteractions {
             this.contextMenu.classList.remove('hidden');
         });
 
-        document.addEventListener('click', e => {
+        // MUDANÇA: Trocado 'click' por 'mousedown' para fechar o menu de forma mais confiável.
+        // Isso garante que o menu feche antes que o 'click' em um ícone possa parar a propagação do evento.
+        document.addEventListener('mousedown', e => {
             if (this.contextMenu && !this.contextMenu.classList.contains('hidden')) {
                 if (!this.contextMenu.contains(e.target)) {
                     this.contextMenu.classList.add('hidden');
@@ -74,8 +76,9 @@ export class DesktopInteractions {
             if (!actionItem) return;
 
             const action = actionItem.dataset.action;
+            
+            this.contextMenu.classList.add('hidden'); // Esconde o menu imediatamente após a ação
 
-            // MUDANÇA: Adicionado o case para a ação 'reset-layout'
             switch(action) {
                 case 'refresh':
                     window.location.reload();
@@ -91,8 +94,6 @@ export class DesktopInteractions {
                     console.log('Elemento Inspecionado:', this.contextMenu.targetElement);
                     break;
             }
-
-            this.contextMenu.classList.add('hidden');
         });
     }
     

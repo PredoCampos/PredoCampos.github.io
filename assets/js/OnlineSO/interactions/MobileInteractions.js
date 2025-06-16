@@ -87,8 +87,8 @@ export class MobileInteractions {
             if (!actionItem) return;
 
             const action = actionItem.dataset.action;
+            this.contextMenu.classList.add('hidden');
 
-            // MUDANÇA: Adicionado o case para a ação 'reset-layout'
             switch(action) {
                 case 'refresh':
                     window.location.reload();
@@ -104,7 +104,6 @@ export class MobileInteractions {
                     console.log('Elemento Inspecionado:', this.contextMenu.targetElement);
                     break;
             }
-            this.contextMenu.classList.add('hidden');
         });
 
         document.addEventListener('touchstart', e => {
@@ -143,6 +142,8 @@ export class MobileInteractions {
         let startPos = null;
 
         icon.addEventListener('touchstart', (e) => {
+            // Este listener é passivo e não deve parar a propagação,
+            // permitindo que o listener de fechar menu no documento funcione.
             touchStartTime = Date.now();
             if (e.touches.length === 1) {
                 startPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -161,6 +162,10 @@ export class MobileInteractions {
                 if (touchDuration < 200 && deltaX < 10 && deltaY < 10) {
                      if (!this.so.state.ui.isDragging) {
                         e.preventDefault();
+
+                        // MUDANÇA: Garante que o menu de contexto feche ao abrir um app.
+                        if (this.contextMenu) this.contextMenu.classList.add('hidden');
+                        
                         this._selectIcon(icon);
                         this.wm.interact(appName);
                      }
