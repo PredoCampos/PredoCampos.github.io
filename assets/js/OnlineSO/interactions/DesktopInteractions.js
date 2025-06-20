@@ -80,7 +80,6 @@ export class DesktopInteractions extends BaseInteractions {
 
         icon.addEventListener('click', (e) => {
             e.stopPropagation();
-            // Somente processa o clique se não estiver em modo de arrastar.
             if (this.so.state.ui.isDragging) return;
             
             clickCount++;
@@ -121,10 +120,6 @@ export class DesktopInteractions extends BaseInteractions {
         });
     }
 
-    /**
-     * MUDANÇA: Lógica de arrastar janela agora usa o método da classe base
-     * para restringir o movimento aos limites da tela.
-     */
     _makeWindowDraggable(targetEl, handleEl, options = {}) {
         let offsetX, offsetY;
         let isDragging = false;
@@ -149,7 +144,6 @@ export class DesktopInteractions extends BaseInteractions {
             const newX = e.clientX - offsetX;
             const newY = e.clientY - offsetY;
 
-            // Usa o método da classe base para obter as coordenadas corrigidas
             const constrained = this._getConstrainedCoordinates(targetEl, newX, newY);
 
             targetEl.style.left = `${constrained.x}px`;
@@ -173,50 +167,45 @@ export class DesktopInteractions extends BaseInteractions {
     }
     
     /**
-     * MUDANÇA: Lógica de arrastar ícone restaurada para o comportamento original,
-     * mais robusto, que previne o arraste acidental em um clique simples.
+     * MUDANÇA: Lógica de arrastar ícone alterada para exigir um "pressionar e segurar",
+     * tornando o comportamento mais intencional e similar ao mobile.
      */
     _makeIconDraggable(targetEl, handleEl, options = {}) {
         let isDragging = false;
+        let pressTimer = null;
         let offsetX, offsetY;
-        let startX, startY;
-        const moveThreshold = 5; // Pixels que o mouse deve mover para iniciar o arraste
 
         const onMouseDown = (e) => {
             if (e.button !== 0) return;
             e.preventDefault();
 
-            startX = e.clientX;
-            startY = e.clientY;
             offsetX = e.clientX - targetEl.offsetLeft;
             offsetY = e.clientY - targetEl.offsetTop;
 
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp, { once: true });
+            
+            // Inicia um timer para ativar o modo de arrastar
+            pressTimer = setTimeout(() => {
+                isDragging = true;
+                this.so.state.ui.isDragging = true;
+                targetEl.classList.add('dragging');
+            }, 350); // Tempo de espera para iniciar o arraste (em ms)
         };
 
         const onMouseMove = (e) => {
-            if (!isDragging) {
-                const deltaX = Math.abs(e.clientX - startX);
-                const deltaY = Math.abs(e.clientY - startY);
-                // Só inicia o arraste se o mouse se mover mais que o threshold
-                if (deltaX > moveThreshold || deltaY > moveThreshold) {
-                    isDragging = true;
-                    this.so.state.ui.isDragging = true;
-                    targetEl.classList.add('dragging');
-                } else {
-                    return; // Não faz nada se não atingiu o threshold
-                }
+            // Se o arraste foi ativado pelo timer, move o elemento
+            if (isDragging) {
+                const newX = e.clientX - offsetX;
+                const newY = e.clientY - offsetY;
+                targetEl.style.left = `${newX}px`;
+                targetEl.style.top = `${newY}px`;
             }
-
-            // Lógica de arrastar, que agora só executa se isDragging for true
-            const newX = e.clientX - offsetX;
-            const newY = e.clientY - offsetY;
-            targetEl.style.left = `${newX}px`;
-            targetEl.style.top = `${newY}px`;
         };
 
         const onMouseUp = () => {
+            // Limpa o timer em qualquer caso (seja um clique ou o fim de um arraste)
+            clearTimeout(pressTimer);
             document.removeEventListener('mousemove', onMouseMove);
             
             if (isDragging) {
@@ -225,8 +214,7 @@ export class DesktopInteractions extends BaseInteractions {
                     options.onDragEnd(targetEl);
                 }
             }
-
-            // Reseta o estado de 'isDragging' de forma segura após o evento
+            
             setTimeout(() => {
                 this.so.state.ui.isDragging = false;
                 isDragging = false;

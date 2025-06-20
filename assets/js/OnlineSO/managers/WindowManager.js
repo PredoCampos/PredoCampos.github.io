@@ -11,7 +11,7 @@ export class WindowManager {
         this.so = soInstance;
         this.config = soInstance.config;
         this.state = soInstance.state;
-        this.animationDuration = 200; // Duração da animação de fade
+        this.animationDuration = 280; // MUDANÇA: Aumentado para uma animação mais suave.
         this.loadIndicator = document.getElementById('app-load-indicator');
     }
 
@@ -65,9 +65,6 @@ export class WindowManager {
         }
     }
 
-    /**
-     * MUDANÇA: Lógica de minimizar refatorada para ser mais robusta.
-     */
     minimize(appName) {
         const app = this.state.windows.abertas.get(appName);
         if (!app || app.status === 'loading' || app.minimized || app.isAnimating) return;
@@ -75,7 +72,6 @@ export class WindowManager {
         app.isAnimating = true;
         const winEl = app.element;
         
-        // Salva as dimensões atuais ANTES de minimizar, caso não estejam salvas.
         if (!app.maximized) {
             const windowRect = winEl.getBoundingClientRect();
             app.originalRect = {
@@ -87,12 +83,12 @@ export class WindowManager {
         }
 
         winEl.classList.add('window-animated');
-        winEl.classList.add('minimized'); // Inicia a transição de opacidade
+        winEl.classList.add('minimized');
         winEl.classList.remove('focused');
         app.minimized = true;
 
         setTimeout(() => {
-            winEl.style.display = 'none'; // Esconde o elemento após a animação
+            winEl.style.display = 'none';
             winEl.classList.remove('window-animated');
             app.isAnimating = false;
             
@@ -102,9 +98,6 @@ export class WindowManager {
         this.so.taskManager.updateState();
     }
 
-    /**
-     * MUDANÇA: Lógica de restaurar refatorada para evitar animação de movimento.
-     */
     restore(appName) {
         const app = this.state.windows.abertas.get(appName);
         if (!app || app.status === 'loading' || !app.minimized || app.isAnimating) return;
@@ -112,27 +105,22 @@ export class WindowManager {
         app.isAnimating = true;
         const winEl = app.element;
         
-        // Passo 1: Aplica a posição e o tamanho corretos ENQUANTO a janela está invisível.
-        // Isso evita que o navegador tente animar a mudança de posição.
         if (app.maximized) {
             winEl.classList.add('maximized');
         } else if (app.originalRect) {
-            winEl.classList.remove('maximized'); // Garante que não está maximizada
+            winEl.classList.remove('maximized');
             winEl.style.top = app.originalRect.top;
             winEl.style.left = app.originalRect.left;
             winEl.style.width = app.originalRect.width;
             winEl.style.height = app.originalRect.height;
         }
 
-        // Passo 2: Torna a janela visível, mas ainda transparente.
         winEl.style.display = 'flex';
         app.minimized = false;
 
-        // Passo 3: Usa um pequeno timeout para garantir que o navegador processou os estilos acima.
-        // Em seguida, adiciona as classes que acionarão a animação de FADE.
         setTimeout(() => {
             winEl.classList.add('window-animated');
-            winEl.classList.remove('minimized'); // Aciona a transição de opacidade
+            winEl.classList.remove('minimized');
             
             this.focus(appName);
 
@@ -196,7 +184,6 @@ export class WindowManager {
                 winEl.style.height = app.originalRect.height;
             }
         } else {
-            // Salva a posição antes de maximizar
             const windowRect = winEl.getBoundingClientRect();
             app.originalRect = {
                 top: `${windowRect.top}px`,
@@ -205,7 +192,6 @@ export class WindowManager {
                 height: `${windowRect.height}px`
             };
             
-            // Remove estilos inline para que a classe .maximized assuma
             winEl.style.top = '';
             winEl.style.left = '';
             winEl.style.width = '';
@@ -225,13 +211,11 @@ export class WindowManager {
         const visibleWindows = openWindows.filter(app => app.status === 'loaded' && !app.minimized);
         
         if (visibleWindows.length > 0) {
-            // Foca na janela de maior z-index
             const topWindow = visibleWindows.reduce((top, current) => {
                 return parseInt(current.element.style.zIndex) > parseInt(top.element.style.zIndex) ? current : top;
             });
             this.focus(topWindow.element.dataset.app);
         } else {
-            // Se não houver janelas visíveis, apenas atualiza a taskbar
             this.so.taskManager.updateState();
         }
     }

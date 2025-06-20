@@ -22,10 +22,10 @@
     flex-direction: column;
 }
 
-/* MUDANÇA: A transição agora é explícita apenas para 'opacity', 
-   garantindo um efeito de "fade" puro, sem animar posição ou tamanho. */
+/* MUDANÇA: A transição agora inclui as propriedades de dimensão e posição,
+   restaurando a animação de maximizar/restaurar, mas de forma segura. */
 .window-animated {
-    transition: opacity 0.2s ease-in-out;
+    transition: opacity 0.25s ease-in-out, width 0.25s ease-in-out, height 0.25s ease-in-out, top 0.25s ease-in-out, left 0.25s ease-in-out;
 }
 
 .window.dragging {
