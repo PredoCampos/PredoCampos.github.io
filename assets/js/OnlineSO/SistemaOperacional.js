@@ -11,9 +11,10 @@ import { TaskManager } from './managers/TaskManager.js';
 import { AppRunner } from './managers/AppRunner.js';
 import { MenuManager } from './managers/MenuManager.js';
 import { PersistenceManager } from './managers/PersistenceManager.js';
+// MUDANÇA: Importa o novo ClockManager
+import { ClockManager } from './managers/ClockManager.js';
 import { DesktopInteractions } from './interactions/DesktopInteractions.js';
 import { MobileInteractions } from './interactions/MobileInteractions.js';
-// MUDANÇA: Importa a nova fábrica de UI.
 import { UIFactory } from './ui/UIFactory.js';
 
 
@@ -53,18 +54,18 @@ export class SistemaOperacional {
             applyMobileFixes();
         }
 
-        // MUDANÇA: Instancia a fábrica junto com os outros gerenciadores.
         this.uiFactory = new UIFactory();
         this.gridManager = new GridManager(this);
         this.windowManager = new WindowManager(this);
         this.taskManager = new TaskManager(this);
         this.appRunner = new AppRunner(this);
         this.menuManager = new MenuManager(this);
+        // MUDANÇA: Instancia e inicia o ClockManager
+        this.clockManager = new ClockManager(this);
+        this.clockManager.start();
 
         this.gridManager.recalculate();
         this.gridManager.initializeIconPositions();
-
-        this._startClock();
 
         if (this.state.device.isMobile) {
             this.interactions = new MobileInteractions(this);
@@ -85,30 +86,7 @@ export class SistemaOperacional {
         }
     }
 
-    _startClock() {
-        const clockElement = document.querySelector(this.config.selectors.taskbarClock);
-        const dateElement = document.querySelector(this.config.selectors.taskbarData);
-
-        if (!clockElement || !dateElement) {
-            console.warn("Elementos de relógio ou data não encontrados na taskbar.");
-            return;
-        }
-
-        const updateDateTime = () => {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            clockElement.textContent = `${hours}:${minutes}`;
-
-            const day = now.getDate().toString().padStart(2, '0');
-            const month = (now.getMonth() + 1).toString().padStart(2, '0');
-            const year = now.getFullYear();
-            dateElement.textContent = `${day}/${month}/${year}`;
-        };
-
-        updateDateTime();
-        setInterval(updateDateTime, 10000);
-    }
+    // MUDANÇA: O método _startClock() foi removido daqui.
 
     _setupEventListeners() {
         let resizeTimer;
