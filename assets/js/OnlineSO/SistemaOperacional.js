@@ -11,7 +11,6 @@ import { TaskManager } from './managers/TaskManager.js';
 import { AppRunner } from './managers/AppRunner.js';
 import { MenuManager } from './managers/MenuManager.js';
 import { PersistenceManager } from './managers/PersistenceManager.js';
-// MUDANÇA: Importa o novo ClockManager
 import { ClockManager } from './managers/ClockManager.js';
 import { DesktopInteractions } from './interactions/DesktopInteractions.js';
 import { MobileInteractions } from './interactions/MobileInteractions.js';
@@ -32,7 +31,8 @@ export class SistemaOperacional {
                 ocupado: new Map(),
                 taskbarHeight: 0, margin: 0, cellWidth: 0, cellHeight: 0,
                 startX: 0, startY: 0, cols: 0, rows: 0,
-                width: 0, height: 0, visualizer: null
+                width: 0, height: 0
+                // MUDANÇA: A propriedade 'visualizer' foi removida.
             },
             windows: {
                 abertas: new Map(),
@@ -60,7 +60,6 @@ export class SistemaOperacional {
         this.taskManager = new TaskManager(this);
         this.appRunner = new AppRunner(this);
         this.menuManager = new MenuManager(this);
-        // MUDANÇA: Instancia e inicia o ClockManager
         this.clockManager = new ClockManager(this);
         this.clockManager.start();
 
@@ -85,8 +84,6 @@ export class SistemaOperacional {
             this.state.grid.ocupado = new Map(savedState.iconPositions);
         }
     }
-
-    // MUDANÇA: O método _startClock() foi removido daqui.
 
     _setupEventListeners() {
         let resizeTimer;

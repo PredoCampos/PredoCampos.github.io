@@ -1,7 +1,7 @@
 /**
  * @file GridManager.js
- * @description Gerencia o grid com lógica de células não-quadradas para acomodar
- * nomes de ícones com múltiplas linhas.
+ * @description Gerencia o grid, com a lógica de colisão de ícones
+ * reescrita do zero para ser clara, robusta e fiel às regras de negócio.
  */
 export class GridManager {
     constructor(soInstance) {
@@ -57,10 +57,6 @@ export class GridManager {
     recalculate() {
         this._calculateDimensions();
         this._updateLayoutCSS();
-        if (this.state.grid.visualizer) {
-            this.state.grid.visualizer.remove();
-        }
-        this.createVisualization();
         this.repositionAllIcons();
     }
     
@@ -82,132 +78,173 @@ export class GridManager {
         const targetKey = `${col},${row}`;
         
         if (grid.ocupado.has(targetKey)) {
-            this._moverIconesCascataVerticalNova(col, row, icon);
+            // MUDANÇA: Chama o novo "roteador" de lógica de colisão.
+            this._handleCollision(col, row, icon);
         } else {
             this._placeIconAt(icon, col, row);
         }
     }
     
-    _moverIconesCascataVerticalNova(coluna, linha, iconeMovido) {
-        if (coluna === this.state.grid.cols - 1) {
-            this._aplicarRegraUltimaColuna(coluna, linha, iconeMovido);
+    /**
+     * NOVO: Ponto de entrada que roteia para a lógica de colisão correta
+     * com base na coluna.
+     */
+    _handleCollision(col, row, draggedIcon) {
+        const { grid } = this.state;
+        const isLastColumn = col === grid.cols - 1;
+
+        if (isLastColumn) {
+            this._handleLastColumnCollision(col, row, draggedIcon);
         } else {
-            this._moverCascataNormal(coluna, linha, iconeMovido);
+            this._handleNormalColumnCollision(col, row, draggedIcon);
         }
     }
 
-    _aplicarRegraUltimaColuna(coluna, linha, iconeMovido) {
-        const ultimaLinha = this.state.grid.rows - 1;
-        
-        if (linha === ultimaLinha && this.state.grid.ocupado.has(`${coluna},${linha}`)) {
-            linha = ultimaLinha - 1; 
-        }
-        
-        const temEspacoVazio = this._verificarEspacoVazio(coluna, linha, ultimaLinha);
-        
-        if (temEspacoVazio) {
-            this._cascataParaBaixo(coluna, linha, iconeMovido);
-        } else {
-            this._empurrarParaCima(coluna, linha, iconeMovido);
+    /**
+     * NOVO: Implementa as Regras 2 e 3 (Efeito Dominó para Baixo com Transbordamento).
+     */
+    _handleNormalColumnCollision(col, row, draggedIcon) {
+        const iconToDisplaceName = this.state.grid.ocupado.get(`${col},${row}`);
+        const iconToDisplace = this._findIconElement(iconToDisplaceName);
+
+        // Coloca o ícone arrastado na posição de destino.
+        this._placeIconAt(draggedIcon, col, row);
+
+        // Inicia o efeito dominó com o ícone que foi deslocado.
+        if (iconToDisplace) {
+            this._rippleDown(col, row + 1, iconToDisplace);
         }
     }
 
-    _cascataParaBaixo(coluna, linha, iconeMovido) {
-        const iconesParaMover = [];
-        for (let l = linha; l < this.state.grid.rows; l++) {
-            const chave = `${coluna},${l}`;
-            if (this.state.grid.ocupado.has(chave)) {
-                const nomeApp = this.state.grid.ocupado.get(chave);
-                const icone = this._findIconElement(nomeApp);
-                if (icone && icone !== iconeMovido) {
-                    iconesParaMover.push({ icone, nomeApp, linhaOriginal: l });
-                }
-            }
+    /**
+     * NOVO: Lógica recursiva de Efeito Dominó para Baixo.
+     */
+    _rippleDown(col, row, iconToMove) {
+        const { grid } = this.state;
+
+        // Condição de parada: Transbordamento de Coluna (Regra 3)
+        if (row >= grid.rows) {
+            this._handleColumnWrap(col + 1, iconToMove);
+            return;
         }
-        
-        iconesParaMover.forEach(item => this.state.grid.ocupado.delete(`${coluna},${item.linhaOriginal}`));
-        
-        this._placeIconAt(iconeMovido, coluna, linha);
 
-        iconesParaMover.forEach((item, index) => {
-            const novaLinha = linha + 1 + index;
-            if (novaLinha < this.state.grid.rows) {
-                this._placeIconAt(item.icone, coluna, novaLinha);
-            }
-        });
-    }
+        const targetKey = `${col},${row}`;
 
-    _empurrarParaCima(coluna, linha, iconeMovido) {
-        const iconeDeslocadoNome = this.state.grid.ocupado.get(`${coluna},${linha}`);
-        if(!iconeDeslocadoNome) {
-             this._placeIconAt(iconeMovido, coluna, linha);
-             return;
+        // Se a célula de destino estiver vazia, a cascata termina.
+        if (!grid.ocupado.has(targetKey)) {
+            this._placeIconAt(iconToMove, col, row);
+            return;
         }
-        const iconeDeslocado = this._findIconElement(iconeDeslocadoNome);
 
-        this._placeIconAt(iconeMovido, coluna, linha);
+        // Se estiver ocupada, continua o efeito dominó.
+        const nextIconToDisplaceName = grid.ocupado.get(targetKey);
+        const nextIconToDisplace = this._findIconElement(nextIconToDisplaceName);
 
-        let novaLinha = linha - 1;
-        if (novaLinha < 0) {
-            this._moverParaColunaAnterior(iconeDeslocado, coluna);
-        } else {
-            if (this.state.grid.ocupado.has(`${coluna},${novaLinha}`)) {
-                 this._empurrarParaCima(coluna, novaLinha, iconeDeslocado);
-            } else {
-                 this._placeIconAt(iconeDeslocado, coluna, novaLinha);
-            }
+        this._placeIconAt(iconToMove, col, row);
+        
+        if (nextIconToDisplace) {
+            this._rippleDown(col, row + 1, nextIconToDisplace);
         }
     }
     
-    _moverParaColunaAnterior(icone, colunaOriginal) {
-        const colunaAnterior = colunaOriginal - 1;
-        if (colunaAnterior < 0) return;
-        
-        let linhaDestino = this.state.grid.rows - 1;
+    /**
+     * NOVO: Lida com a Regra 3 (Transbordamento para a próxima coluna).
+     */
+    _handleColumnWrap(col, iconToMove) {
+        const { grid } = this.state;
 
-        if(this.state.grid.ocupado.has(`${colunaAnterior},${linhaDestino}`)) {
-             this._aplicarRegraUltimaColuna(colunaAnterior, linhaDestino, icone);
+        // Se não houver mais colunas, não faz nada.
+        if (col >= grid.cols) {
+            // Idealmente, encontrar qualquer outro lugar, mas por segurança, paramos.
+            console.warn("Grid cheio, ícone não pode ser reposicionado:", iconToMove.dataset.app);
+            return;
+        }
+
+        // Tenta colocar na primeira linha da nova coluna, iniciando um novo dominó se necessário.
+        this._rippleDown(col, 0, iconToMove);
+    }
+
+    /**
+     * NOVO: Implementa a Regra 4 (Lógica complexa da última coluna).
+     */
+    _handleLastColumnCollision(col, row, draggedIcon) {
+        const { grid } = this.state;
+        const isLastCell = row === grid.rows - 1;
+
+        // Regra 4.1: Caso único da última célula da grade.
+        if (isLastCell) {
+            const iconToDisplaceUp = this._findIconElement(this.state.grid.ocupado.get(`${col},${row-1}`));
+            this._placeIconAt(draggedIcon, col, row - 1);
+            if(iconToDisplaceUp) {
+                this._rippleUp(col, row - 2, iconToDisplaceUp);
+            }
+            return;
+        }
+        
+        // Regra 4.2: Colisões gerais na última coluna.
+        const iconToDisplace = this._findIconElement(this.state.grid.ocupado.get(`${col},${row}`));
+        this._placeIconAt(draggedIcon, col, row);
+
+        // Prioridade para Baixo: Verifica se há espaço abaixo.
+        let hasSpaceBelow = false;
+        for (let r = row + 1; r < grid.rows; r++) {
+            if (!grid.ocupado.has(`${col},${r}`)) {
+                hasSpaceBelow = true;
+                break;
+            }
+        }
+
+        if (hasSpaceBelow) {
+            this._rippleDown(col, row + 1, iconToDisplace);
         } else {
-             this._placeIconAt(icone, colunaAnterior, linhaDestino);
+            // Recurso para Cima: Se não há espaço, empurra para cima.
+            this._rippleUp(col, row - 1, iconToDisplace);
         }
     }
 
-    _moverCascataNormal(coluna, linha, iconeMovido) {
-        const iconesParaMover = [];
-        for (let l = linha; l < this.state.grid.rows; l++) {
-            const chave = `${coluna},${l}`;
-            if (this.state.grid.ocupado.has(chave)) {
-                const nomeApp = this.state.grid.ocupado.get(chave);
-                const icone = this._findIconElement(nomeApp);
-                if (icone && icone !== iconeMovido) {
-                    iconesParaMover.push({ icone, nomeApp });
-                }
-            }
-        }
+    /**
+     * NOVO: Lógica recursiva de Efeito Dominó para Cima.
+     */
+    _rippleUp(col, row, iconToMove) {
+        const { grid } = this.state;
         
-        this.state.grid.ocupado.delete(`${coluna},${linha}`);
-        this._placeIconAt(iconeMovido, coluna, linha);
+        // Condição de parada: Transbordamento Reverso (Regra 4.3)
+        if (row < 0) {
+            this._handleReverseWrap(col - 1, iconToMove);
+            return;
+        }
 
-        let l = linha + 1;
-        let c = coluna;
+        const targetKey = `${col},${row}`;
 
-        for (const item of iconesParaMover) {
-            if (l >= this.state.grid.rows) {
-                l = 0;
-                c++;
-            }
-            if (c >= this.state.grid.cols) break; 
+        if (!grid.ocupado.has(targetKey)) {
+            this._placeIconAt(iconToMove, col, row);
+            return;
+        }
 
-            const chaveDestino = `${c},${l}`;
-            if (this.state.grid.ocupado.has(chaveDestino)) {
-                this._moverCascataNormal(c, l, item.icone);
-            } else {
-                this._placeIconAt(item.icone, c, l);
-            }
-            l++;
+        const nextIconToDisplaceName = grid.ocupado.get(targetKey);
+        const nextIconToDisplace = this._findIconElement(nextIconToDisplaceName);
+        
+        this._placeIconAt(iconToMove, col, row);
+        
+        if (nextIconToDisplace) {
+            this._rippleUp(col, row - 1, nextIconToDisplace);
         }
     }
 
+    /**
+     * NOVO: Lida com a Regra 4.3 (Transbordamento Reverso).
+     */
+    _handleReverseWrap(col, iconToMove) {
+        const { grid } = this.state;
+        if (col < 0) {
+            console.warn("Grid cheio, ícone não pode ser reposicionado:", iconToMove.dataset.app);
+            return;
+        }
+        // Tenta colocar na última linha da coluna anterior, iniciando um dominó para cima se necessário.
+        this._rippleUp(col, grid.rows - 1, iconToMove);
+    }
+    
+    // MÉTODOS AUXILIARES (sem alterações, mas mantidos por serem essenciais)
     _placeIconAt(icon, col, row, isInitializing = false) {
         const key = `${col},${row}`;
         const coords = this._getCoordsFromGridKey(key);
@@ -256,9 +293,8 @@ export class GridManager {
         const availableW = screenW - (gridState.margin * 2);
         const availableH = screenH - gridState.taskbarHeight - (gridState.margin * 2) - safetyMarginBottom;
 
-        // MUDANÇA: Lógica de cálculo para células não-quadradas, com espaçamento vertical mais conservador.
         const idealCellWidth = iconBaseSize + 20;
-        const idealCellHeight = iconBaseSize + 30; // Aumento menor para um espaçamento mais justo
+        const idealCellHeight = iconBaseSize + 30;
 
         gridState.cols = Math.max(1, Math.floor(availableW / idealCellWidth));
         gridState.rows = Math.max(1, Math.floor(availableH / idealCellHeight));
@@ -292,7 +328,6 @@ export class GridManager {
             iconWrapperWidth = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--size-icon-wrapper'));
         }
         
-        // Centraliza o ícone no meio da sua célula de grid
         const x = grid.startX + (col * grid.cellWidth) + (grid.cellWidth - iconWrapperWidth) / 2;
         const y = grid.startY + (row * grid.cellHeight);
         return { x, y };
@@ -308,22 +343,6 @@ export class GridManager {
     _findIconElement(appName) {
         return document.querySelector(`.desktop-icon[data-app="${appName}"]`);
     }
-
-    createVisualization() {
-        const { desktop } = this.config.selectors;
-        const { grid } = this.state;
-        const visualizer = document.createElement('div');
-        visualizer.id = 'grid-visualization';
-        visualizer.style.position = 'absolute';
-        visualizer.style.top = '0';
-        visualizer.style.left = '0';
-        visualizer.style.width = '100%';
-        visualizer.style.height = `calc(100% - ${grid.taskbarHeight}px)`;
-        visualizer.style.pointerEvents = 'none';
-        visualizer.style.zIndex = '1';
-        this.state.grid.visualizer = visualizer;
-        document.querySelector(desktop).appendChild(visualizer);
-    }
     
     _findFirstFreePosition() {
         for (let c = 0; c < this.state.grid.cols; c++) {
@@ -332,14 +351,5 @@ export class GridManager {
             }
         }
         return { col: 0, row: 0 };
-    }
-
-    _verificarEspacoVazio(coluna, linhaInicio, ultimaLinha) {
-        for (let l = linhaInicio; l <= ultimaLinha; l++) {
-            if (!this.state.grid.ocupado.has(`${coluna},${l}`)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
