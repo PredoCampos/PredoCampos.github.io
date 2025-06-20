@@ -1,7 +1,6 @@
 /**
  * @file SistemaOperacional.js
- * @description Classe principal que orquestra todo o sistema operacional,
- * agora integrando o PersistenceManager para carregar o estado salvo.
+ * @description Classe principal que orquestra todo o sistema operacional.
  */
 
 import { STATIC_CONFIG } from './config.js';
@@ -11,17 +10,18 @@ import { WindowManager } from './managers/WindowManager.js';
 import { TaskManager } from './managers/TaskManager.js';
 import { AppRunner } from './managers/AppRunner.js';
 import { MenuManager } from './managers/MenuManager.js';
+import { PersistenceManager } from './managers/PersistenceManager.js';
 import { DesktopInteractions } from './interactions/DesktopInteractions.js';
 import { MobileInteractions } from './interactions/MobileInteractions.js';
-// MUDANÇA: Importa o novo gerenciador de persistência
-import { PersistenceManager } from './managers/PersistenceManager.js';
+// MUDANÇA: Importa a nova fábrica de UI.
+import { UIFactory } from './ui/UIFactory.js';
+
 
 export class SistemaOperacional {
     constructor() {
         /** @type {object} Configurações estáticas do sistema. */
         this.config = STATIC_CONFIG;
 
-        // MUDANÇA: Instancia o novo gerenciador
         this.persistenceManager = new PersistenceManager();
 
         /** @type {object} Armazena o estado dinâmico da aplicação. */
@@ -47,13 +47,14 @@ export class SistemaOperacional {
     }
 
     _initialize() {
-        // MUDANÇA: Carrega o estado salvo ANTES de qualquer outra coisa
         this._loadState();
 
         if (this.state.device.isMobile) {
             applyMobileFixes();
         }
 
+        // MUDANÇA: Instancia a fábrica junto com os outros gerenciadores.
+        this.uiFactory = new UIFactory();
         this.gridManager = new GridManager(this);
         this.windowManager = new WindowManager(this);
         this.taskManager = new TaskManager(this);
@@ -61,7 +62,6 @@ export class SistemaOperacional {
         this.menuManager = new MenuManager(this);
 
         this.gridManager.recalculate();
-        // Esta função agora irá respeitar o estado carregado
         this.gridManager.initializeIconPositions();
 
         this._startClock();
@@ -76,20 +76,13 @@ export class SistemaOperacional {
         this._setupEventListeners();
     }
     
-    /**
-     * MUDANÇA: Novo método para carregar o estado do localStorage.
-     */
     _loadState() {
         const savedState = this.persistenceManager.load();
         if (!savedState) return;
 
-        // Carrega a posição dos ícones, se existir
         if (savedState.iconPositions) {
-            // O estado salvo é um array de [chave, valor], perfeito para criar um novo Map
             this.state.grid.ocupado = new Map(savedState.iconPositions);
         }
-
-        // (No futuro, poderíamos carregar o estado das janelas aqui também)
     }
 
     _startClock() {

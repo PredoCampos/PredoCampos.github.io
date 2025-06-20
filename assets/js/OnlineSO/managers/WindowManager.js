@@ -1,17 +1,18 @@
 /**
  * @file WindowManager.js
- * @description Gerencia o ciclo de vida das janelas, garantindo uma
- * animação de fade puro e estável.
+ * @description Gerencia o ciclo de vida das janelas, agora com suporte a
+ * dimensões personalizadas e posicionamento inteligente.
  */
 import { capitalize } from '../utils.js';
-import { APP_ICONS } from '../config.js';
+// MUDANÇA: Importa as configurações dos apps e ícones.
+import { APP_ICONS, APP_CONFIG } from '../config.js';
 
 export class WindowManager {
     constructor(soInstance) {
         this.so = soInstance;
         this.config = soInstance.config;
         this.state = soInstance.state;
-        this.animationDuration = 280; // MUDANÇA: Aumentado para uma animação mais suave.
+        this.animationDuration = 280;
         this.loadIndicator = document.getElementById('app-load-indicator');
     }
 
@@ -54,6 +55,7 @@ export class WindowManager {
         }, randomDelay);
     }
 
+    // ... (os métodos close, minimize, restore, interact, focus, toggleMaximize, _manageFocusAfterStateChange permanecem os mesmos) ...
     close(appName) {
         const app = this.state.windows.abertas.get(appName);
         if (app && app.status !== 'loading') {
@@ -219,57 +221,90 @@ export class WindowManager {
             this.so.taskManager.updateState();
         }
     }
-
+    
+    /**
+     * MUDANÇA: O método agora usa a UIFactory para criar o elemento da janela
+     * e depois apenas calcula sua posição e tamanho.
+     */
     _createWindowElement(appName) {
         const { selectors } = this.config;
         const { windows: winState } = this.state;
         const container = document.querySelector(selectors.windowsContainer);
         const windowId = `window-${winState.proximoId++}`;
-        const winEl = document.createElement('div');
-        winEl.className = 'window';
-        winEl.id = windowId;
-        winEl.dataset.app = appName;
-        const { x, y, width, height } = this._calculateWindowInitialRect();
+        const iconPath = (APP_ICONS[appName] || APP_ICONS.default).small;
+        
+        // Delega a criação do HTML para a fábrica
+        const winEl = this.so.uiFactory.createWindowElement(appName, iconPath, windowId);
+
+        // Calcula a posição e o tamanho iniciais
+        const { x, y, width, height } = this._calculateWindowInitialRect(appName);
         winEl.style.left = `${x}px`;
         winEl.style.top = `${y}px`;
         winEl.style.width = `${width}px`;
         winEl.style.height = `${height}px`;
-        const iconPath = (APP_ICONS[appName] || APP_ICONS.default).small;
-        winEl.innerHTML = `
-            <div class="window-header">
-                <div class="window-header-title-group">
-                    <img src="${iconPath}" alt="${appName} icon" class="window-header-icon">
-                    <span class="window-title">${capitalize(appName)}</span>
-                </div>
-                <div class="window-controls">
-                    <button class="window-control minimize-btn" aria-label="Minimizar">_</button>
-                    <button class="window-control maximize-btn" aria-label="Maximizar">□</button>
-                    <button class="window-control close-btn" aria-label="Fechar">×</button>
-                </div>
-            </div>
-            <div class="window-content"></div>
-        `;
+
         container.appendChild(winEl);
         return winEl;
     }
 
-    _calculateWindowInitialRect() {
+    /**
+     * MUDANÇA: Método reescrito para usar dimensões personalizadas e implementar
+     * a nova lógica de posicionamento para desktop vs. mobile.
+     * @param {string} appName - O nome do aplicativo sendo aberto.
+     * @returns {{x: number, y: number, width: number, height: number}}
+     */
+    _calculateWindowInitialRect(appName) {
         const { window: winConfig } = this.config;
         const { windows: winState, device, grid } = this.state;
-        let width = winConfig.defaultWidth;
-        let height = winConfig.defaultHeight;
+        
+        // Passo 1: Obter dimensões (customizadas ou padrão)
+        const appSpecificConfig = APP_CONFIG[appName];
+        let width = appSpecificConfig?.defaultWidth || winConfig.defaultWidth;
+        let height = appSpecificConfig?.defaultHeight || winConfig.defaultHeight;
+
+        // Ajusta o tamanho para caber na tela do mobile, se necessário
         if (device.isMobile) {
-            width = Math.min(width, window.innerWidth - 40);
-            height = Math.min(height, window.innerHeight - grid.taskbarHeight - 60);
+            width = Math.min(width, window.innerWidth - 20);
+            height = Math.min(height, window.innerHeight - grid.taskbarHeight - 40);
         }
+        
+        // Passo 2: Calcular a posição com base no dispositivo
         const openWindowsCount = winState.abertas.size;
-        const offset = openWindowsCount * winConfig.offsetIncrement;
-        let x = ((window.innerWidth - width) / 2) + offset;
-        let y = ((window.innerHeight - grid.taskbarHeight - height) / 2) + offset;
-        if (x + width > window.innerWidth || y + height > window.innerHeight - grid.taskbarHeight) {
-            x = device.isMobile ? 20 : 40;
-            y = device.isMobile ? 20 : 40;
+        let x, y;
+
+        if (device.isMobile) {
+            // Lógica de "caminhada" para mobile
+            const startX = (window.innerWidth - width) / 2;
+            const startY = 20;
+            const xIncrement = 30;
+            const yIncrement = 40;
+            
+            if (openWindowsCount === 0) {
+                x = startX;
+                y = startY;
+            } else {
+                y = startY + (openWindowsCount * yIncrement);
+                // Alterna entre esquerda e direita a cada nova janela
+                if (openWindowsCount % 2 === 1) {
+                    x = startX - xIncrement; // Ímpar: Esquerda
+                } else {
+                    x = startX + xIncrement; // Par: Direita
+                }
+            }
+            // Garante que a janela não saia completamente da tela
+            x = Math.max(5, Math.min(x, window.innerWidth - width - 5));
+            y = Math.max(5, Math.min(y, window.innerHeight - height - grid.taskbarHeight - 5));
+
+        } else {
+            // Lógica de "escada" (cascade) para desktop
+            const MAX_CASCADE_STEPS = 8;
+            const cascadeStep = openWindowsCount % MAX_CASCADE_STEPS;
+            const offset = cascadeStep * winConfig.offsetIncrement;
+            
+            x = ((window.innerWidth - width) / 2) + offset;
+            y = ((window.innerHeight - grid.taskbarHeight - height) / 2) + offset;
         }
+        
         return { x, y, width, height };
     }
 }

@@ -18,7 +18,7 @@ export const STATIC_CONFIG = {
         marginPercentage: 0.05,
         marginPercentageMobile: 0.02,
         iconBaseSize: 96,
-        iconBaseSizeMobile: 65, // Valor que você pediu para salvar
+        iconBaseSizeMobile: 65,
     },
 
     // Outras configs
@@ -35,6 +35,30 @@ export const STATIC_CONFIG = {
         menuButton: '#menu-button'
     }
 };
+
+/**
+ * MUDANÇA: Novo objeto para configurações específicas de cada aplicativo.
+ * Permite definir características únicas, como as dimensões padrão.
+ */
+export const APP_CONFIG = {
+    'calculadora': {
+        defaultWidth: 280,
+        defaultHeight: 450,
+        resizable: false
+    },
+    'notas': {
+        defaultWidth: 500,
+        defaultHeight: 400,
+        resizable: true
+    },
+    'cmd': {
+        defaultWidth: 640,
+        defaultHeight: 320,
+        resizable: true
+    },
+    // Aplicativos sem configuração aqui usarão o padrão de STATIC_CONFIG.
+};
+
 
 // Mapa de ícones para ser usado em todo o sistema
 export const APP_ICONS = {
@@ -62,13 +86,12 @@ export const APP_ICONS = {
         large: 'assets/images/so/lixo.png',
         small: 'assets/images/so/lixo-small.png'
     },
-    // NOVOS APLICATIVOS
     'cmd': {
-        large: 'assets/images/so/cmd.png', // Você precisará criar estes ícones
+        large: 'assets/images/so/cmd.png',
         small: 'assets/images/so/cmd-small.png'
     },
     'help': {
-        large: 'assets/images/so/help.png', // Você precisará criar estes ícones
+        large: 'assets/images/so/help.png',
         small: 'assets/images/so/help-small.png'
     },
     'default': {
