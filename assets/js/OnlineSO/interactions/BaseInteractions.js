@@ -57,6 +57,24 @@ export class BaseInteractions {
         throw new Error("O método '_makeWindowInteractive' deve ser implementado pela classe filha.");
     }
 
+    /**
+     * MUDANÇA: Novo método compartilhado para garantir que a janela não saia dos limites da área de trabalho.
+     * @param {HTMLElement} targetEl - O elemento da janela que está sendo arrastado.
+     * @param {number} x - A coordenada X proposta.
+     * @param {number} y - A coordenada Y proposta.
+     * @returns {{x: number, y: number}} As coordenadas corrigidas.
+     */
+    _getConstrainedCoordinates(targetEl, x, y) {
+        const taskbarHeight = this.so.state.grid.taskbarHeight;
+        const maxX = window.innerWidth - targetEl.offsetWidth;
+        const maxY = window.innerHeight - taskbarHeight - targetEl.offsetHeight;
+
+        const constrainedX = Math.max(0, Math.min(x, maxX));
+        const constrainedY = Math.max(0, Math.min(y, maxY));
+        
+        return { x: constrainedX, y: constrainedY };
+    }
+
     // --- Métodos de Interação de Ícones (Comuns) ---
 
     _selectIcon(icon) {

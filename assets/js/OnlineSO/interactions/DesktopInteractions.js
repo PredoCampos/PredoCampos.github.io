@@ -80,7 +80,9 @@ export class DesktopInteractions extends BaseInteractions {
 
         icon.addEventListener('click', (e) => {
             e.stopPropagation();
+            // Somente processa o clique se não estiver em modo de arrastar.
             if (this.so.state.ui.isDragging) return;
+            
             clickCount++;
             if (clickCount === 1) {
                 clickTimer = setTimeout(() => {
@@ -120,7 +122,8 @@ export class DesktopInteractions extends BaseInteractions {
     }
 
     /**
-     * Implementação específica para desktop: usa eventos de mouse.
+     * MUDANÇA: Lógica de arrastar janela agora usa o método da classe base
+     * para restringir o movimento aos limites da tela.
      */
     _makeWindowDraggable(targetEl, handleEl, options = {}) {
         let offsetX, offsetY;
@@ -128,68 +131,102 @@ export class DesktopInteractions extends BaseInteractions {
 
         const onMouseDown = (e) => {
             if (e.button !== 0 || (options.canDrag && !options.canDrag())) return;
+            
             isDragging = true;
             this.so.state.ui.isDragging = true;
             targetEl.classList.add('dragging');
+
             offsetX = e.clientX - targetEl.offsetLeft;
             offsetY = e.clientY - targetEl.offsetTop;
+            
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp, { once: true });
         };
 
         const onMouseMove = (e) => {
             if (!isDragging) return;
-            let newLeft = e.clientX - offsetX;
-            let newTop = e.clientY - offsetY;
-            targetEl.style.left = `${newLeft}px`;
-            targetEl.style.top = `${newTop}px`;
+            
+            const newX = e.clientX - offsetX;
+            const newY = e.clientY - offsetY;
+
+            // Usa o método da classe base para obter as coordenadas corrigidas
+            const constrained = this._getConstrainedCoordinates(targetEl, newX, newY);
+
+            targetEl.style.left = `${constrained.x}px`;
+            targetEl.style.top = `${constrained.y}px`;
         };
 
         const onMouseUp = () => {
             if (!isDragging) return;
+            
             targetEl.classList.remove('dragging');
-            document.removeEventListener('mousemove', onMouseMove);
+            isDragging = false;
+            
             setTimeout(() => {
                 this.so.state.ui.isDragging = false;
-                isDragging = false;
             }, 50);
+            
+            document.removeEventListener('mousemove', onMouseMove);
         };
 
         handleEl.addEventListener('mousedown', onMouseDown);
     }
     
+    /**
+     * MUDANÇA: Lógica de arrastar ícone restaurada para o comportamento original,
+     * mais robusto, que previne o arraste acidental em um clique simples.
+     */
     _makeIconDraggable(targetEl, handleEl, options = {}) {
         let isDragging = false;
         let offsetX, offsetY;
+        let startX, startY;
+        const moveThreshold = 5; // Pixels que o mouse deve mover para iniciar o arraste
 
         const onMouseDown = (e) => {
             if (e.button !== 0) return;
             e.preventDefault();
+
+            startX = e.clientX;
+            startY = e.clientY;
             offsetX = e.clientX - targetEl.offsetLeft;
             offsetY = e.clientY - targetEl.offsetTop;
+
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp, { once: true });
         };
 
         const onMouseMove = (e) => {
             if (!isDragging) {
-                // Inicia o arraste somente após um pequeno movimento
-                isDragging = true;
-                this.so.state.ui.isDragging = true;
-                targetEl.classList.add('dragging');
+                const deltaX = Math.abs(e.clientX - startX);
+                const deltaY = Math.abs(e.clientY - startY);
+                // Só inicia o arraste se o mouse se mover mais que o threshold
+                if (deltaX > moveThreshold || deltaY > moveThreshold) {
+                    isDragging = true;
+                    this.so.state.ui.isDragging = true;
+                    targetEl.classList.add('dragging');
+                } else {
+                    return; // Não faz nada se não atingiu o threshold
+                }
             }
-            targetEl.style.left = `${e.clientX - offsetX}px`;
-            targetEl.style.top = `${e.clientY - offsetY}px`;
+
+            // Lógica de arrastar, que agora só executa se isDragging for true
+            const newX = e.clientX - offsetX;
+            const newY = e.clientY - offsetY;
+            targetEl.style.left = `${newX}px`;
+            targetEl.style.top = `${newY}px`;
         };
 
         const onMouseUp = () => {
             document.removeEventListener('mousemove', onMouseMove);
-            targetEl.classList.remove('dragging');
+            
             if (isDragging) {
+                targetEl.classList.remove('dragging');
                 if (options.onDragEnd) {
                     options.onDragEnd(targetEl);
                 }
             }
+
+            // Reseta o estado de 'isDragging' de forma segura após o evento
             setTimeout(() => {
                 this.so.state.ui.isDragging = false;
                 isDragging = false;

@@ -22,9 +22,10 @@
     flex-direction: column;
 }
 
+/* MUDANÇA: A transição agora é explícita apenas para 'opacity', 
+   garantindo um efeito de "fade" puro, sem animar posição ou tamanho. */
 .window-animated {
-    /* Revertido para a transição 'all' que sabemos que funciona com a lógica antiga */
-    transition: all 0.35s ease-in-out;
+    transition: opacity 0.2s ease-in-out;
 }
 
 .window.dragging {

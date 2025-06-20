@@ -108,6 +108,8 @@ export class MobileInteractions extends BaseInteractions {
         let startPos = null;
 
         icon.addEventListener('touchstart', (e) => {
+            // Apenas registra o início se não estivermos em modo de arrastar de outro evento
+            if (this.so.state.ui.isDragging) return;
             touchStartTime = Date.now();
             if (e.touches.length === 1) {
                 startPos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
@@ -116,12 +118,12 @@ export class MobileInteractions extends BaseInteractions {
 
         icon.addEventListener('touchend', (e) => {
             const touchDuration = Date.now() - touchStartTime;
-            if (e.changedTouches.length === 1 && startPos) {
+            if (e.changedTouches.length === 1 && startPos && !this.so.state.ui.isDragging) {
                 const endPos = { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
                 const deltaX = Math.abs(endPos.x - startPos.x);
                 const deltaY = Math.abs(endPos.y - startPos.y);
 
-                if (touchDuration < 200 && deltaX < 10 && deltaY < 10 && !this.so.state.ui.isDragging) {
+                if (touchDuration < 200 && deltaX < 10 && deltaY < 10) {
                     e.preventDefault();
                     if (this.contextMenu) this.contextMenu.classList.add('hidden');
                     this._selectIcon(icon);
@@ -163,7 +165,8 @@ export class MobileInteractions extends BaseInteractions {
     }
     
     /**
-     * Implementação específica para mobile: usa eventos de toque.
+     * MUDANÇA: Lógica de arrastar janela agora usa o método da classe base
+     * para restringir o movimento aos limites da tela.
      */
     _makeWindowDraggable(targetEl, handleEl, options = {}) {
         let offsetX, offsetY;
@@ -171,6 +174,9 @@ export class MobileInteractions extends BaseInteractions {
 
         const onTouchStart = (e) => {
             if (e.touches.length !== 1 || (options.canDrag && !options.canDrag())) return;
+            isDragging = true;
+            this.so.state.ui.isDragging = true;
+            targetEl.classList.add('dragging');
             const touch = e.touches[0];
             offsetX = touch.clientX - targetEl.offsetLeft;
             offsetY = touch.clientY - targetEl.offsetTop;
@@ -180,65 +186,98 @@ export class MobileInteractions extends BaseInteractions {
 
         const onTouchMove = (e) => {
             e.preventDefault();
-            if (!isDragging) {
-                isDragging = true;
-                this.so.state.ui.isDragging = true;
-                targetEl.classList.add('dragging');
-            }
+            if (!isDragging) return;
+
             const touch = e.touches[0];
-            let newLeft = touch.clientX - offsetX;
-            let newTop = touch.clientY - offsetY;
-            targetEl.style.left = `${newLeft}px`;
-            targetEl.style.top = `${newTop}px`;
+            const newX = touch.clientX - offsetX;
+            const newY = touch.clientY - offsetY;
+
+            // Usa o método da classe base para obter as coordenadas corrigidas
+            const constrained = this._getConstrainedCoordinates(targetEl, newX, newY);
+
+            targetEl.style.left = `${constrained.x}px`;
+            targetEl.style.top = `${constrained.y}px`;
         };
 
         const onTouchEnd = () => {
-            document.removeEventListener('touchmove', onTouchMove);
-            if (isDragging) targetEl.classList.remove('dragging');
+            if (!isDragging) return;
+            targetEl.classList.remove('dragging');
+            isDragging = false;
             setTimeout(() => {
-                isDragging = false;
                 this.so.state.ui.isDragging = false;
             }, 50);
+            document.removeEventListener('touchmove', onTouchMove);
         };
 
         handleEl.addEventListener('touchstart', onTouchStart, { passive: false });
     }
     
+    /**
+     * MUDANÇA: Lógica de arrastar ícone restaurada para o comportamento original,
+     * mais robusto, que diferencia toque de arraste.
+     */
     _makeIconDraggable(targetEl, handleEl, options = {}) {
         let isDragging = false;
         let offsetX, offsetY;
+        let touchStartX, touchStartY;
+        let longPressTimer = null;
+        const moveThreshold = 15; 
+        const longPressDuration = 400;
 
         const onTouchStart = (e) => {
             if (e.touches.length !== 1) return;
+            
             const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
             offsetX = touch.clientX - targetEl.offsetLeft;
             offsetY = touch.clientY - targetEl.offsetTop;
+
             document.addEventListener('touchmove', onTouchMove, { passive: false });
             document.addEventListener('touchend', onTouchEnd, { once: true });
-        };
 
-        const onTouchMove = (e) => {
-            e.preventDefault();
-            if (!isDragging) {
+            longPressTimer = setTimeout(() => {
                 isDragging = true;
                 this.so.state.ui.isDragging = true;
                 targetEl.classList.add('dragging');
                 if (navigator.vibrate) navigator.vibrate(50);
+            }, longPressDuration);
+        };
+
+        const onTouchMove = (e) => {
+            if (longPressTimer) {
+                const deltaX = Math.abs(e.touches[0].clientX - touchStartX);
+                const deltaY = Math.abs(e.touches[0].clientY - touchStartY);
+                if (deltaX > moveThreshold || deltaY > moveThreshold) {
+                    clearTimeout(longPressTimer);
+                    longPressTimer = null;
+                }
             }
-            const touch = e.touches[0];
-            targetEl.style.left = `${touch.clientX - offsetX}px`;
-            targetEl.style.top = `${touch.clientY - offsetY}px`;
+
+            if (isDragging) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const newX = touch.clientX - offsetX;
+                const newY = touch.clientY - offsetY;
+                targetEl.style.left = `${newX}px`;
+                targetEl.style.top = `${newY}px`;
+            }
         };
 
         const onTouchEnd = () => {
+            clearTimeout(longPressTimer);
             document.removeEventListener('touchmove', onTouchMove);
-            targetEl.classList.remove('dragging');
-            if (isDragging && options.onDragEnd) {
-                options.onDragEnd(targetEl);
+            
+            if (isDragging) {
+                targetEl.classList.remove('dragging');
+                if (options.onDragEnd) {
+                    options.onDragEnd(targetEl);
+                }
             }
+
             setTimeout(() => {
-                isDragging = false;
                 this.so.state.ui.isDragging = false;
+                isDragging = false;
             }, 50);
         };
 
