@@ -1,10 +1,9 @@
 /**
  * @file WindowManager.js
- * @description Gerencia o ciclo de vida das janelas, agora com suporte a
- * dimensões personalizadas e posicionamento inteligente.
+ * @description Gerencia o ciclo de vida das janelas, com pré-carregamento
+ * de apps para uma experiência de usuário fluida.
  */
 import { capitalize } from '../utils.js';
-// MUDANÇA: Importa as configurações dos apps e ícones.
 import { APP_ICONS, APP_CONFIG } from '../config.js';
 
 export class WindowManager {
@@ -17,45 +16,52 @@ export class WindowManager {
     }
 
     open(appName) {
-        const existingApp = this.state.windows.abertas.get(appName);
-        if (existingApp) {
+        if (this.state.windows.abertas.has(appName)) {
             this.interact(appName);
             return;
         }
 
         this.state.windows.abertas.set(appName, { status: 'loading' });
-
         if (this.loadIndicator) this.loadIndicator.classList.remove('hidden');
         document.body.classList.add('app-loading');
 
         const randomDelay = Math.random() * (1500 - 500) + 500;
+        
+        const delayPromise = new Promise(resolve => setTimeout(resolve, randomDelay));
+        const appModulePromise = this.so.appRunner.load(appName);
 
-        setTimeout(() => {
-            if (this.loadIndicator) this.loadIndicator.classList.add('hidden');
-            document.body.classList.remove('app-loading');
+        Promise.all([appModulePromise, delayPromise])
+            .then(([appModule, _]) => {
+                if (this.loadIndicator) this.loadIndicator.classList.add('hidden');
+                document.body.classList.remove('app-loading');
 
-            const windowEl = this._createWindowElement(appName);
-            const appData = {
-                id: windowEl.id,
-                element: windowEl,
-                minimized: false,
-                maximized: false,
-                originalRect: null,
-                isAnimating: false,
-                status: 'loaded'
-            };
+                const windowEl = this._createWindowElement(appName);
+                const appData = {
+                    id: windowEl.id,
+                    element: windowEl,
+                    minimized: false,
+                    maximized: false,
+                    originalRect: null,
+                    isAnimating: false,
+                    status: 'loaded'
+                };
 
-            this.state.windows.abertas.set(appName, appData);
-
-            this.so.taskManager.add(appName);
-            this.so.appRunner.run(appName, windowEl.querySelector('.window-content'));
-            this.focus(appName);
-            console.log(`Aplicativo '${appName}' aberto após ${randomDelay.toFixed(0)}ms.`);
-
-        }, randomDelay);
+                this.state.windows.abertas.set(appName, appData);
+                
+                this.so.appRunner.run(appModule, windowEl.querySelector('.window-content'));
+                
+                this.so.taskManager.add(appName);
+                this.focus(appName);
+                console.log(`Aplicativo '${appName}' aberto após ${randomDelay.toFixed(0)}ms.`);
+            })
+            .catch(error => {
+                console.error(`Não foi possível concluir a abertura de '${appName}':`, error);
+                if (this.loadIndicator) this.loadIndicator.classList.add('hidden');
+                document.body.classList.remove('app-loading');
+                this.state.windows.abertas.delete(appName);
+            });
     }
 
-    // ... (os métodos close, minimize, restore, interact, focus, toggleMaximize, _manageFocusAfterStateChange permanecem os mesmos) ...
     close(appName) {
         const app = this.state.windows.abertas.get(appName);
         if (app && app.status !== 'loading') {
@@ -134,17 +140,27 @@ export class WindowManager {
         }, 20); 
     }
     
+    /**
+     * MUDANÇA: Lógica corrigida para lidar corretamente com aplicativos que
+     * ainda não foram abertos.
+     * @param {string} appName 
+     * @returns 
+     */
     interact(appName) {
         const app = this.state.windows.abertas.get(appName);
+
+        // 1. Se o aplicativo não existe no mapa de estado, chama open() para criá-lo.
         if (!app) {
             this.open(appName);
             return;
         }
 
+        // 2. Se o aplicativo já existe, mas está carregando ou animando, não faz nada.
         if (app.status === 'loading' || app.isAnimating) {
             return;
         }
 
+        // 3. Se o aplicativo existe e está estável, interage com ele (minimiza/restaura/foca).
         if (app.minimized) {
             this.restore(appName);
         } else {
@@ -222,10 +238,6 @@ export class WindowManager {
         }
     }
     
-    /**
-     * MUDANÇA: O método agora usa a UIFactory para criar o elemento da janela
-     * e depois apenas calcula sua posição e tamanho.
-     */
     _createWindowElement(appName) {
         const { selectors } = this.config;
         const { windows: winState } = this.state;
@@ -233,10 +245,8 @@ export class WindowManager {
         const windowId = `window-${winState.proximoId++}`;
         const iconPath = (APP_ICONS[appName] || APP_ICONS.default).small;
         
-        // Delega a criação do HTML para a fábrica
         const winEl = this.so.uiFactory.createWindowElement(appName, iconPath, windowId);
 
-        // Calcula a posição e o tamanho iniciais
         const { x, y, width, height } = this._calculateWindowInitialRect(appName);
         winEl.style.left = `${x}px`;
         winEl.style.top = `${y}px`;
@@ -247,62 +257,56 @@ export class WindowManager {
         return winEl;
     }
 
-    /**
-     * MUDANÇA: Método reescrito para usar dimensões personalizadas e implementar
-     * a nova lógica de posicionamento para desktop vs. mobile.
-     * @param {string} appName - O nome do aplicativo sendo aberto.
-     * @returns {{x: number, y: number, width: number, height: number}}
-     */
     _calculateWindowInitialRect(appName) {
         const { window: winConfig } = this.config;
         const { windows: winState, device, grid } = this.state;
         
-        // Passo 1: Obter dimensões (customizadas ou padrão)
         const appSpecificConfig = APP_CONFIG[appName];
         let width = appSpecificConfig?.defaultWidth || winConfig.defaultWidth;
         let height = appSpecificConfig?.defaultHeight || winConfig.defaultHeight;
 
-        // Ajusta o tamanho para caber na tela do mobile, se necessário
         if (device.isMobile) {
             width = Math.min(width, window.innerWidth - 20);
             height = Math.min(height, window.innerHeight - grid.taskbarHeight - 40);
         }
         
-        // Passo 2: Calcular a posição com base no dispositivo
-        const openWindowsCount = winState.abertas.size;
+        const openWindowsIndex = winState.abertas.size - 1; 
         let x, y;
 
         if (device.isMobile) {
-            // Lógica de "caminhada" para mobile
-            const startX = (window.innerWidth - width) / 2;
-            const startY = 20;
-            const xIncrement = 30;
-            const yIncrement = 40;
+            const startY = 15;
+            const yIncrement = 25;
             
-            if (openWindowsCount === 0) {
-                x = startX;
-                y = startY;
-            } else {
-                y = startY + (openWindowsCount * yIncrement);
-                // Alterna entre esquerda e direita a cada nova janela
-                if (openWindowsCount % 2 === 1) {
-                    x = startX - xIncrement; // Ímpar: Esquerda
-                } else {
-                    x = startX + xIncrement; // Par: Direita
-                }
-            }
-            // Garante que a janela não saia completamente da tela
-            x = Math.max(5, Math.min(x, window.innerWidth - width - 5));
-            y = Math.max(5, Math.min(y, window.innerHeight - height - grid.taskbarHeight - 5));
+            x = (window.innerWidth - width) / 2;
+            y = startY + (openWindowsIndex * yIncrement);
+
+            y = Math.min(y, window.innerHeight - height - grid.taskbarHeight - 5);
 
         } else {
-            // Lógica de "escada" (cascade) para desktop
-            const MAX_CASCADE_STEPS = 8;
-            const cascadeStep = openWindowsCount % MAX_CASCADE_STEPS;
-            const offset = cascadeStep * winConfig.offsetIncrement;
-            
-            x = ((window.innerWidth - width) / 2) + offset;
-            y = ((window.innerHeight - grid.taskbarHeight - height) / 2) + offset;
+            if (openWindowsIndex === 0) {
+                x = (window.innerWidth - width) / 2;
+                y = 20;
+            } else {
+                const openWindows = Array.from(winState.abertas.values());
+                const lastWindowApp = openWindows[openWindowsIndex - 1];
+
+                if (lastWindowApp && lastWindowApp.element) {
+                    const lastEl = lastWindowApp.element;
+                    const lastX = parseInt(lastEl.style.left, 10);
+                    const lastY = parseInt(lastEl.style.top, 10);
+                    
+                    x = lastX + winConfig.offsetIncrement;
+                    y = lastY + winConfig.offsetIncrement;
+
+                    if (x + width > window.innerWidth - 20 || y + height > window.innerHeight - grid.taskbarHeight - 20) {
+                        x = 20;
+                        y = 20;
+                    }
+                } else {
+                    x = 20;
+                    y = 20;
+                }
+            }
         }
         
         return { x, y, width, height };

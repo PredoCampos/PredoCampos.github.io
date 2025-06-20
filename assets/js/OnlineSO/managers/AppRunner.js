@@ -1,7 +1,7 @@
 /**
  * @file AppRunner.js
  * @description Lida com o carregamento dinâmico e a execução de aplicativos
- * modulares sob demanda.
+ * modulares sob demanda, agora com carga e execução separadas.
  */
 import { capitalize } from '../utils.js';
 
@@ -11,11 +11,32 @@ export class AppRunner {
     }
 
     /**
-     * Carrega e executa um aplicativo dinamicamente a partir de seu arquivo de módulo.
-     * @param {string} appName - O nome do aplicativo a ser executado.
+     * MUDANÇA: Novo método que apenas carrega o módulo do aplicativo dinamicamente.
+     * Isso permite que o carregamento aconteça em paralelo com outras operações.
+     * @param {string} appName - O nome do aplicativo a ser carregado.
+     * @returns {Promise<object>} Uma promessa que resolve com o módulo do aplicativo.
+     */
+    async load(appName) {
+        try {
+            const appPath = `../apps/${appName}.app.js`;
+            console.log(`Carregando módulo do aplicativo: ${appPath}`);
+            const module = await import(appPath);
+            return module;
+        } catch (error) {
+            console.error(`Falha ao carregar o módulo do aplicativo '${appName}':`, error);
+            // Re-lança o erro para que a promessa seja rejeitada e possa ser tratada pelo chamador.
+            throw error;
+        }
+    }
+
+    /**
+     * MUDANÇA: O método agora recebe um módulo já carregado e o executa.
+     * @param {object} appModule - O módulo do aplicativo já carregado.
      * @param {HTMLElement} contentContainer - O elemento onde o app será renderizado.
      */
-    async run(appName, contentContainer) {
+    run(appModule, contentContainer) {
+        const appName = contentContainer.closest('.window')?.dataset.app || 'desconhecido';
+        
         // Limpa o conteúdo anterior e reseta estilos básicos
         contentContainer.innerHTML = '';
         contentContainer.style.backgroundColor = 'var(--color-win98-grey)';
@@ -24,18 +45,13 @@ export class AppRunner {
         contentContainer.style.padding = '10px';
 
         try {
-            // MUDANÇA: O caminho agora sobe um diretório ('../') para encontrar a pasta 'apps'.
-            const appPath = `../apps/${appName}.app.js`;
-            console.log(`Carregando módulo do aplicativo: ${appPath}`);
-
-            const module = await import(appPath);
-
-            const AppClass = module.default;
+            const AppClass = appModule.default;
             if (!AppClass) {
                 throw new Error(`O arquivo do aplicativo '${appName}' não tem uma exportação padrão (default export).`);
             }
 
-            const appInstance = new AppClass(contentContainer, this.so);
+            // Passa a instância do SO para o construtor do app, se necessário
+            const appInstance = new AppClass(contentContainer, this.so); 
 
             if (typeof appInstance.init === 'function') {
                 appInstance.init();
@@ -44,11 +60,11 @@ export class AppRunner {
             }
 
         } catch (error) {
-            console.error(`Falha ao carregar ou executar o aplicativo '${appName}':`, error);
+            console.error(`Falha ao instanciar ou executar o aplicativo '${appName}':`, error);
             contentContainer.innerHTML = `
                 <div style="padding: 20px; text-align: center;">
                     <h3>Erro ao abrir ${capitalize(appName)}</h3>
-                    <p>Não foi possível carregar o aplicativo.</p>
+                    <p>Não foi possível iniciar o aplicativo.</p>
                     <p style="font-size: 11px; color: #555; margin-top: 15px;">Verifique o console para detalhes técnicos.</p>
                 </div>
             `;
