@@ -19,6 +19,7 @@
 </head>
 <body>
     <main id="app">
+        <input type="file" id="image-input" accept="image/*,image/gif" hidden>
         <div class="container">
             <header class="app-header">
                 <h1>Gerador de Arte ASCII</h1>
@@ -101,7 +102,6 @@
             </div>
             
             <div class="upload-area" id="upload-container">
-                <input type="file" id="image-input" accept="image/*,image/gif" hidden>
                 <label for="image-input" id="image-upload-label" class="upload-label" role="button" aria-label="Carregar uma imagem ou GIF">
                     <span>Clique para carregar uma imagem ou GIF</span>
                 </label>
