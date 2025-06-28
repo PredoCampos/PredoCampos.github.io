@@ -1,21 +1,11 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador de Arte ASCII</title>
+    <!-- O link para o seu arquivo CSS permanece o mesmo -->
     <link rel="stylesheet" href="./index.css">
-<script type="importmap">
-{
-  "imports": {
-    "@google/genai": "https://esm.sh/@google/genai@^1.7.0",
-    "gifuct-js": "https://esm.sh/gifuct-js@2.1.2",
-    "gif.js": "https://esm.sh/gif.js@0.2.0"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 </head>
 <body>
     <main id="app">
@@ -51,8 +41,8 @@
                             <label>Cores e Valores</label>
                             <div class="color-controls">
                                 <input type="color" id="bg-color-picker" value="#000000" title="Escolha a cor de fundo">
-                                <button id="invert-btn" class="button-icon" title="Inverter Cores">&#x21C6;</button>
-                                <button id="invert-chars-btn" class="button-icon" title="Inverter Caracteres">&#x21C5;</button>
+                                <button id="invert-btn" class="button-icon" title="Inverter Cores">⇆</button>
+                                <button id="invert-chars-btn" class="button-icon" title="Inverter Caracteres">⇅</button>
                                 <input type="color" id="fg-color-picker" value="#FFFFFF" title="Escolha a cor dos caracteres">
                             </div>
                         </div>
@@ -91,7 +81,7 @@
                                 <label>Dimensões de Saída</label>
                                 <div class="dimension-controls">
                                     <input type="number" id="download-width-input" min="1" value="800" title="Largura da imagem de saída">
-                                    <button id="aspect-ratio-toggle" class="button-icon locked" title="Manter proporção">&#128279;</button>
+                                    <button id="aspect-ratio-toggle" class="button-icon locked" title="Manter proporção"></button>
                                     <input type="number" id="download-height-input" min="1" value="600" title="Altura da imagem de saída">
                                 </div>
                             </div>
@@ -108,7 +98,16 @@
             </div>
         </div>
     </main>
-    <script type="module" src="./index.tsx"></script>
-<script type="module" src="/index.tsx"></script>
+
+    <!-- === SCRIPTS CARREGADOS DIRETAMENTE === -->
+    <!-- Carrega a biblioteca para LER GIFs de um CDN -->
+    <script src="https://unpkg.com/gifuct-js@2.1.2/dist/gifuct-js.min.js"></script>
+    
+    <!-- Carrega a biblioteca para CRIAR GIFs de um CDN -->
+    <script src="https://jnordberg.github.io/gif.js/dist/gif.js"></script>
+
+    <!-- Carrega o nosso script principal (a versão .js pura) -->
+    <!-- A ORDEM É IMPORTANTE: este arquivo deve vir depois das bibliotecas -->
+    <script src="./index.js"></script>
 </body>
 </html>
