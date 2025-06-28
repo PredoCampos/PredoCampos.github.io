@@ -1,6 +1,0 @@
-{
-  "name": "ASCII Art Generator",
-  "description": "An interactive, client-side tool to convert any image into a downloadable ASCII art image. Adjust resolution and colors in real-time.",
-  "requestFramePermissions": [],
-  "prompt": ""
-}
