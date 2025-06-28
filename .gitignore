@@ -3,3 +3,6 @@
 
 # Pasta version não deve ser rastreada pelo Git
 version/*
+
+# Ignorar a pasta de dependências do Node.js
+node_modules
