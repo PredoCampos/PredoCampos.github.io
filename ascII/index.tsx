@@ -37,7 +37,6 @@ const downloadSizeSlider = document.getElementById('download-size-slider') as HT
 const ALPHA_THRESHOLD = 50;
 let USER_ASCII_CHARS = ['.', '<', '>', '/', '1', '0']; 
 let SORTED_ASCII_CHARS: string[] = [];
-let gifWorkerUrl: string | null = null; // To store the local worker URL
 
 let currentImage: HTMLImageElement | null = null;
 let isGif = false;
@@ -456,19 +455,13 @@ function downloadImage() {
 }
 
 async function downloadGif() {
-    if (!gifWorkerUrl) {
-        console.error("GIF worker script not loaded. Cannot generate GIF.");
-        alert("Erro: Não foi possível carregar o componente de geração de GIF. Por favor, recarregue a página.");
-        return;
-    }
-
     downloadBtn.disabled = true;
     downloadBtnText.textContent = 'Gerando GIF...';
 
     const gif = new (GIF as any)({
         workers: 2,
         quality: 10,
-        workerScript: gifWorkerUrl,
+        workerScript: './gif.worker.js',
         background: bgColorPicker.value,
     });
     
@@ -607,15 +600,6 @@ function toggleAspectRatioLock() {
 }
 
 (async () => {
-    try {
-        const response = await fetch('https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js');
-        const scriptText = await response.text();
-        const blob = new Blob([scriptText], { type: 'application/javascript' });
-        gifWorkerUrl = URL.createObjectURL(blob);
-    } catch (error) {
-        console.error('Failed to pre-load GIF worker:', error);
-    }
-
     SORTED_ASCII_CHARS = await analyzeAndSortChars(USER_ASCII_CHARS);
     charInputElement.value = USER_ASCII_CHARS.join('');
 
