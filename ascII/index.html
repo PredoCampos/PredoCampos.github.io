@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Arte ASCII</title>
+    <link rel="stylesheet" href="index.css">
+<script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.7.0",
+    "gifuct-js": "https://esm.sh/gifuct-js@2.1.2",
+    "gif.js": "https://esm.sh/gif.js@0.2.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <main id="app">
+        <div class="container">
+            <header class="app-header">
+                <h1>Gerador de Arte ASCII</h1>
+                <p class="subtitle">Transforme qualquer imagem ou GIF em arte.</p>
+            </header>
+
+            <div id="content-area" class="content-grid" style="display: none;">
+                <div class="content-panel">
+                    <h2>Original</h2>
+                    <div class="image-preview-box" title="Clique para trocar a imagem">
+                        <img id="image-preview" src="" alt="Pré-visualização da imagem original" />
+                        <div class="image-preview-overlay">
+                            <span>Trocar Imagem</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-panel">
+                    <h2>Arte ASCII</h2>
+                    <div id="controls" class="controls-container">
+                        <div class="control-group">
+                            <label for="resolution-slider">Resolução</label>
+                            <div class="resolution-control">
+                                <input type="range" id="resolution-slider" min="10" max="200" value="100" title="Ajuste a densidade de caracteres">
+                                <input type="number" id="resolution-input" max="200" value="100" title="Valor da resolução">
+                            </div>
+                            <p id="resolution-error" class="control-hint error-message" style="display: none;"></p>
+                        </div>
+                        <div class="control-group">
+                            <label>Cores e Valores</label>
+                            <div class="color-controls">
+                                <input type="color" id="bg-color-picker" value="#000000" title="Escolha a cor de fundo">
+                                <button id="invert-btn" class="button-icon" title="Inverter Cores">&#x21C6;</button>
+                                <button id="invert-chars-btn" class="button-icon" title="Inverter Caracteres">&#x21C5;</button>
+                                <input type="color" id="fg-color-picker" value="#FFFFFF" title="Escolha a cor dos caracteres">
+                            </div>
+                        </div>
+                         <div class="control-group">
+                            <label for="char-input">Conjunto de Caracteres</label>
+                            <input id="char-input" type="text" class="char-input" title="Edite os caracteres. A ordem será definida pela densidade.">
+                            <p class="control-hint">Mínimo de 3 caracteres.</p>
+                        </div>
+                    </div>
+                    <div id="progress-container" class="progress-container" style="display: none;">
+                       <div id="progress-bar" class="progress-bar"></div>
+                    </div>
+                    <div class="output-container">
+                       <canvas id="output-canvas" aria-live="polite"></canvas>
+                    </div>
+                    <details id="advanced-download-wrapper">
+                        <summary>Opções Avançadas de Download</summary>
+                        <div class="download-settings">
+                             <div class="control-group">
+                                <label for="download-size-slider">Qualidade da Saída</label>
+                                <div class="resolution-control">
+                                    <input type="range" id="download-size-slider" min="100" max="3000" value="800" title="Ajuste a dimensão da imagem final">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label for="preset-select">Predefinição de Tamanho</label>
+                                <select id="preset-select" class="preset-select">
+                                    <option value="original">Original</option>
+                                    <option value="1280x720">HD (1280x720)</option>
+                                    <option value="1920x1080">Full HD (1920x1080)</option>
+                                    <option value="3840x2160">4K UHD (3840x2160)</option>
+                                    <option value="custom">Personalizado</option>
+                                </select>
+                            </div>
+                            <div class="control-group">
+                                <label>Dimensões de Saída</label>
+                                <div class="dimension-controls">
+                                    <input type="number" id="download-width-input" min="1" value="800" title="Largura da imagem de saída">
+                                    <button id="aspect-ratio-toggle" class="button-icon locked" title="Manter proporção">&#128279;</button>
+                                    <input type="number" id="download-height-input" min="1" value="600" title="Altura da imagem de saída">
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+                    <button id="download-btn" class="button"><span>Baixar Arte</span></button>
+                </div>
+            </div>
+            
+            <div class="upload-area" id="upload-container">
+                <input type="file" id="image-input" accept="image/*,image/gif" hidden>
+                <label for="image-input" id="image-upload-label" class="upload-label" role="button" aria-label="Carregar uma imagem ou GIF">
+                    <span>Clique para carregar uma imagem ou GIF</span>
+                </label>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="index.tsx"></script>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>
