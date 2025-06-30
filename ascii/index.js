@@ -1,635 +1,475 @@
-// Importa as bibliotecas como módulos ES
-import { parseGIF, decompressFrames } from 'gifuct-js';
-import GIF from 'gif.js';
-
-// DOM element references
-const imageInputElement = document.getElementById('image-input');
-const uploadContainer = document.getElementById('upload-container');
-const imagePreview = document.getElementById('image-preview');
-const imagePreviewBox = document.querySelector('.image-preview-box');
-const contentArea = document.getElementById('content-area');
-
-const outputCanvas = document.getElementById('output-canvas');
-const controlsContainer = document.getElementById('controls');
-const resolutionSlider = document.getElementById('resolution-slider');
-const resolutionInput = document.getElementById('resolution-input');
-const resolutionError = document.getElementById('resolution-error');
-const bgColorPicker = document.getElementById('bg-color-picker');
-const fgColorPicker = document.getElementById('fg-color-picker');
-const charInputElement = document.getElementById('char-input');
-
-const downloadBtn = document.getElementById('download-btn');
-const downloadBtnText = downloadBtn.querySelector('span');
-const invertBtn = document.getElementById('invert-btn');
-const invertCharsBtn = document.getElementById('invert-chars-btn');
-
-const progressContainer = document.getElementById('progress-container');
-const progressBar = document.getElementById('progress-bar');
-
-const presetSelect = document.getElementById('preset-select');
-const downloadWidthInput = document.getElementById('download-width-input');
-const downloadHeightInput = document.getElementById('download-height-input');
-const aspectRatioToggle = document.getElementById('aspect-ratio-toggle');
-const downloadSizeSlider = document.getElementById('download-size-slider');
 
 
-// --- State Variables ---
-const ALPHA_THRESHOLD = 50;
-let USER_ASCII_CHARS = ['.', '<', '>', '/', '1', '0']; 
-let SORTED_ASCII_CHARS = [];
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-let currentImage = null;
-let isGif = false;
-let currentGif = null;
-let parsedFrames = [];
-let asciiFrameData = [];
-let animationTimeoutId = null;
-let currentFrameIndex = 0;
-let currentAsciiData = null; // Store data for single image downloads
+document.addEventListener('DOMContentLoaded', () => {
+    // --- DOM Element Selection ---
+    const fileUploadInput = document.getElementById('file-upload');
+    const imagePreview = document.getElementById('image-preview');
+    const imagePreviewContainer = document.getElementById('image-preview-container');
+    const uploadLabel = document.getElementById('upload-label');
+    const resultsContainer = document.getElementById('results-container');
+    const resultsImagePreview = document.getElementById('results-image-preview');
+    const themeToggleButton = document.getElementById('theme-toggle-button');
+    const filterForm = document.getElementById('filter-form');
+    const asciiArtContainer = document.getElementById('ascii-art-container');
+    const asciiPreview = document.getElementById('ascii-preview');
+    const asciiForm = document.getElementById('ascii-form');
+    const sectionHeaders = document.querySelectorAll('.section-header');
+    const actionsContainer = document.getElementById('actions-container');
+    const copyBtn = document.getElementById('copy-btn');
+    const downloadTxtBtn = document.getElementById('download-txt-btn');
+    const downloadPngBtn = document.getElementById('download-png-btn');
+    const helpBtn = document.getElementById('help-btn');
+    const helpModalOverlay = document.getElementById('help-modal-overlay');
+    const closeModalBtn = document.getElementById('close-modal-btn');
 
-let originalAspectRatio = 1;
-let isAspectRatioLocked = true;
 
-let debounceTimer;
-let charDebounceTimer;
+    const filterControls = {
+        brightness: document.getElementById('brightness'),
+        contrast: document.getElementById('contrast'),
+        saturate: document.getElementById('saturate'),
+        'hue-rotate': document.getElementById('hue-rotate'),
+        grayscale: document.getElementById('grayscale'),
+        sepia: document.getElementById('sepia'),
+        'invert-toggle': document.getElementById('invert-toggle'),
+        invert: document.getElementById('invert'),
+        'threshold-toggle': document.getElementById('threshold-toggle'),
+        threshold: document.getElementById('threshold'),
+    };
 
-async function analyzeAndSortChars(chars) {
-    const uniqueChars = [...new Set(chars)];
-    if (uniqueChars.length === 0) return [];
+    const asciiControls = {
+        resolution: document.getElementById('ascii-resolution'),
+        charset: document.getElementById('ascii-charset'),
+        invert: document.getElementById('ascii-invert-toggle'),
+    };
+    
+    // --- Initial State & Defaults ---
+    const defaultFilters = {
+        brightness: 100,
+        contrast: 100,
+        saturate: 100,
+        'hue-rotate': 0,
+        grayscale: 0,
+        sepia: 0,
+        'invert-toggle': false,
+        invert: 100,
+        'threshold-toggle': false,
+        threshold: 50,
+    };
 
+    const defaultAsciiSettings = {
+        resolution: 100,
+        charset: ' .:-=+*#%@',
+        invert: false,
+    };
+
+    // Create a single offscreen canvas for processing
     const canvas = document.createElement('canvas');
-    // Adicionando a otimização sugerida pelo console
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return uniqueChars;
-
-    const charSize = 24;
-    canvas.width = charSize;
-    canvas.height = charSize;
-    ctx.font = `bold ${charSize}px "Roboto Mono", monospace`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    const charDensities = [];
-
-    for (const char of uniqueChars) {
-        ctx.fillStyle = '#000';
-        ctx.fillRect(0, 0, charSize, charSize);
-        ctx.fillStyle = '#fff';
-        ctx.fillText(char, charSize / 2, charSize / 2);
-
-        const imageData = ctx.getImageData(0, 0, charSize, charSize).data;
-        let density = 0;
-        for (let i = 0; i < imageData.length; i += 4) {
-            if (imageData[i] > 0) density++;
-        }
-        charDensities.push({ char, density });
-    }
-
-    charDensities.sort((a, b) => a.density - b.density);
-    return charDensities.map(item => item.char);
-}
-
-function showProgress(show) {
-    progressContainer.style.display = show ? 'flex' : 'none';
-    if (show) progressBar.style.width = '0%';
-}
-
-function updateProgress(percentage) {
-    progressBar.style.width = `${percentage}%`;
-}
-
-function generateAsciiFrameData(imageDataSource) {
-    if (SORTED_ASCII_CHARS.length === 0) return null;
-
-    const resolution = parseInt(resolutionSlider.value, 10);
-    const sourceWidth = imageDataSource.width;
-    const sourceHeight = imageDataSource.height;
-
-    const aspectRatio = sourceWidth / sourceHeight;
-    const numCols = resolution;
-    const numRows = Math.round((numCols / aspectRatio) * 0.55);
-
-    const offscreenCanvas = document.createElement('canvas');
-    offscreenCanvas.width = numCols;
-    offscreenCanvas.height = numRows;
-    const offscreenCtx = offscreenCanvas.getContext('2d', { willReadFrequently: true });
-    if (!offscreenCtx) return null;
-
-    offscreenCtx.drawImage(imageDataSource, 0, 0, numCols, numRows);
-    const currentImageData = offscreenCtx.getImageData(0, 0, numCols, numRows).data;
-
-    const asciiData = [];
-
-    for (let y = 0; y < numRows; y++) {
-        for (let x = 0; x < numCols; x++) {
-            const i = (y * numCols + x) * 4;
-            const r = currentImageData[i];
-            const g = currentImageData[i + 1];
-            const b = currentImageData[i + 2];
-            const a = currentImageData[i + 3];
-
-            let char = '';
-
-            if (a > ALPHA_THRESHOLD) {
-                const brightness = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-                const charIndex = Math.min(SORTED_ASCII_CHARS.length - 1, Math.floor(brightness * SORTED_ASCII_CHARS.length));
-                const calculatedChar = SORTED_ASCII_CHARS[charIndex];
-                if (calculatedChar) char = calculatedChar;
-            }
-            
-            if (char) {
-                asciiData.push({ char, x, y });
-            }
-        }
-    }
-    return { asciiData, numCols, numRows, aspectRatio };
-}
-
-function drawAsciiToCanvas(targetCanvas, frameData, config) {
-    const ctx = targetCanvas.getContext('2d');
-    if (!ctx) return;
     
-    if (!frameData || !frameData.asciiData || !frameData.aspectRatio) {
-        ctx.fillStyle = config.bgColor;
-        ctx.fillRect(0, 0, targetCanvas.width, targetCanvas.height);
-        return;
-    }
+    // --- Core Functions ---
 
-    const { asciiData, numCols, numRows, aspectRatio } = frameData;
-    const { bgColor, fgColor } = config;
-
-    const canvasW = targetCanvas.width;
-    const canvasH = targetCanvas.height;
-
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, canvasW, canvasH);
-    
-    let targetW, targetH;
-    if ((canvasW / canvasH) > aspectRatio) {
-        targetH = canvasH;
-        targetW = canvasH * aspectRatio;
-    } else {
-        targetW = canvasW;
-        targetH = canvasW / aspectRatio;
-    }
-
-    const offsetX = (canvasW - targetW) / 2;
-    const offsetY = (canvasH - targetH) / 2;
-    
-    const cellWidth = targetW / numCols;
-    const cellHeight = targetH / numRows;
-    
-    ctx.font = `bold ${cellHeight}px "Roboto Mono", monospace`;
-    ctx.fillStyle = fgColor;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    for (const item of asciiData) {
-        const drawX = offsetX + item.x * cellWidth + cellWidth / 2;
-        const drawY = offsetY + item.y * cellHeight + cellHeight / 2;
-        ctx.fillText(item.char, drawX, drawY);
-    }
-}
-
-function drawAsciiFrame(frameData) {
-    // Adicionando a otimização sugerida pelo console
-    const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
-    if (!ctx) return;
-    const bgColor = bgColorPicker.value;
-
-    if (!frameData || !frameData.asciiData || !frameData.aspectRatio) {
-        ctx.fillStyle = bgColor;
-        ctx.fillRect(0, 0, outputCanvas.width, outputCanvas.height);
-        return;
-    }
-
-    const { asciiData, numCols, numRows, aspectRatio } = frameData;
-    const fgColor = fgColorPicker.value;
-    
-    const previewContainerWidth = outputCanvas.parentElement?.clientWidth || 800;
-    outputCanvas.width = previewContainerWidth;
-    outputCanvas.height = outputCanvas.width / aspectRatio;
-
-    ctx.fillStyle = bgColor;
-    ctx.fillRect(0, 0, outputCanvas.width, outputCanvas.height);
-    
-    const cellWidth = outputCanvas.width / numCols;
-    const cellHeight = outputCanvas.height / numRows;
-    ctx.font = `bold ${cellHeight}px "Roboto Mono", monospace`;
-    ctx.fillStyle = fgColor;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-
-    for (const item of asciiData) {
-        ctx.fillText(item.char, item.x * cellWidth + cellWidth / 2, item.y * cellHeight + cellHeight / 2);
-    }
-}
-
-function stopAnimation() {
-    if (animationTimeoutId) {
-        clearTimeout(animationTimeoutId);
-        animationTimeoutId = null;
-    }
-}
-
-function playAnimation() {
-    stopAnimation();
-    if (!isGif || asciiFrameData.length === 0) return;
-
-    const frameData = asciiFrameData[currentFrameIndex];
-    
-    if (!frameData) {
-        currentFrameIndex = (currentFrameIndex + 1) % asciiFrameData.length;
-        animationTimeoutId = window.setTimeout(playAnimation, 100);
-        return;
-    }
-
-    drawAsciiFrame(frameData.data);
-    
-    const delay = frameData.delay;
-    currentFrameIndex = (currentFrameIndex + 1) % asciiFrameData.length;
-
-    animationTimeoutId = window.setTimeout(playAnimation, delay);
-}
-
-async function processAllFrames() {
-    stopAnimation();
-    showProgress(true);
-    controlsContainer.setAttribute('disabled', 'true');
-    await new Promise(resolve => setTimeout(resolve, 20));
-
-    asciiFrameData = [];
-    const masterCanvas = document.createElement('canvas');
-    // Adicionando a otimização sugerida pelo console
-    const masterCtx = masterCanvas.getContext('2d', { willReadFrequently: true });
-
-    if (!masterCtx || !currentGif) {
-        showProgress(false);
-        controlsContainer.removeAttribute('disabled');
-        console.error("GIF processing error: No GIF data available.");
-        return;
-    }
-
-    const fullWidth = currentGif.lsd.width;
-    const fullHeight = currentGif.lsd.height;
-    masterCanvas.width = fullWidth;
-    masterCanvas.height = fullHeight;
-
-    for (let i = 0; i < parsedFrames.length; i++) {
-        const frame = parsedFrames[i];
-        const { width, height, top, left } = frame.dims;
-
-        const frameImageData = masterCtx.createImageData(width, height);
-        frameImageData.data.set(frame.patch);
+    /**
+     * Dynamically updates the parameters of the SVG 'threshold' filter.
+     * @param {number} level - The threshold level from 0 to 100.
+     */
+    function updateThresholdFilter(level) {
+        const slope = 255; // A large number for a steep, threshold-like transition
+        const intercept = - (level / 100) * slope;
+        const feFuncs = document.querySelectorAll('#threshold feComponentTransfer > *');
         
-        masterCtx.putImageData(frameImageData, left, top);
+        feFuncs.forEach(func => {
+            func.setAttribute('type', 'linear');
+            func.setAttribute('slope', slope);
+            func.setAttribute('intercept', intercept);
+        });
+    }
 
-        const frameGenerationResult = generateAsciiFrameData(masterCanvas);
+    /**
+     * Applies CSS filters to the results image based on current input values.
+     */
+    function applyFilters() {
+        if (!resultsImagePreview) return;
+
+        const isThresholdOn = filterControls['threshold-toggle'].checked;
+
+        let filterParts = [
+            `brightness(${filterControls.brightness.value / 100})`,
+            `contrast(${filterControls.contrast.value / 100})`,
+            `saturate(${filterControls.saturate.value / 100})`,
+            `hue-rotate(${filterControls['hue-rotate'].value}deg)`,
+            `sepia(${filterControls.sepia.value / 100})`,
+        ];
         
-        if (frameGenerationResult) {
-            asciiFrameData.push({ data: frameGenerationResult, delay: frame.delay });
+        // Threshold overrides grayscale
+        if(isThresholdOn) {
+            filterParts.push('grayscale(1)');
         } else {
-             asciiFrameData.push({ data: null, delay: frame.delay });
-        }
-        
-        if (frame.disposalType === 2) {
-            masterCtx.clearRect(left, top, width, height);
+            filterParts.push(`grayscale(${filterControls.grayscale.value / 100})`);
         }
 
-        updateProgress(((i + 1) / parsedFrames.length) * 100);
-        if (i % 5 === 0) await new Promise(resolve => setTimeout(resolve, 0));
+        if (filterControls['invert-toggle'].checked) {
+            filterParts.push(`invert(${filterControls.invert.value}%)`);
+        }
+
+        let svgFilters = '';
+        if (isThresholdOn) {
+            svgFilters += ' url(#threshold)';
+        }
+        
+        resultsImagePreview.style.filter = filterParts.join(' ') + svgFilters;
+    }
+
+    /**
+     * Generates ASCII art from the filtered image preview.
+     */
+    function generateAsciiArt() {
+        if (!resultsImagePreview.src || !ctx || !asciiPreview || resultsImagePreview.naturalWidth === 0) {
+            return;
+        }
+
+        const sourceImage = resultsImagePreview;
+        const width = sourceImage.naturalWidth;
+        const height = sourceImage.naturalHeight;
+
+        const resolution = parseInt(asciiControls.resolution.value, 10);
+        const charMap = asciiControls.charset.value.split('');
+        const invertColors = asciiControls.invert.checked;
+
+        if (charMap.length === 0) {
+            asciiPreview.textContent = 'Please provide characters for the character set.';
+            return;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        ctx.filter = sourceImage.style.filter;
+        ctx.drawImage(sourceImage, 0, 0, width, height);
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+
+        let asciiString = '';
+        const cellWidth = width / resolution;
+        const fontAspectRatio = 0.5;
+        const cellHeight = cellWidth / fontAspectRatio;
+
+        for (let y = 0; y < height; y += cellHeight) {
+            for (let x = 0; x < width; x += cellWidth) {
+                const posX = Math.floor(x);
+                const posY = Math.floor(y);
+                const i = (posY * width + posX) * 4;
+
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const brightness = (r + g + b) / 3;
+
+                let charIndex = Math.floor((brightness / 255) * (charMap.length - 1));
+                if (invertColors) {
+                    charIndex = (charMap.length - 1) - charIndex;
+                }
+                
+                asciiString += charMap[charIndex] || ' ';
+            }
+            asciiString += '\n';
+        }
+
+        asciiPreview.textContent = asciiString;
+    }
+
+
+    /**
+     * Updates the text display for a range slider.
+     * @param {HTMLInputElement} slider - The range input element.
+     */
+    function updateSliderValueText(slider) {
+        const valueDisplay = document.getElementById(`${slider.id}-value`);
+        if (valueDisplay) {
+            const unit = slider.dataset.unit || '';
+            valueDisplay.textContent = slider.value + unit;
+        }
+    }
+
+    /**
+     * Resets all filter controls to their default values and applies them.
+     */
+    function resetAllFilters() {
+        for (const key in defaultFilters) {
+            const control = filterControls[key];
+            if (!control) continue;
+
+            if (control.type === 'checkbox') {
+                control.checked = defaultFilters[key];
+                control.dispatchEvent(new Event('change')); 
+            } else if (control.type === 'range') {
+                control.value = defaultFilters[key];
+                updateSliderValueText(control);
+            }
+        }
+        updateThresholdFilter(defaultFilters.threshold);
+        applyFilters();
+    }
+
+    /**
+     * Resets all ASCII controls to their default values and regenerates art.
+     */
+    function resetAsciiSettings() {
+        asciiControls.resolution.value = defaultAsciiSettings.resolution;
+        asciiControls.charset.value = defaultAsciiSettings.charset;
+        asciiControls.invert.checked = defaultAsciiSettings.invert;
+
+        updateSliderValueText(asciiControls.resolution);
+        generateAsciiArt();
     }
     
-    showProgress(false);
-    controlsContainer.removeAttribute('disabled');
-    currentFrameIndex = 0;
-    playAnimation();
-}
+    /**
+     * Sets up a toggleable filter control (checkbox enables/disables a slider).
+     * @param {string} toggleId - The ID of the checkbox input.
+     * @param {string} sliderId - The ID of the range input.
+     */
+    function setupToggleableFilter(toggleId, sliderId) {
+        const toggle = document.getElementById(toggleId);
+        const slider = document.getElementById(sliderId);
+        if (!toggle || !slider) return;
 
-
-async function generateAsciiArt() {
-    if (!currentImage) return;
-
-    const resolution = parseInt(resolutionInput.value, 10);
-    const minRes = parseInt(resolutionSlider.min, 10);
-    const maxRes = parseInt(resolutionSlider.max, 10);
-
-    if (isNaN(resolution) || resolution < minRes || resolution > maxRes) {
-        resolutionError.textContent = `Resolução deve ser entre ${minRes} e ${maxRes}.`;
-        resolutionError.style.display = 'block';
-        downloadBtn.disabled = true;
-        return;
+        toggle.addEventListener('change', () => {
+            slider.disabled = !toggle.checked;
+            if (toggleId === 'threshold-toggle') {
+                filterControls.grayscale.disabled = toggle.checked;
+            }
+            applyFilters();
+            generateAsciiArt();
+        });
     }
 
-    resolutionError.style.display = 'none';
-    downloadBtn.disabled = false;
 
-    if (isGif) {
-        await processAllFrames();
-    } else {
-        showProgress(true);
-        controlsContainer.setAttribute('disabled', 'true');
-        await new Promise(resolve => setTimeout(resolve, 20));
+    // --- Event Listeners Setup ---
+    
+    // Disable action buttons initially
+    copyBtn.disabled = true;
+    downloadTxtBtn.disabled = true;
+    downloadPngBtn.disabled = true;
 
-        const data = generateAsciiFrameData(currentImage);
-        currentAsciiData = data;
-        
-        updateProgress(50);
-        await new Promise(resolve => setTimeout(resolve, 20));
-        
-        drawAsciiFrame(data);
-        updateProgress(100);
-        
-        showProgress(false);
-        controlsContainer.removeAttribute('disabled');
-    }
-}
+    // Section Collapse/Expand Logic
+    sectionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            const sectionContainer = header.closest('.results-container');
+            if (sectionContainer) {
+                sectionContainer.classList.toggle('collapsed');
+                const button = header.querySelector('.toggle-section-btn');
+                const isCollapsed = sectionContainer.classList.contains('collapsed');
+                button.setAttribute('aria-expanded', !isCollapsed);
+            }
+        });
+    });
+    
 
+    // Image Uploader Logic
+    if (fileUploadInput && imagePreview && imagePreviewContainer && uploadLabel && resultsContainer && resultsImagePreview) {
+        imagePreviewContainer.addEventListener('click', () => fileUploadInput.click());
 
-function handleControlChange() {
-    clearTimeout(debounceTimer);
-    debounceTimer = window.setTimeout(generateAsciiArt, 150);
-}
+        fileUploadInput.addEventListener('change', (event) => {
+            const target = event.target;
+            if (!(target instanceof HTMLInputElement)) return;
 
-function syncResolution(source) {
-    if (source === 'slider') {
-        resolutionInput.value = resolutionSlider.value;
-    } else {
-        const value = parseInt(resolutionInput.value, 10);
-        if (!isNaN(value) && value >= parseInt(resolutionSlider.min) && value <= parseInt(resolutionSlider.max)) {
-            resolutionSlider.value = value.toString();
-        }
-    }
-}
+            const files = target.files;
+            if (files && files.length > 0) {
+                const file = files[0];
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select an image file.');
+                    return;
+                }
 
-function handleImageUpload(event) {
-    stopAnimation();
-    const target = event.target;
-    const file = target.files?.[0];
-    if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const result = e.target?.result;
+                    if (typeof result === 'string') {
+                        imagePreview.src = result;
+                        resultsImagePreview.src = result;
 
-    const reader = new FileReader();
-    isGif = file.type === 'image/gif';
+                        // Use a load event on the preview image to ensure its dimensions are available
+                        resultsImagePreview.onload = () => {
+                            imagePreviewContainer.style.display = 'flex';
+                            uploadLabel.style.display = 'none';
+                            
+                            // Make sure sections are not collapsed when a new image is uploaded
+                            resultsContainer.classList.remove('collapsed');
+                            asciiArtContainer.classList.remove('collapsed');
+                            document.querySelectorAll('.toggle-section-btn').forEach(btn => btn.setAttribute('aria-expanded', 'true'));
 
-    reader.onload = (e) => {
-        uploadContainer.style.display = 'none';
-        contentArea.style.display = 'grid';
-        
-        const img = new Image();
-        img.onload = () => {
-            currentImage = img;
-            originalAspectRatio = img.naturalWidth / img.naturalHeight;
-            
-            downloadWidthInput.value = img.naturalWidth.toString();
-            downloadHeightInput.value = img.naturalHeight.toString();
-            const largerDimension = Math.max(img.naturalWidth, img.naturalHeight);
-            downloadSizeSlider.value = Math.min(largerDimension, parseInt(downloadSizeSlider.max)).toString();
-            presetSelect.value = 'original';
-            isAspectRatioLocked = true;
-            aspectRatioToggle.classList.add('locked');
-            aspectRatioToggle.innerHTML = '🔗'; 
+                            resultsContainer.classList.add('visible');
+                            asciiArtContainer.classList.add('visible');
+                            actionsContainer.classList.add('visible');
 
-            imagePreview.src = img.src;
-            if (isGif) {
-                const bufferReader = new FileReader();
-                bufferReader.onload = (bufEvent) => {
-                    const buffer = bufEvent.target?.result;
-                    currentGif = parseGIF(buffer);
-                    parsedFrames = decompressFrames(currentGif, true);
-                    generateAsciiArt();
+                            copyBtn.disabled = false;
+                            downloadTxtBtn.disabled = false;
+                            downloadPngBtn.disabled = false;
+                            
+                            resetAllFilters();
+                            resetAsciiSettings();
+                            
+                            // Unset the handler to avoid it re-running
+                            resultsImagePreview.onload = null;
+                        };
+                    }
                 };
-                bufferReader.readAsArrayBuffer(file);
-            } else {
-                currentGif = null;
-                parsedFrames = [];
+                reader.readAsDataURL(file);
+            }
+        });
+    } else {
+        console.error('One or more image uploader elements are missing from the DOM.');
+    }
+
+    // Theme Toggler Logic
+    if (themeToggleButton) {
+        themeToggleButton.addEventListener('click', () => {
+            const htmlElement = document.documentElement;
+            htmlElement.classList.toggle('dark-mode');
+            localStorage.setItem('theme', htmlElement.classList.contains('dark-mode') ? 'dark' : 'light');
+        });
+    } else {
+        console.error('Theme toggle button is missing from the DOM.');
+    }
+
+    // Filter Controls Logic
+    if (filterForm) {
+        setupToggleableFilter('invert-toggle', 'invert');
+        setupToggleableFilter('threshold-toggle', 'threshold');
+
+        filterForm.addEventListener('input', (e) => {
+            const target = e.target;
+            if (target instanceof HTMLInputElement && target.type === 'range') {
+                updateSliderValueText(target);
+                if (target.id === 'threshold') {
+                    updateThresholdFilter(target.value);
+                }
+                applyFilters();
                 generateAsciiArt();
             }
-        };
-        img.src = e.target?.result;
-    };
-    reader.readAsDataURL(file);
-}
-
-function downloadImage() {
-    if (!currentAsciiData) return;
-
-    const downloadCanvas = document.createElement('canvas');
-    downloadCanvas.width = parseInt(downloadWidthInput.value, 10) || 800;
-    downloadCanvas.height = parseInt(downloadHeightInput.value, 10) || 600;
-
-    drawAsciiToCanvas(downloadCanvas, currentAsciiData, {
-        bgColor: bgColorPicker.value,
-        fgColor: fgColorPicker.value,
-    });
-    
-    const dataUrl = downloadCanvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.download = 'ascii-art.png';
-    link.href = dataUrl;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
-
-function downloadGif() {
-    downloadBtn.disabled = true;
-    downloadBtnText.textContent = 'Gerando GIF...';
-
-    const gif = new GIF({
-        workers: 2,
-        quality: 10,
-        workerScript: './gif.worker.js',
-        background: bgColorPicker.value,
-    });
-    
-    const downloadCanvas = document.createElement('canvas');
-    downloadCanvas.width = parseInt(downloadWidthInput.value, 10) || 800;
-    downloadCanvas.height = parseInt(downloadHeightInput.value, 10) || 600;
-    // Adicionando a otimização sugerida pelo console
-    const ctx = downloadCanvas.getContext('2d', { willReadFrequently: true });
-
-    for (const frame of asciiFrameData) {
-        drawAsciiToCanvas(downloadCanvas, frame.data, {
-            bgColor: bgColorPicker.value,
-            fgColor: fgColorPicker.value,
         });
 
-        // =================================================================
-        // AQUI ESTÁ A CORREÇÃO CRÍTICA
-        // O algoritmo de quantização de cores (NeuQuant) da biblioteca gif.js
-        // pode travar indefinidamente se receber uma imagem com pouquíssimas
-        // cores (ex: apenas 2). Adicionamos um único pixel de uma cor ligeiramente
-        // diferente para garantir que o algoritmo tenha dados suficientes para processar.
-        // =================================================================
-        if (ctx) {
-            const oldColor = ctx.fillStyle;
-            ctx.fillStyle = '#010101'; // Uma cor sutilmente diferente do preto
-            ctx.fillRect(0, 0, 1, 1);   // Pinta o pixel no canto superior esquerdo
-            ctx.fillStyle = oldColor; // Restaura a cor original para não afetar nada
-        }
+        filterForm.addEventListener('reset', (e) => {
+            e.preventDefault();
+            resetAllFilters();
+            generateAsciiArt();
+        });
 
-        gif.addFrame(downloadCanvas, { copy: true, delay: frame.delay });
-    }
-
-    gif.on('finished', (blob) => {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.download = 'ascii-art.gif';
-        link.href = url;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-        
-        downloadBtn.disabled = false;
-        downloadBtnText.textContent = 'Baixar Arte';
-    });
-    
-    gif.on('abort', () => {
-        console.error("A geração do GIF foi abortada.");
-        alert("Ocorreu um erro inesperado ao gerar o GIF.");
-        downloadBtn.disabled = false;
-        downloadBtnText.textContent = 'Baixar Arte';
-    });
-
-    gif.render();
-}
-
-function invertColors() {
-    const bg = bgColorPicker.value;
-    const fg = fgColorPicker.value;
-    bgColorPicker.value = fg;
-    fgColorPicker.value = bg;
-    generateAsciiArt();
-}
-
-function invertCharacters() {
-    SORTED_ASCII_CHARS.reverse();
-    generateAsciiArt();
-}
-
-function handleCharInputChange() {
-    clearTimeout(charDebounceTimer);
-    charDebounceTimer = window.setTimeout(async () => {
-        const newChars = charInputElement.value;
-        if (newChars.length < 3) return;
-        
-        USER_ASCII_CHARS = [...new Set(newChars.split(''))];
-        charInputElement.value = USER_ASCII_CHARS.join('');
-
-        controlsContainer.setAttribute('disabled', 'true');
-        SORTED_ASCII_CHARS = await analyzeAndSortChars(USER_ASCII_CHARS);
-        controlsContainer.removeAttribute('disabled');
-        generateAsciiArt();
-    }, 400);
-}
-
-function updateDownloadSlider() {
-    const widthVal = parseInt(downloadWidthInput.value, 10);
-    const heightVal = parseInt(downloadHeightInput.value, 10);
-    if (isNaN(widthVal) || isNaN(heightVal)) return;
-
-    const largerDimension = Math.max(widthVal, heightVal);
-    downloadSizeSlider.value = Math.min(largerDimension, parseInt(downloadSizeSlider.max)).toString();
-}
-
-function handleDimensionChange(source) {
-    if (!isAspectRatioLocked) {
-        presetSelect.value = 'custom';
-        updateDownloadSlider();
-        return;
-    }
-    const widthVal = parseInt(downloadWidthInput.value, 10);
-    const heightVal = parseInt(downloadHeightInput.value, 10);
-
-    if (source === 'width' && widthVal > 0) {
-        downloadHeightInput.value = Math.round(widthVal / originalAspectRatio).toString();
-    } else if (source === 'height' && heightVal > 0) {
-        downloadWidthInput.value = Math.round(heightVal * originalAspectRatio).toString();
-    }
-    presetSelect.value = 'custom';
-    updateDownloadSlider();
-}
-
-function handlePresetChange() {
-    const value = presetSelect.value;
-    if (value === 'custom') {
-        isAspectRatioLocked = false;
-        aspectRatioToggle.classList.toggle('locked', isAspectRatioLocked);
-        aspectRatioToggle.innerHTML = '🔓';
-        return;
-    };
-
-    if (value === 'original' && currentImage) {
-        downloadWidthInput.value = currentImage.naturalWidth.toString();
-        downloadHeightInput.value = currentImage.naturalHeight.toString();
-        if (!isAspectRatioLocked) toggleAspectRatioLock();
+        document.querySelectorAll('#filter-form input[type="range"]').forEach(updateSliderValueText);
+        resetAllFilters();
     } else {
-        const [width, height] = value.split('x');
-        downloadWidthInput.value = width;
-        downloadHeightInput.value = height;
+        console.error('Filter form is missing from the DOM.');
     }
-    updateDownloadSlider();
-}
 
-function handleDownloadSizeChange() {
-    const size = parseInt(downloadSizeSlider.value, 10);
-    let newWidth, newHeight;
+    // ASCII Controls Logic
+    if (asciiForm) {
+        asciiForm.addEventListener('input', (e) => {
+            const target = e.target;
+            if (target instanceof HTMLInputElement && target.type === 'range') {
+                updateSliderValueText(target);
+            }
+            generateAsciiArt();
+        });
 
-    if (originalAspectRatio >= 1) { // Landscape or square
-        newWidth = size;
-        newHeight = Math.round(size / originalAspectRatio);
-    } else { // Portrait
-        newHeight = size;
-        newWidth = Math.round(size * originalAspectRatio);
+        asciiForm.addEventListener('reset', (e) => {
+            e.preventDefault();
+            resetAsciiSettings();
+        });
+
+        updateSliderValueText(asciiControls.resolution);
+    } else {
+        console.error('ASCII form is missing from the DOM.');
     }
-    downloadWidthInput.value = newWidth.toString();
-    downloadHeightInput.value = newHeight.toString();
 
-    if (!isAspectRatioLocked) {
-       toggleAspectRatioLock();
+    // Action Buttons Logic
+    if(copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+            if (!asciiPreview.textContent) return;
+
+            try {
+                await navigator.clipboard.writeText(asciiPreview.textContent);
+                const originalContent = copyBtn.innerHTML;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = originalContent;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                alert('Could not copy text to clipboard.');
+            }
+        });
     }
-    presetSelect.value = 'custom';
-}
 
-function toggleAspectRatioLock() {
-    isAspectRatioLocked = !isAspectRatioLocked;
-    aspectRatioToggle.classList.toggle('locked', isAspectRatioLocked);
-    aspectRatioToggle.innerHTML = isAspectRatioLocked ? '🔗' : '🔓';
-    if (isAspectRatioLocked && currentImage) {
-        handleDimensionChange('width');
+    if(downloadTxtBtn) {
+        downloadTxtBtn.addEventListener('click', () => {
+            if (!asciiPreview.textContent) return;
+
+            const blob = new Blob([asciiPreview.textContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'ascii-art.txt';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        });
     }
-}
 
-// Bloco de inicialização auto-executável e assíncrono
-(async () => {
-    SORTED_ASCII_CHARS = await analyzeAndSortChars(USER_ASCII_CHARS);
-    charInputElement.value = USER_ASCII_CHARS.join('');
+    if(downloadPngBtn) {
+        downloadPngBtn.addEventListener('click', () => {
+            if (!resultsImagePreview.src || resultsImagePreview.naturalWidth === 0) return;
+            
+            const sourceImage = resultsImagePreview;
+            const width = sourceImage.naturalWidth;
+            const height = sourceImage.naturalHeight;
 
-    imageInputElement.addEventListener('change', handleImageUpload);
-    imagePreviewBox.addEventListener('click', () => imageInputElement.click());
+            canvas.width = width;
+            canvas.height = height;
+            ctx.filter = sourceImage.style.filter; // Apply filters
+            ctx.drawImage(sourceImage, 0, 0, width, height); // Draw image
 
-    resolutionSlider.addEventListener('input', () => {
-        syncResolution('slider');
-        handleControlChange();
-    });
-    resolutionInput.addEventListener('input', () => {
-        syncResolution('input');
-        handleControlChange();
-    });
+            const url = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'edited-image.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            ctx.filter = 'none'; // Reset canvas filter
+        });
+    }
 
-    bgColorPicker.addEventListener('input', handleControlChange);
-    fgColorPicker.addEventListener('input', handleControlChange);
-    
-    charInputElement.addEventListener('input', handleCharInputChange);
+    // Help Modal Logic
+    if (helpBtn && helpModalOverlay && closeModalBtn) {
+        const openModal = () => {
+            helpModalOverlay.classList.add('visible');
+            document.body.classList.add('modal-open');
+        };
 
-    downloadBtn.addEventListener('click', () => isGif ? downloadGif() : downloadImage());
-    invertBtn.addEventListener('click', invertColors);
-    invertCharsBtn.addEventListener('click', invertCharacters);
+        const closeModal = () => {
+            helpModalOverlay.classList.remove('visible');
+            document.body.classList.remove('modal-open');
+        };
 
-    downloadWidthInput.addEventListener('input', () => handleDimensionChange('width'));
-    downloadHeightInput.addEventListener('input', () => handleDimensionChange('height'));
-    presetSelect.addEventListener('change', handlePresetChange);
-    aspectRatioToggle.addEventListener('click', toggleAspectRatioLock);
-    downloadSizeSlider.addEventListener('input', handleDownloadSizeChange);
-})();
+        helpBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        helpModalOverlay.addEventListener('click', (e) => {
+            if (e.target === helpModalOverlay) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && helpModalOverlay.classList.contains('visible')) {
+                closeModal();
+            }
+        });
+    } else {
+        console.error('One or more help modal elements are missing from the DOM.');
+    }
+});

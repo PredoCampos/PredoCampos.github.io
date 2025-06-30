@@ -1,116 +1,247 @@
+
+
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador de Arte ASCII</title>
-    
-    <!-- Link para a folha de estilos externa -->
+    <title>ASCII Image Editor</title>
     <link rel="stylesheet" href="index.css">
-
-    <!-- Importmap para gerenciar as dependências do JavaScript -->
-    <script type="importmap">
-    {
-      "imports": {
-        "gifuct-js": "https://esm.sh/gifuct-js@^2.1.2",
-        "gif.js": "https://esm.sh/gif.js@^0.2.0"
-      }
-    }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script>
+        // Apply theme from localStorage immediately to prevent FOUC (Flash of Unstyled Content)
+        (function() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
     </script>
 </head>
 <body>
-    <main id="app">
-        <input type="file" id="image-input" accept="image/*,image/gif" hidden>
-        <div class="container">
-            <header class="app-header">
-                <h1>Gerador de Arte ASCII</h1>
-                <p class="subtitle">Transforme qualquer imagem ou GIF em arte.</p>
-            </header>
+    <!-- Hidden SVG for advanced filter definitions -->
+    <svg style="position: absolute; height: 0; width: 0; overflow: hidden;">
+        <defs>
+             <!-- Filter for Thresholding - properties will be set by JS -->
+            <filter id="threshold">
+                <feComponentTransfer>
+                    <feFuncR type="linear" slope="255" intercept="0"/>
+                    <feFuncG type="linear" slope="255" intercept="0"/>
+                    <feFuncB type="linear" slope="255" intercept="0"/>
+                </feComponentTransfer>
+            </filter>
+        </defs>
+    </svg>
 
-            <div id="content-area" class="content-grid" style="display: none;">
-                <div class="content-panel">
-                    <h2>Original</h2>
-                    <div class="image-preview-box" title="Clique para trocar a imagem">
-                        <img id="image-preview" src="" alt="Pré-visualização da imagem original" />
-                        <div class="image-preview-overlay">
-                            <span>Trocar Imagem</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="content-panel">
-                    <h2>Arte ASCII</h2>
-                    <div id="controls" class="controls-container">
-                        <div class="control-group">
-                            <label for="resolution-slider">Resolução</label>
-                            <div class="resolution-control">
-                                <input type="range" id="resolution-slider" min="10" max="200" value="100" title="Ajuste a densidade de caracteres">
-                                <input type="number" id="resolution-input" max="200" value="100" title="Valor da resolução">
-                            </div>
-                            <p id="resolution-error" class="control-hint error-message" style="display: none;"></p>
-                        </div>
-                        <div class="control-group">
-                            <label>Cores e Valores</label>
-                            <div class="color-controls">
-                                <input type="color" id="bg-color-picker" value="#000000" title="Escolha a cor de fundo">
-                                <button id="invert-btn" class="button-icon" title="Inverter Cores">⇆</button>
-                                <button id="invert-chars-btn" class="button-icon" title="Inverter Caracteres">⇅</button>
-                                <input type="color" id="fg-color-picker" value="#FFFFFF" title="Escolha a cor dos caracteres">
-                            </div>
-                        </div>
-                         <div class="control-group">
-                            <label for="char-input">Conjunto de Caracteres</label>
-                            <input id="char-input" type="text" class="char-input" title="Edite os caracteres. A ordem será definida pela densidade.">
-                            <p class="control-hint">Mínimo de 3 caracteres.</p>
-                        </div>
-                    </div>
-                    <div id="progress-container" class="progress-container" style="display: none;">
-                       <div id="progress-bar" class="progress-bar"></div>
-                    </div>
-                    <div class="output-container">
-                       <canvas id="output-canvas" aria-live="polite"></canvas>
-                    </div>
-                    <details id="advanced-download-wrapper">
-                        <summary>Opções Avançadas de Download</summary>
-                        <div class="download-settings">
-                             <div class="control-group">
-                                <label for="download-size-slider">Qualidade da Saída</label>
-                                <div class="resolution-control">
-                                    <input type="range" id="download-size-slider" min="100" max="3000" value="800" title="Ajuste a dimensão da imagem final">
-                                </div>
-                            </div>
-                            <div class="control-group">
-                                <label for="preset-select">Predefinição de Tamanho</label>
-                                <select id="preset-select" class="preset-select">
-                                    <option value="original">Original</option>
-                                    <option value="1280x720">HD (1280x720)</option>
-                                    <option value="1920x1080">Full HD (1920x1080)</option>
-                                    <option value="3840x2160">4K UHD (3840x2160)</option>
-                                    <option value="custom">Personalizado</option>
-                                </select>
-                            </div>
-                            <div class="control-group">
-                                <label>Dimensões de Saída</label>
-                                <div class="dimension-controls">
-                                    <input type="number" id="download-width-input" min="1" value="800" title="Largura da imagem de saída">
-                                    <button id="aspect-ratio-toggle" class="button-icon locked" title="Manter proporção"></button>
-                                    <input type="number" id="download-height-input" min="1" value="600" title="Altura da imagem de saída">
-                                </div>
-                            </div>
-                        </div>
-                    </details>
-                    <button id="download-btn" class="button"><span>Baixar Arte</span></button>
-                </div>
-            </div>
-            
-            <div class="upload-area" id="upload-container">
-                <label for="image-input" id="image-upload-label" class="upload-label" role="button" aria-label="Carregar uma imagem ou GIF">
-                    <span>Clique para carregar uma imagem ou GIF</span>
-                </label>
+    <button id="theme-toggle-button" aria-label="Toggle dark mode">
+        <svg class="sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
+            <circle cx="12" cy="12" r="8"></circle>
+        </svg>
+        <svg class="moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+    </button>
+
+    <main id="app-container">
+        <button id="help-btn" aria-label="Open help guide">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M4.25 5.5a.75.75 0 0 0-1.5 0v.256c0 2.054 1.28 3.82 3.03 4.534.195.082.38.19.54.318a2.5 2.5 0 0 0 .88 3.633c.27.24.63.36.99.36.36 0 .72-.12.99-.36a2.5 2.5 0 0 0 .88-3.633.01.01 0 0 0-.001-.002c.16-.128.345-.236.54-.318C13.47 9.576 14.75 7.804 14.75 5.756V5.5a.75.75 0 0 0-1.5 0v.093c0 1.426-.96 2.64-2.25 3.107a.25.25 0 0 1-.25-.25v-1.7a.25.25 0 0 1 .25-.25h.5a.75.75 0 0 0 0-1.5h-5a.75.75 0 0 0 0 1.5h.5a.25.25 0 0 1 .25.25v1.7c0 .138-.112.25-.25.25C4.21 8.233 3.25 7.019 3.25 5.593V5.5zM8 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+            </svg>
+        </button>
+        <pre id="main-title">
+  ___                       _           _   ___  ___ ___ ___     _       _   
+ |_ _|_ __  __ _ __ _ ___  | |_ ___    /_\ / __|/ __|_ _|_ _|   /_\  _ _| |_ 
+  | || '  \/ _` / _` / -_) |  _/ _ \  / _ \\__ \ (__ | | | |   / _ \| '_|  _|
+ |___|_|_|_\__,_\__, \___|  \__\___/ /_/ \_\___/\___|___|___| /_/ \_\_|  \__|
+                |___/                                                        
+</pre>
+        <p>Upload an image to start editing in real-time.</p>
+        <div class="upload-area">
+            <input type="file" id="file-upload" accept="image/*,image/gif" hidden>
+            <label for="file-upload" id="upload-label" class="upload-label">
+                <span>+</span>
+                <p>Click to upload an image</p>
+            </label>
+            <div id="image-preview-container" class="image-preview-container">
+                <img id="image-preview" src="#" alt="Image preview">
             </div>
         </div>
+
+        <div id="results-container" class="results-container">
+            <div class="section-header">
+                <h2>Image Editor</h2>
+                <button class="toggle-section-btn" aria-expanded="true" aria-controls="filters-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+            </div>
+            <div class="section-content" id="filters-content">
+                <div class="results-preview">
+                    <img id="results-image-preview" src="#" alt="Editable image preview">
+                </div>
+                <div class="results-menu">
+                    <form id="filter-form">
+                        <div class="filter-control">
+                            <label for="brightness">Brightness</label>
+                            <input type="range" id="brightness" min="0" max="200" value="100" data-unit="%">
+                            <span class="filter-value" id="brightness-value">100%</span>
+                        </div>
+                         <div class="filter-control">
+                            <label for="contrast">Contrast</label>
+                            <input type="range" id="contrast" min="0" max="200" value="100" data-unit="%">
+                            <span class="filter-value" id="contrast-value">100%</span>
+                        </div>
+                         <div class="filter-control">
+                            <label for="saturate">Saturation</label>
+                            <input type="range" id="saturate" min="0" max="200" value="100" data-unit="%">
+                            <span class="filter-value" id="saturate-value">100%</span>
+                        </div>
+                         <div class="filter-control">
+                            <label for="hue-rotate">Hue</label>
+                            <input type="range" id="hue-rotate" min="0" max="360" value="0" data-unit="deg">
+                            <span class="filter-value" id="hue-rotate-value">0deg</span>
+                        </div>
+                        <div class="filter-control">
+                            <label for="grayscale">Grayscale</label>
+                            <input type="range" id="grayscale" min="0" max="100" value="0" data-unit="%">
+                            <span class="filter-value" id="grayscale-value">0%</span>
+                        </div>
+                        <div class="filter-control">
+                            <label for="sepia">Sepia</label>
+                            <input type="range" id="sepia" min="0" max="100" value="0" data-unit="%">
+                            <span class="filter-value" id="sepia-value">0%</span>
+                        </div>
+
+                        <hr class="control-divider">
+
+                        <div class="filter-control toggleable">
+                            <div class="label-group">
+                                <input type="checkbox" id="invert-toggle">
+                                <label for="invert-toggle">Invert</label>
+                            </div>
+                            <input type="range" id="invert" min="0" max="100" value="100" data-unit="%" disabled>
+                            <span class="filter-value" id="invert-value">100%</span>
+                        </div>
+                         <div class="filter-control toggleable">
+                            <div class="label-group">
+                                <input type="checkbox" id="threshold-toggle">
+                                <label for="threshold-toggle">Threshold</label>
+                            </div>
+                            <input type="range" id="threshold" min="0" max="100" value="50" data-unit="%" disabled>
+                            <span class="filter-value" id="threshold-value">50%</span>
+                        </div>
+                        
+                        <button type="reset" id="reset-filters-btn">Reset Filters</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div id="ascii-art-container" class="results-container">
+            <div class="section-header">
+                <h2>ASCII Art</h2>
+                <button class="toggle-section-btn" aria-expanded="true" aria-controls="ascii-content">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                </button>
+            </div>
+            <div class="section-content" id="ascii-content">
+                <div class="ascii-preview-wrapper">
+                    <pre id="ascii-preview" aria-live="polite" aria-atomic="true" aria-label="ASCII art preview"></pre>
+                </div>
+                <div class="results-menu">
+                    <p class="ascii-description">Generated from the edited image above.</p>
+                    <form id="ascii-form">
+                        <div class="filter-control">
+                            <label for="ascii-resolution">Resolution</label>
+                            <input type="range" id="ascii-resolution" min="40" max="200" value="100" data-unit="">
+                            <span class="filter-value" id="ascii-resolution-value">100</span>
+                        </div>
+                        <div class="filter-control">
+                            <label for="ascii-charset">Characters</label>
+                            <input type="text" id="ascii-charset" class="ascii-charset-input" value=" .:-=+*#%@">
+                        </div>
+                         <div class="filter-control toggleable">
+                            <div class="label-group">
+                                <input type="checkbox" id="ascii-invert-toggle">
+                                <label for="ascii-invert-toggle">Invert Colors</label>
+                            </div>
+                        </div>
+                        <button type="reset" id="reset-ascii-btn">Reset ASCII</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div id="actions-container" class="actions-container">
+            <button id="copy-btn" class="action-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3z"/>
+                </svg>
+                Copy ASCII
+            </button>
+            <button id="download-txt-btn" class="action-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8.5 6.5a.5.5 0 0 0-1 0v3.793L6.354 9.146a.5.5 0 1 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 10.293V6.5z"/>
+                    <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 1.5L11 3H9.5V1.5z"/>
+                </svg>
+                Download .txt
+            </button>
+            <button id="download-png-btn" class="action-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M.002 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2V3zm1 9v1a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.773a.5.5 0 0 0-.63.062L1.002 12zm5-6.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0z"/>
+                </svg>
+                Download .png
+            </button>
+        </div>
+
     </main>
+
+    <div id="help-modal-overlay" class="modal-overlay">
+        <div id="help-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button id="close-modal-btn" aria-label="Close help guide">&times;</button>
+            <div class="modal-header">
+                <h2 id="modal-title">Guia do Editor de Imagem para Arte ASCII</h2>
+            </div>
+            <div class="modal-content">
+                <p>Este guia apresenta as opções de personalização disponíveis na nossa ferramenta. Explore os ajustes para transformar suas imagens em arte ASCII única.</p>
+
+                <h3>Editor de Imagem (Ajustes Básicos)</h3>
+                <ul>
+                    <li><strong>Brilho:</strong> Ajusta a luminosidade da imagem, tornando-a mais clara ou escura.</li>
+                    <li><strong>Contraste:</strong> Aumenta ou diminui a diferença entre as áreas claras e escuras.</li>
+                    <li><strong>Saturação:</strong> Controla a intensidade das cores. Valores altos deixam as cores mais vibrantes.</li>
+                    <li><strong>Matiz:</strong> Altera a tonalidade geral das cores da imagem.</li>
+                    <li><strong>Escala de Cinza:</strong> Remove as cores da imagem, convertendo-a para tons de cinza.</li>
+                    <li><strong>Sépia:</strong> Aplica um filtro de tom amarronzado, dando um aspecto antigo.</li>
+                </ul>
+
+                <h3>Editor de Imagem (Ajustes Avançados)</h3>
+                <ul>
+                    <li><strong>Inverter:</strong> Inverte todas as cores da imagem.</li>
+                    <li><strong>Limiar (Threshold):</strong> Converte a imagem para apenas duas cores (preto e branco), com base num ponto de corte de luminosidade. Ajuda a criar contornos nítidos.</li>
+                </ul>
+
+                <h3>Configurações da Arte ASCII</h3>
+                <ul>
+                    <li><strong>Resolução:</strong> Controla o nível de detalhe da arte ASCII. Valores mais altos usam mais caracteres para representar a imagem, resultando em maior definição.</li>
+                    <li><strong>Caracteres:</strong> Define o conjunto de caracteres usados para construir a arte. A sequência vai do mais escuro para o mais claro. Experimente diferentes combinações para estilos variados.</li>
+                    <li><strong>Inverter Cores:</strong> Inverte o mapeamento dos caracteres, usando caracteres "claros" para áreas escuras da imagem e vice-versa.</li>
+                </ul>
+
+                <h3>Ações</h3>
+                <ul>
+                    <li><strong>Copiar ASCII:</strong> Copia a arte ASCII gerada para a área de transferência.</li>
+                    <li><strong>Download .txt:</strong> Salva a arte ASCII como um arquivo de texto (.txt).</li>
+                    <li><strong>Download .png:</strong> Salva a imagem com os filtros aplicados como um arquivo de imagem (.png).</li>
+                    <li><strong>Resetar Filtros:</strong> Restaura todas as configurações do "Editor de Imagem" para os valores padrão.</li>
+                    <li><strong>Resetar ASCII:</strong> Restaura todas as "Configurações da Arte ASCII" para os valores padrão.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
     
-    <!-- Carrega o script principal como um módulo -->
     <script type="module" src="index.js"></script>
 </body>
 </html>
