@@ -1,4 +1,3 @@
-
 // gif.worker.js 0.2.0 - https://github.com/jnordberg/gif.js
 (function e(t, n, r) {
     function s(o, u) {
@@ -166,19 +165,25 @@
             }
             return minpos
         };
+        
         GIFEncoder.prototype.getPixels = function() {
             var w = this.width;
             var h = this.height;
-            var image = this.image;
-            if (w != image.width || h != image.height) {
-                var temp = document.createElement("canvas");
-                temp.width = w;
-                temp.height = h;
-                var ctx = temp.getContext("2d");
-                ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, w, h);
-                this.pixels = ctx.getImageData(0, 0, w, h).data
+            var tempPixels = new Uint8Array(w * h * 3);
+            var data = this.pixels; // Original RGBA pixels
+            var src = 0;
+            var dst = 0;
+            for (var i = 0; i < h; i++) {
+                for (var j = 0; j < w; j++) {
+                    tempPixels[dst++] = data[src++]; // R
+                    tempPixels[dst++] = data[src++]; // G
+                    tempPixels[dst++] = data[src++]; // B
+                    src++; // Skip Alpha
+                }
             }
+            this.pixels = tempPixels; // Replace with RGB pixels
         };
+
         GIFEncoder.prototype.writeGraphicCtrlExt = function() {
             this.out.writeByte(33);
             this.out.writeByte(249);
@@ -718,6 +723,8 @@ function colormap() {
     return map
 }
 network = new Array(netsize);
+freq = [];
+bias = [];
 for (var i = 0; i < netsize; i++) {
     network[i] = new Array(4);
     var p = network[i];
@@ -725,8 +732,6 @@ for (var i = 0; i < netsize; i++) {
     freq[i] = intbias / netsize;
     bias[i] = 0
 }
-freq = [];
-bias = [];
 netindex = new Int32Array(256);
 radpower = new Int32Array(netsize);
 this. NeuQuant = NeuQuant
@@ -745,7 +750,15 @@ module.exports = NeuQuant
             encoder.setTransparent(frame.transparent);
             encoder.setDispose(frame.dispose);
             encoder.setProperties(frame.has_alpha, frame.first);
-            encoder.addFrame(frame.data);
+            
+            // =================================================================
+            // AQUI ESTÁ A CORREÇÃO
+            // O objeto 'frame' que o worker recebe já é o objeto ImageData.
+            // A função addFrame espera este objeto inteiro.
+            // A versão anterior passava 'frame.data', o que estava incorreto.
+            // =================================================================
+            encoder.addFrame(frame);
+
             if (frame.last) {
                 encoder.finish()
             }

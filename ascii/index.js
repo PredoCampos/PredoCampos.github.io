@@ -145,7 +145,7 @@ function generateAsciiFrameData(imageDataSource) {
 }
 
 function drawAsciiToCanvas(targetCanvas, frameData, config) {
-    const ctx = targetCanvas.getContext('2d');
+    const ctx = targetCanvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
     
     if (!frameData || !frameData.asciiData || !frameData.aspectRatio) {
@@ -191,7 +191,7 @@ function drawAsciiToCanvas(targetCanvas, frameData, config) {
 }
 
 function drawAsciiFrame(frameData) {
-    const ctx = outputCanvas.getContext('2d');
+    const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
     const bgColor = bgColorPicker.value;
 
@@ -258,7 +258,7 @@ async function processAllFrames() {
 
     asciiFrameData = [];
     const masterCanvas = document.createElement('canvas');
-    const masterCtx = masterCanvas.getContext('2d');
+    const masterCtx = masterCanvas.getContext('2d', { willReadFrequently: true });
 
     if (!masterCtx || !currentGif) {
         showProgress(false);
@@ -432,40 +432,66 @@ async function downloadGif() {
     downloadBtn.disabled = true;
     downloadBtnText.textContent = 'Gerando GIF...';
 
-    const gif = new GIF({
-        workers: 2,
-        quality: 10,
-        workerScript: './gif.worker.js', // O caminho deve estar correto
-        background: bgColorPicker.value,
-    });
-    
-    const downloadCanvas = document.createElement('canvas');
-    downloadCanvas.width = parseInt(downloadWidthInput.value, 10) || 800;
-    downloadCanvas.height = parseInt(downloadHeightInput.value, 10) || 600;
+    let workerUrl = null;
 
-    for (const frame of asciiFrameData) {
-        drawAsciiToCanvas(downloadCanvas, frame.data, {
-            bgColor: bgColorPicker.value,
-            fgColor: fgColorPicker.value,
+    try {
+        // To prevent CORS issues with the worker, we fetch the script as a blob
+        // and create an object URL. This ensures the worker is loaded from the same origin.
+        const response = await fetch('./gif.worker.js');
+        if (!response.ok) {
+            throw new Error(`Failed to fetch worker script: ${response.status} ${response.statusText}`);
+        }
+        const workerScriptBlob = await response.blob();
+        workerUrl = URL.createObjectURL(workerScriptBlob);
+
+        const gif = new GIF({
+            workers: 2,
+            quality: 10,
+            workerScript: workerUrl,
+            background: bgColorPicker.value,
         });
-        gif.addFrame(downloadCanvas, { copy: true, delay: frame.delay });
-    }
-
-    gif.on('finished', (blob) => {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.download = 'ascii-art.gif';
-        link.href = url;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
         
+        const downloadCanvas = document.createElement('canvas');
+        downloadCanvas.width = parseInt(downloadWidthInput.value, 10) || 800;
+        downloadCanvas.height = parseInt(downloadHeightInput.value, 10) || 600;
+
+        for (const frame of asciiFrameData) {
+            drawAsciiToCanvas(downloadCanvas, frame.data, {
+                bgColor: bgColorPicker.value,
+                fgColor: fgColorPicker.value,
+            });
+            gif.addFrame(downloadCanvas, { copy: true, delay: frame.delay });
+        }
+
+        gif.on('finished', (blob) => {
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.download = 'ascii-art.gif';
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            downloadBtn.disabled = false;
+            downloadBtnText.textContent = 'Baixar Arte';
+            
+            if (workerUrl) {
+                URL.revokeObjectURL(workerUrl);
+            }
+        });
+
+        gif.render();
+
+    } catch (error) {
+        console.error('Error during GIF generation:', error);
+        alert('Ocorreu um erro ao gerar o GIF. O script do worker não pôde ser carregado.');
         downloadBtn.disabled = false;
         downloadBtnText.textContent = 'Baixar Arte';
-    });
-
-    gif.render();
+        if (workerUrl) {
+            URL.revokeObjectURL(workerUrl);
+        }
+    }
 }
 
 function invertColors() {
