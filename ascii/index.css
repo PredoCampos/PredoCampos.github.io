@@ -1,5 +1,6 @@
 
 
+
 :root {
     /* Light Theme Variables */
     --bg-color: #f0f2f5;
@@ -448,6 +449,67 @@ input[type="range"]:disabled::-moz-range-thumb {
     cursor: not-allowed;
 }
 
+/* Custom Checkbox Styles */
+.label-group input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.label-group > label {
+    position: relative;
+    padding-left: 30px; /* Space for custom checkbox */
+    cursor: pointer;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: 22px; /* Ensure label height is consistent */
+}
+
+.label-group > label::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--border-color);
+    background-color: var(--upload-area-bg-color);
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.label-group > label::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 50%;
+    width: 6px;
+    height: 12px;
+    border: solid var(--card-bg-color);
+    border-width: 0 3px 3px 0;
+    transform: translateY(-60%) rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.label-group input[type="checkbox"]:checked + label::before {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.label-group input[type="checkbox"]:checked + label::after {
+    opacity: 1;
+}
+
+.label-group input[type="checkbox"]:focus-visible + label::before {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+
 #reset-filters-btn, #reset-ascii-btn {
     background-color: var(--upload-area-bg-color);
     color: var(--card-secondary-fg-color);
@@ -477,7 +539,7 @@ input[type="range"]:disabled::-moz-range-thumb {
     background-color: var(--upload-area-bg-color);
     border-radius: 8px;
     padding: 0.5rem;
-    overflow: auto;
+    overflow: hidden; /* Hide overflow, font size will handle fitting */
     min-height: 300px;
     display: flex;
     justify-content: center;
@@ -492,7 +554,7 @@ input[type="range"]:disabled::-moz-range-thumb {
     white-space: pre;
     color: var(--card-fg-color);
     text-align: center;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, font-size 0.2s ease-out;
 }
 
 .ascii-charset-input {
@@ -509,6 +571,11 @@ input[type="range"]:disabled::-moz-range-thumb {
 
 .ascii-charset-input:focus {
     outline: 1px solid var(--primary-color);
+}
+
+#ascii-form .filter-control.toggleable .label-group {
+    grid-column: 2 / 4;
+    justify-content: flex-start;
 }
 
 /* Action Buttons Section */
@@ -746,5 +813,9 @@ input[type="range"]:disabled::-moz-range-thumb {
 
     .ascii-charset-input {
        grid-column: 1 / -1;
+    }
+
+    #ascii-form .filter-control.toggleable .label-group {
+        grid-column: 1 / -1;
     }
 }

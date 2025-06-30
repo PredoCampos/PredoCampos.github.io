@@ -1,5 +1,6 @@
 
 
+
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0
@@ -131,6 +132,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!resultsImagePreview.src || !ctx || !asciiPreview || resultsImagePreview.naturalWidth === 0) {
             return;
         }
+        
+        const wrapper = asciiPreview.parentElement;
+        if (!wrapper) return;
 
         const sourceImage = resultsImagePreview;
         const width = sourceImage.naturalWidth;
@@ -144,6 +148,17 @@ document.addEventListener('DOMContentLoaded', () => {
             asciiPreview.textContent = 'Please provide characters for the character set.';
             return;
         }
+        
+        // --- Dynamic Font Size Calculation ---
+        // A typical monospace character's width is about 0.6 times its font-size.
+        const charAspectRatio = 0.6; 
+        const wrapperWidth = wrapper.clientWidth;
+        // Calculate the ideal font size to fit the resolution within the wrapper.
+        const dynamicFontSize = wrapperWidth / (resolution * charAspectRatio);
+        // Clamp the font size to prevent it from becoming too small or large.
+        const clampedFontSize = Math.max(1, Math.min(dynamicFontSize, 14));
+        asciiPreview.style.fontSize = `${clampedFontSize}px`;
+        // --- End of Font Size Calculation ---
 
         canvas.width = width;
         canvas.height = height;
@@ -421,26 +436,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if(downloadPngBtn) {
         downloadPngBtn.addEventListener('click', () => {
-            if (!resultsImagePreview.src || resultsImagePreview.naturalWidth === 0) return;
+            if (!asciiPreview.textContent) return;
+
+            // Get styles from the <pre> element to match the output
+            const computedStyle = window.getComputedStyle(asciiPreview);
+            const wrapperStyle = window.getComputedStyle(asciiPreview.parentElement);
             
-            const sourceImage = resultsImagePreview;
-            const width = sourceImage.naturalWidth;
-            const height = sourceImage.naturalHeight;
+            const font = `${computedStyle.fontSize} ${computedStyle.fontFamily}`;
+            const lineHeight = parseFloat(computedStyle.lineHeight) || (parseFloat(computedStyle.fontSize) * 1.2);
+            const textColor = computedStyle.color;
+            const bgColor = wrapperStyle.backgroundColor;
 
-            canvas.width = width;
-            canvas.height = height;
-            ctx.filter = sourceImage.style.filter; // Apply filters
-            ctx.drawImage(sourceImage, 0, 0, width, height); // Draw image
+            const lines = asciiPreview.textContent.split('\n');
 
-            const url = canvas.toDataURL('image/png');
+            // Create a canvas to measure text dimensions accurately
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.font = font;
+
+            // Find the widest line to determine canvas width
+            const maxWidth = Math.max(...lines.map(line => tempCtx.measureText(line).width));
+            
+            // Calculate canvas dimensions, adding some padding for aesthetics
+            const padding = 20;
+            const canvasWidth = maxWidth + padding;
+            const canvasHeight = (lineHeight * lines.length) + padding;
+
+            // Create the main canvas for drawing the PNG
+            const pngCanvas = document.createElement('canvas');
+            pngCanvas.width = canvasWidth;
+            pngCanvas.height = canvasHeight;
+            const pngCtx = pngCanvas.getContext('2d');
+
+            // Fill the background
+            pngCtx.fillStyle = bgColor;
+            pngCtx.fillRect(0, 0, pngCanvas.width, pngCanvas.height);
+            
+            // Set text properties
+            pngCtx.font = font;
+            pngCtx.fillStyle = textColor;
+            pngCtx.textBaseline = 'middle'; // Center text vertically in the line height
+            
+            // Draw each line of text, centered horizontally
+            lines.forEach((line, index) => {
+                const textWidth = pngCtx.measureText(line).width;
+                const x = (canvasWidth - textWidth) / 2;
+                const y = (padding / 2) + (index * lineHeight) + (lineHeight / 2);
+                pngCtx.fillText(line, x, y);
+            });
+
+            // Trigger the download
+            const url = pngCanvas.toDataURL('image/png');
             const link = document.createElement('a');
             link.href = url;
-            link.download = 'edited-image.png';
+            link.download = 'ascii-art.png';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
-            ctx.filter = 'none'; // Reset canvas filter
         });
     }
 
