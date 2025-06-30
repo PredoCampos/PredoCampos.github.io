@@ -1,4 +1,4 @@
-// gif.worker.js 0.2.0 - https://github.com/jnordberg/gif.js
+// gif.worker.js 0.2.0 - Corrigido para conversão de pixels e ordem de inicialização
 (function e(t, n, r) {
     function s(o, u) {
         if (!n[o]) {
@@ -166,22 +166,30 @@
             return minpos
         };
         
+        // =================================================================
+        // AQUI ESTÁ A CORREÇÃO CRÍTICA
+        // Esta função converte manualmente os pixels de RGBA (4 bytes) para
+        // RGB (3 bytes), que é o formato esperado pelo resto da biblioteca.
+        // Isso evita o travamento do processo de download.
+        // =================================================================
         GIFEncoder.prototype.getPixels = function() {
             var w = this.width;
             var h = this.height;
-            var tempPixels = new Uint8Array(w * h * 3);
-            var data = this.pixels; // Original RGBA pixels
-            var src = 0;
-            var dst = 0;
-            for (var i = 0; i < h; i++) {
-                for (var j = 0; j < w; j++) {
-                    tempPixels[dst++] = data[src++]; // R
-                    tempPixels[dst++] = data[src++]; // G
-                    tempPixels[dst++] = data[src++]; // B
-                    src++; // Skip Alpha
-                }
+            var rgbaPixels = this.pixels;
+            var rgbPixels = new Uint8Array(w * h * 3);
+            
+            var rgbaIndex = 0;
+            var rgbIndex = 0;
+            var pixelCount = w * h;
+
+            for (var i = 0; i < pixelCount; i++) {
+                rgbPixels[rgbIndex++] = rgbaPixels[rgbaIndex++]; // R
+                rgbPixels[rgbIndex++] = rgbaPixels[rgbaIndex++]; // G
+                rgbPixels[rgbIndex++] = rgbaPixels[rgbaIndex++]; // B
+                rgbaIndex++; // Skip Alpha
             }
-            this.pixels = tempPixels; // Replace with RGB pixels
+            
+            this.pixels = rgbPixels;
         };
 
         GIFEncoder.prototype.writeGraphicCtrlExt = function() {
@@ -722,9 +730,9 @@ function colormap() {
     }
     return map
 }
-network = new Array(netsize);
 freq = [];
 bias = [];
+network = new Array(netsize);
 for (var i = 0; i < netsize; i++) {
     network[i] = new Array(4);
     var p = network[i];
@@ -751,12 +759,6 @@ module.exports = NeuQuant
             encoder.setDispose(frame.dispose);
             encoder.setProperties(frame.has_alpha, frame.first);
             
-            // =================================================================
-            // AQUI ESTÁ A CORREÇÃO
-            // O objeto 'frame' que o worker recebe já é o objeto ImageData.
-            // A função addFrame espera este objeto inteiro.
-            // A versão anterior passava 'frame.data', o que estava incorreto.
-            // =================================================================
             encoder.addFrame(frame);
 
             if (frame.last) {

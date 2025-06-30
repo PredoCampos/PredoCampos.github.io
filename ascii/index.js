@@ -58,6 +58,7 @@ async function analyzeAndSortChars(chars) {
     if (uniqueChars.length === 0) return [];
 
     const canvas = document.createElement('canvas');
+    // Adicionando a otimização sugerida pelo console
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return uniqueChars;
 
@@ -145,7 +146,7 @@ function generateAsciiFrameData(imageDataSource) {
 }
 
 function drawAsciiToCanvas(targetCanvas, frameData, config) {
-    const ctx = targetCanvas.getContext('2d', { willReadFrequently: true });
+    const ctx = targetCanvas.getContext('2d');
     if (!ctx) return;
     
     if (!frameData || !frameData.asciiData || !frameData.aspectRatio) {
@@ -191,6 +192,7 @@ function drawAsciiToCanvas(targetCanvas, frameData, config) {
 }
 
 function drawAsciiFrame(frameData) {
+    // Adicionando a otimização sugerida pelo console
     const ctx = outputCanvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
     const bgColor = bgColorPicker.value;
@@ -258,6 +260,7 @@ async function processAllFrames() {
 
     asciiFrameData = [];
     const masterCanvas = document.createElement('canvas');
+    // Adicionando a otimização sugerida pelo console
     const masterCtx = masterCanvas.getContext('2d', { willReadFrequently: true });
 
     if (!masterCtx || !currentGif) {
@@ -384,7 +387,7 @@ function handleImageUpload(event) {
             presetSelect.value = 'original';
             isAspectRatioLocked = true;
             aspectRatioToggle.classList.add('locked');
-            aspectRatioToggle.innerHTML = ''; 
+            aspectRatioToggle.innerHTML = '🔗'; 
 
             imagePreview.src = img.src;
             if (isGif) {
@@ -428,70 +431,68 @@ function downloadImage() {
     document.body.removeChild(link);
 }
 
-async function downloadGif() {
+function downloadGif() {
     downloadBtn.disabled = true;
     downloadBtnText.textContent = 'Gerando GIF...';
 
-    let workerUrl = null;
+    const gif = new GIF({
+        workers: 2,
+        quality: 10,
+        workerScript: './gif.worker.js',
+        background: bgColorPicker.value,
+    });
+    
+    const downloadCanvas = document.createElement('canvas');
+    downloadCanvas.width = parseInt(downloadWidthInput.value, 10) || 800;
+    downloadCanvas.height = parseInt(downloadHeightInput.value, 10) || 600;
+    // Adicionando a otimização sugerida pelo console
+    const ctx = downloadCanvas.getContext('2d', { willReadFrequently: true });
 
-    try {
-        // To prevent CORS issues with the worker, we fetch the script as a blob
-        // and create an object URL. This ensures the worker is loaded from the same origin.
-        const response = await fetch('./gif.worker.js');
-        if (!response.ok) {
-            throw new Error(`Failed to fetch worker script: ${response.status} ${response.statusText}`);
-        }
-        const workerScriptBlob = await response.blob();
-        workerUrl = URL.createObjectURL(workerScriptBlob);
-
-        const gif = new GIF({
-            workers: 2,
-            quality: 10,
-            workerScript: workerUrl,
-            background: bgColorPicker.value,
+    for (const frame of asciiFrameData) {
+        drawAsciiToCanvas(downloadCanvas, frame.data, {
+            bgColor: bgColorPicker.value,
+            fgColor: fgColorPicker.value,
         });
+
+        // =================================================================
+        // AQUI ESTÁ A CORREÇÃO CRÍTICA
+        // O algoritmo de quantização de cores (NeuQuant) da biblioteca gif.js
+        // pode travar indefinidamente se receber uma imagem com pouquíssimas
+        // cores (ex: apenas 2). Adicionamos um único pixel de uma cor ligeiramente
+        // diferente para garantir que o algoritmo tenha dados suficientes para processar.
+        // =================================================================
+        if (ctx) {
+            const oldColor = ctx.fillStyle;
+            ctx.fillStyle = '#010101'; // Uma cor sutilmente diferente do preto
+            ctx.fillRect(0, 0, 1, 1);   // Pinta o pixel no canto superior esquerdo
+            ctx.fillStyle = oldColor; // Restaura a cor original para não afetar nada
+        }
+
+        gif.addFrame(downloadCanvas, { copy: true, delay: frame.delay });
+    }
+
+    gif.on('finished', (blob) => {
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.download = 'ascii-art.gif';
+        link.href = url;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
         
-        const downloadCanvas = document.createElement('canvas');
-        downloadCanvas.width = parseInt(downloadWidthInput.value, 10) || 800;
-        downloadCanvas.height = parseInt(downloadHeightInput.value, 10) || 600;
-
-        for (const frame of asciiFrameData) {
-            drawAsciiToCanvas(downloadCanvas, frame.data, {
-                bgColor: bgColorPicker.value,
-                fgColor: fgColorPicker.value,
-            });
-            gif.addFrame(downloadCanvas, { copy: true, delay: frame.delay });
-        }
-
-        gif.on('finished', (blob) => {
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.download = 'ascii-art.gif';
-            link.href = url;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url);
-            
-            downloadBtn.disabled = false;
-            downloadBtnText.textContent = 'Baixar Arte';
-            
-            if (workerUrl) {
-                URL.revokeObjectURL(workerUrl);
-            }
-        });
-
-        gif.render();
-
-    } catch (error) {
-        console.error('Error during GIF generation:', error);
-        alert('Ocorreu um erro ao gerar o GIF. O script do worker não pôde ser carregado.');
         downloadBtn.disabled = false;
         downloadBtnText.textContent = 'Baixar Arte';
-        if (workerUrl) {
-            URL.revokeObjectURL(workerUrl);
-        }
-    }
+    });
+    
+    gif.on('abort', () => {
+        console.error("A geração do GIF foi abortada.");
+        alert("Ocorreu um erro inesperado ao gerar o GIF.");
+        downloadBtn.disabled = false;
+        downloadBtnText.textContent = 'Baixar Arte';
+    });
+
+    gif.render();
 }
 
 function invertColors() {
@@ -518,7 +519,6 @@ function handleCharInputChange() {
 
         controlsContainer.setAttribute('disabled', 'true');
         SORTED_ASCII_CHARS = await analyzeAndSortChars(USER_ASCII_CHARS);
-        // A geração de arte será reativada quando o processamento de caracteres terminar
         controlsContainer.removeAttribute('disabled');
         generateAsciiArt();
     }, 400);
@@ -556,7 +556,7 @@ function handlePresetChange() {
     if (value === 'custom') {
         isAspectRatioLocked = false;
         aspectRatioToggle.classList.toggle('locked', isAspectRatioLocked);
-        aspectRatioToggle.innerHTML = '';
+        aspectRatioToggle.innerHTML = '🔓';
         return;
     };
 
@@ -595,7 +595,7 @@ function handleDownloadSizeChange() {
 function toggleAspectRatioLock() {
     isAspectRatioLocked = !isAspectRatioLocked;
     aspectRatioToggle.classList.toggle('locked', isAspectRatioLocked);
-    aspectRatioToggle.innerHTML = isAspectRatioLocked ? '' : '';
+    aspectRatioToggle.innerHTML = isAspectRatioLocked ? '🔗' : '🔓';
     if (isAspectRatioLocked && currentImage) {
         handleDimensionChange('width');
     }
