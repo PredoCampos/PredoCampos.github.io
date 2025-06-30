@@ -1,4 +1,4 @@
-
+// Importa as bibliotecas como módulos ES
 import { parseGIF, decompressFrames } from 'gifuct-js';
 import GIF from 'gif.js';
 
@@ -97,19 +97,12 @@ function updateProgress(percentage) {
     progressBar.style.width = `${percentage}%`;
 }
 
-/**
- * Processes a single image or frame's pixel data and returns structured ASCII data.
- * @param {CanvasImageSource} imageDataSource - The image or canvas to process.
- * @returns The structured data for drawing.
- */
 function generateAsciiFrameData(imageDataSource) {
     if (SORTED_ASCII_CHARS.length === 0) return null;
 
     const resolution = parseInt(resolutionSlider.value, 10);
-    // Use the source's dimensions, not the potentially different currentImage dimensions
     const sourceWidth = imageDataSource.width;
     const sourceHeight = imageDataSource.height;
-
 
     const aspectRatio = sourceWidth / sourceHeight;
     const numCols = resolution;
@@ -151,11 +144,7 @@ function generateAsciiFrameData(imageDataSource) {
     return { asciiData, numCols, numRows, aspectRatio };
 }
 
-function drawAsciiToCanvas(
-    targetCanvas, 
-    frameData, 
-    config
-) {
+function drawAsciiToCanvas(targetCanvas, frameData, config) {
     const ctx = targetCanvas.getContext('2d');
     if (!ctx) return;
     
@@ -201,11 +190,6 @@ function drawAsciiToCanvas(
     }
 }
 
-
-/**
- * Draws a frame of ASCII art to the preview canvas.
- * @param {object} frameData - The pre-processed data for the frame.
- */
 function drawAsciiFrame(frameData) {
     const ctx = outputCanvas.getContext('2d');
     if (!ctx) return;
@@ -283,7 +267,6 @@ async function processAllFrames() {
         return;
     }
 
-    // Set canvas to the full GIF dimensions from the logical screen descriptor
     const fullWidth = currentGif.lsd.width;
     const fullHeight = currentGif.lsd.height;
     masterCanvas.width = fullWidth;
@@ -293,15 +276,11 @@ async function processAllFrames() {
         const frame = parsedFrames[i];
         const { width, height, top, left } = frame.dims;
 
-        // Create image data for the current frame's patch
         const frameImageData = masterCtx.createImageData(width, height);
         frameImageData.data.set(frame.patch);
         
-        // Draw the patch onto the master canvas at the correct offset
-        // This composites the frames correctly.
         masterCtx.putImageData(frameImageData, left, top);
 
-        // Generate ASCII from the fully composited master canvas. This prevents stretching.
         const frameGenerationResult = generateAsciiFrameData(masterCanvas);
         
         if (frameGenerationResult) {
@@ -310,13 +289,9 @@ async function processAllFrames() {
              asciiFrameData.push({ data: null, delay: frame.delay });
         }
         
-        // After processing the frame, handle its disposal to prepare the canvas for the next frame.
-        // Disposal Type 2: The browser is supposed to clear the area covered by the frame to the background color.
         if (frame.disposalType === 2) {
             masterCtx.clearRect(left, top, width, height);
         }
-        // Note: Disposal type 3 (restore to previous) is not handled as it's rare and complex.
-        // This implementation correctly handles the common cases.
 
         updateProgress(((i + 1) / parsedFrames.length) * 100);
         if (i % 5 === 0) await new Promise(resolve => setTimeout(resolve, 0));
@@ -402,7 +377,6 @@ function handleImageUpload(event) {
             currentImage = img;
             originalAspectRatio = img.naturalWidth / img.naturalHeight;
             
-            // Set default download settings
             downloadWidthInput.value = img.naturalWidth.toString();
             downloadHeightInput.value = img.naturalHeight.toString();
             const largerDimension = Math.max(img.naturalWidth, img.naturalHeight);
@@ -410,7 +384,7 @@ function handleImageUpload(event) {
             presetSelect.value = 'original';
             isAspectRatioLocked = true;
             aspectRatioToggle.classList.add('locked');
-            aspectRatioToggle.innerHTML = '&#128279;'; 
+            aspectRatioToggle.innerHTML = ''; 
 
             imagePreview.src = img.src;
             if (isGif) {
@@ -461,7 +435,7 @@ async function downloadGif() {
     const gif = new GIF({
         workers: 2,
         quality: 10,
-        workerScript: './gif.worker.js',
+        workerScript: './gif.worker.js', // O caminho deve estar correto
         background: bgColorPicker.value,
     });
     
@@ -518,6 +492,7 @@ function handleCharInputChange() {
 
         controlsContainer.setAttribute('disabled', 'true');
         SORTED_ASCII_CHARS = await analyzeAndSortChars(USER_ASCII_CHARS);
+        // A geração de arte será reativada quando o processamento de caracteres terminar
         controlsContainer.removeAttribute('disabled');
         generateAsciiArt();
     }, 400);
@@ -555,13 +530,13 @@ function handlePresetChange() {
     if (value === 'custom') {
         isAspectRatioLocked = false;
         aspectRatioToggle.classList.toggle('locked', isAspectRatioLocked);
-        aspectRatioToggle.innerHTML = '&#128278;';
+        aspectRatioToggle.innerHTML = '';
         return;
     };
 
-    if (value === 'original') {
-        downloadWidthInput.value = currentImage?.naturalWidth.toString() || '800';
-        downloadHeightInput.value = currentImage?.naturalHeight.toString() || '600';
+    if (value === 'original' && currentImage) {
+        downloadWidthInput.value = currentImage.naturalWidth.toString();
+        downloadHeightInput.value = currentImage.naturalHeight.toString();
         if (!isAspectRatioLocked) toggleAspectRatioLock();
     } else {
         const [width, height] = value.split('x');
@@ -594,17 +569,16 @@ function handleDownloadSizeChange() {
 function toggleAspectRatioLock() {
     isAspectRatioLocked = !isAspectRatioLocked;
     aspectRatioToggle.classList.toggle('locked', isAspectRatioLocked);
-    aspectRatioToggle.innerHTML = isAspectRatioLocked ? '&#128279;' : '&#128278;';
+    aspectRatioToggle.innerHTML = isAspectRatioLocked ? '' : '';
     if (isAspectRatioLocked && currentImage) {
         handleDimensionChange('width');
     }
 }
 
+// Bloco de inicialização auto-executável e assíncrono
 (async () => {
-    controlsContainer.setAttribute('disabled', 'true');
     SORTED_ASCII_CHARS = await analyzeAndSortChars(USER_ASCII_CHARS);
     charInputElement.value = USER_ASCII_CHARS.join('');
-    controlsContainer.removeAttribute('disabled');
 
     imageInputElement.addEventListener('change', handleImageUpload);
     imagePreviewBox.addEventListener('click', () => imageInputElement.click());
