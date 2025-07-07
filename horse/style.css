@@ -1,0 +1,73 @@
+/* Configurações globais */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #fdf5e6;
+    color: #000;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Estilo base para todas as bordas */
+.border {
+    position: fixed; /* Fixa as bordas na tela */
+    background-color: #fdf5e6;
+    font-size: 16px;
+    line-height: 1;
+    overflow: hidden; /* Esconde qualquer caractere que transborde */
+    white-space: pre; /* Impede a quebra de linha do texto */
+    z-index: 10;
+}
+
+/* Posicionamento de cada borda para cobrir as laterais de ponta a ponta */
+#top-border {
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1em; /* Altura de um caractere */
+}
+
+#bottom-border {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1em;
+}
+
+#left-border {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 1em; /* Largura de um caractere */
+}
+
+#right-border {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1em;
+}
+
+/* Conteúdo principal, posicionado no espaço vazio deixado pelas bordas */
+#main-content {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    bottom: 1em;
+    left: 1em;
+
+    /* Centraliza a animação */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#animation-container {
+    font-family: inherit; /* Herda a fonte 'Courier New' */
+    font-size: 1rem;
+    line-height: 1.1;
+    text-align: center;
+    color: #483d8b; /* Cor roxa da referência */
+}
