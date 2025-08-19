@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#C0C0C0">
+    <title>Predo Campoz xp</title>
+    <link rel="icon" type="image/png" href="assets/images/windows-icon.png">
+    <link rel="stylesheet" href="assets/css/index.css">
+</head>
+<body>
+
+    <div id="boot-screen">
+        <img src="assets/images/logo-boot.png" alt="Logo" class="boot-logo">
+        <p class="boot-percentage">0%</p>
+        <div class="boot-loader-bar">
+            <div class="boot-loader-progress"></div>
+        </div>
+        <span class="boot-copyright">Copyright © Predo Campos</span>
+    </div>
+
+    <main id="desktop" class="desktop">
+        
+        <ul class="desktop-icons">
+            <li>
+                <button class="desktop-icon" data-app="internet">
+                    <img src="assets/images/internet.png" alt="Abrir aplicativo de Internet" class="icon-image">
+                    <span class="icon-label">Internet</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="arquivos">
+                    <img src="assets/images/explorer.png" alt="Abrir gerenciador de Arquivos" class="icon-image">
+                    <span class="icon-label">Arquivos</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="notas">
+                    <img src="assets/images/notes.png" alt="Abrir aplicativo de Notas" class="icon-image">
+                    <span class="icon-label">Notas</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="calculadora">
+                    <img src="assets/images/calculadora.png" alt="Abrir Calculadora" class="icon-image">
+                    <span class="icon-label">Calculadora</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="cobra">
+                    <img src="assets/images/snake.png" alt="Abrir jogo da Cobra" class="icon-image">
+                    <span class="icon-label">Cobra</span>
+                </button>
+            </li>
+            
+            <li>
+                <button class="desktop-icon" data-app="lixo">
+                    <img src="assets/images/lixo.png" alt="Abrir Lixeira" class="icon-image">
+                    <span class="icon-label">Lixo</span>
+                </button>
+            </li>
+        </ul>
+        
+        <div id="windows-container" class="windows-container"></div>
+
+    </main>
+
+    <footer id="taskbar" class="taskbar">
+        <button id="menu-button" class="menu-button">
+            <img src="assets/images/windows-icon.png" alt="Start" class="menu-button-icon">
+            <span>Start</span>
+        </button>
+
+        <div class="taskbar-separator"></div>
+
+        <div id="taskbar-apps" class="taskbar-apps"></div>
+        
+        <div class="taskbar-separator"></div>
+
+        <div id="taskbar-info" class="taskbar-info">
+            <time id="taskbar-clock" class="taskbar-clock">22:15</time>
+            <div id="taskbar-data" class="taskbar-data">15/06/2025</div>
+        </div>
+    </footer>
+
+    <div id="start-menu" class="start-menu hidden">
+        <div class="start-menu-sidebar">
+            <span class="sidebar-text">Online SO</span>
+        </div>
+        <ul class="start-menu-items">
+            <li class="start-menu-item" data-app="programs">
+                <img src="assets/images/programs-icon.png" alt="Programas">
+                <span>Programas</span>
+                <span class="submenu-arrow"></span>
+                <ul class="start-menu-submenu">
+                    <li class="start-menu-item" data-app="internet">
+                        <img src="assets/images/internet-small.png" alt="Internet">
+                        <span>Internet</span>
+                    </li>
+                    <li class="start-menu-item" data-app="notas">
+                        <img src="assets/images/notes-small.png" alt="Notas">
+                        <span>Notas</span>
+                    </li>
+                    <li class="start-menu-item" data-app="cobra">
+                        <img src="assets/images/snake-small.png" alt="Cobra">
+                        <span>Cobra</span>
+                    </li>
+                    <li class="start-menu-item" data-app="calculadora">
+                        <img src="assets/images/calculadora-small.png" alt="Calculadora">
+                        <span>Calculadora</span>
+                    </li>
+                    <li class="start-menu-item" data-app="cmd">
+                        <img src="assets/images/cmd-small.png" alt="CMD">
+                        <span>CMD</span>
+                    </li>
+                </ul>
+            </li>
+            <li class="start-menu-item" data-app="arquivos">
+                <img src="assets/images/explorer-small.png" alt="Arquivos">
+                <span>Arquivos</span>
+            </li>
+            <li class="separator"></li>
+            <li class="start-menu-item" data-app="help">
+                <img src="assets/images/help-small.png" alt="Help">
+                <span>Help</span>
+            </li>
+        </ul>
+    </div>
+
+    <div id="app-load-indicator" class="hidden">
+        <img src="assets/images/hourglass.png" alt="Carregando..." class="hourglass-icon">
+    </div>
+
+    <div id="context-menu" class="context-menu hidden">
+        <ul class="context-menu-items">
+            <li class="context-menu-item" data-action="refresh">Atualizar</li>
+            <li class="context-menu-item" data-action="reset-layout">Restaurar</li>
+            <li class="context-menu-separator"></li>
+            <li class="context-menu-item" data-action="open-cmd">Prompt de Comando</li>
+            <li class="context-menu-separator"></li>
+            <li class="context-menu-item" data-action="inspect">Inspecionar</li>
+        </ul>
+    </div>
+
+    <script type="module" src="assets/js/index.js"></script>
+</body>
+</html>
