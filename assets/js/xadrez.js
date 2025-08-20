@@ -1,13 +1,12 @@
 /**
  * @file xadrez.js
  * @description Controla a lógica para uma animação de fundo com um padrão de xadrez infinito.
- * @version 2.0.0
+ * @version 2.1.0
  */
 
-// Objeto de configuração para ajustar facilmente os parâmetros da animação.
 const CONFIG = {
     // -- VELOCIDADES --
-    GRID_SPEED: 25,      // Velocidade de rolagem do grid (pixels por segundo)
+    GRID_SPEED: 25,         // Velocidade de rolagem do grid (pixels por segundo)
     FOOTER_SPIKE_SPEED: 40, // Velocidade de movimento das ondas do rodapé (pixels por segundo)
 
     // -- PROPORÇÕES DO RODAPÉ --
@@ -16,11 +15,12 @@ const CONFIG = {
     FOOTER_OFFSET_Y_RATIO: 0.12,     // Deslocamento Y da camada de trás do rodapé
 
     // -- GEOMETRIA DAS ONDAS DO RODAPÉ --
-    SPIKE_HEIGHT_RATIO: 0.25, // Altura da onda (1/4 do tamanho do quadrado)
+    SPIKE_HEIGHT_RATIO: 0.25,     // Altura da onda (1/4 do tamanho do quadrado)
     SPIKE_BASE_WIDTH_RATIO: 0.25, // Largura da base da onda (1/4 do tamanho do quadrado)
     
-    // -- PERFORMANCE --
+    // -- PERFORMANCE E LÓGICA --
     RESIZE_DEBOUNCE_DELAY: 200, // Tempo de espera (ms) para recriar o grid após redimensionar a janela
+    TILE_BUFFER_COUNT: 3,       // Número de quadrados de buffer para garantia
 };
 
 /**
@@ -37,6 +37,12 @@ class ChessPattern {
         this.container = document.getElementById('infiniteGrid');
         /** @private @type {HTMLElement} */
         this.footer = document.querySelector('footer');
+
+        if (!this.container || !this.footer) {
+            console.error("Elementos essenciais (#infiniteGrid ou footer) não foram encontrados. A animação não pode iniciar.");
+            return;
+        }
+
         /** @private @type {SVGElement} */
         this.svg = null;
         /** @private @type {SVGPathElement} */
@@ -97,6 +103,7 @@ class ChessPattern {
         // que é definido por `var(--tile-size)` no CSS.
         const tempTile = document.createElement('div');
         tempTile.className = 'chess-square';
+        tempTile.style.position = 'absolute'; 
         document.body.appendChild(tempTile);
         this.tileSize = tempTile.offsetWidth;
         document.body.removeChild(tempTile);
@@ -111,15 +118,13 @@ class ChessPattern {
         this.container.innerHTML = '';
         this.tiles = [];
 
-        // Adiciona um buffer de 2 quadrados para garantir que a tela esteja sempre preenchida.
-        const buffer = this.tileSize * 2;
+        const buffer = this.tileSize * CONFIG.TILE_BUFFER_COUNT;
         const containerHeight = window.innerHeight + buffer;
         const viewportWidth = window.innerWidth;
         
         const horizontalTiles = Math.ceil(viewportWidth / this.tileSize) + 2;
         let verticalTiles = Math.ceil(containerHeight / this.tileSize) + 2;
         
-        // Garante um número par de fileiras para que o padrão se repita corretamente.
         if (verticalTiles % 2 !== 0) {
             verticalTiles++;
         }
@@ -128,18 +133,16 @@ class ChessPattern {
 
         for (let x = 0; x < horizontalTiles; x++) {
             for (let y = 0; y < verticalTiles; y++) {
-                // A condição (x + y) % 2 === 0 cria o padrão de xadrez.
                 if ((x + y) % 2 === 0) {
                     const tileElement = document.createElement('div');
                     tileElement.className = 'chess-square';
                     
                     const posX = x * this.tileSize;
-                    // Posiciona o grid a começar acima da tela para um scroll suave.
                     const posY = y * this.tileSize - buffer;
                     
-                    const tileObject = { element: tileElement, x, y: posY };
-                    tileElement.style.left = `${posX}px`;
-                    tileElement.style.transform = `translateY(${posY}px)`;
+                    const tileObject = { element: tileElement, x: posX, y: posY };
+                    
+                    tileElement.style.transform = `translate(${posX}px, ${posY}px)`;
                     
                     this.tiles.push(tileObject);
                     this.container.appendChild(tileElement);
@@ -160,18 +163,15 @@ class ChessPattern {
             const deltaTime = (timestamp - lastTimestamp) / 1000; // Tempo em segundos
             lastTimestamp = timestamp;
 
-            // Movimenta os quadrados do grid.
             const movement = CONFIG.GRID_SPEED * deltaTime;
             for (const tile of this.tiles) {
                 tile.y -= movement;
-                // Reposiciona o quadrado no fundo quando ele sai da tela por cima.
-                if (tile.y < -this.tileSize * 3) {
+                if (tile.y < -this.tileSize * CONFIG.TILE_BUFFER_COUNT) {
                     tile.y += this.gridHeight;
                 }
-                tile.element.style.transform = `translateY(${tile.y}px)`;
+                tile.element.style.transform = `translate(${tile.x}px, ${tile.y}px)`;
             }
 
-            // Movimenta as ondas do rodapé.
             const spikeMovement = CONFIG.FOOTER_SPIKE_SPEED * deltaTime;
             this.spikeOffset += spikeMovement;
             this.updateFooterShape();
@@ -200,7 +200,7 @@ class ChessPattern {
         
         const strokeWidth = this.tileSize * CONFIG.FOOTER_STROKE_WIDTH_RATIO;
         const offsetY = this.tileSize * CONFIG.FOOTER_OFFSET_Y_RATIO;
-        const topPadding = offsetY + strokeWidth; // Garante que a borda não seja cortada.
+        const topPadding = offsetY + strokeWidth;
         
         const spikeHeight = this.tileSize * CONFIG.SPIKE_HEIGHT_RATIO;
         const spikeBaseWidth = this.tileSize * CONFIG.SPIKE_BASE_WIDTH_RATIO;
@@ -220,7 +220,6 @@ class ChessPattern {
             isValley = !isValley;
         }
 
-        // Constrói a string do atributo 'd' (data) do SVG path.
         let pathData = `M ${points[0]}`;
         pathData += points.slice(1).map(p => `L ${p}`).join(' ');
         pathData += ` L ${screenWidth + this.tileSize} ${footerHeight} L -${this.tileSize} ${footerHeight} Z`;
@@ -246,7 +245,6 @@ class ChessPattern {
     }
 }
 
-// Inicia a classe após o carregamento completo do DOM.
 document.addEventListener('DOMContentLoaded', () => {
     new ChessPattern();
 });

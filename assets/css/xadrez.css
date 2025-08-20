@@ -1,20 +1,15 @@
 /**
  * @file xadrez.css
  * @description Estilos para a animação de um padrão de xadrez infinito.
- * @version 2.1.0
+ * @version 2.2.0
  */
 
-/* Reset básico para remover margens e preenchimentos padrão. */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/*
-  Define variáveis CSS globais para centralizar todas as configurações de design.
-  Isto facilita a personalização do visual sem alterar a lógica das regras.
-*/
 :root {
     /* -- CORES -- */
     --color-page-background: #1a1a1a;
@@ -41,7 +36,7 @@
     /* Deslocamento vertical (eixo Y) da camada de trás. */
     --footer-offset-y-ratio: 0.12; /* 12% do tamanho do quadrado */
 
-    /* -- CONVERSÕES PARA PIXELS (USADAS NAS REGRAS ABAIXO) -- */
+    /* -- CONVERSÕES PARA PIXELS -- */
     --stroke-width: calc(var(--tile-size) * var(--footer-stroke-width-ratio));
     --offset-x: calc(var(--tile-size) * var(--footer-offset-x-ratio));
     --offset-y: calc(var(--tile-size) * var(--footer-offset-y-ratio));
@@ -51,18 +46,21 @@
 body {
     background-color: var(--color-page-background);
     min-height: 100vh;
-    overflow: hidden; /* Impede barras de rolagem */
+    overflow: hidden;
     position: relative;
     background-image: linear-gradient(
         to bottom right,
         rgba(255, 255, 255, 0.15),
         transparent 45%
     );
-    cursor: url('../images/xadrez/mouse.svg'), auto;
 }
 
-body:active {
-    cursor: url('../images/xadrez/mouse-click.svg'), auto;
+*{
+    cursor: url('../images/xadrez/mouse.svg') 14 15, auto;
+}
+
+*:active {
+    cursor: url('../images/xadrez/mouse-click.svg') 14 15, auto;
 }
 
 /* O rodapé funciona como um container para o elemento SVG. */
@@ -72,27 +70,25 @@ footer {
     left: 0;
     width: 100%;
     height: 14vh;
-    z-index: 2; /* Garante que o rodapé fique sobre o grid */
+    z-index: 2;
 }
 
 /* O SVG deve ocupar todo o espaço do rodapé. */
 footer svg {
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Permite cliques através do SVG, se necessário */
+    pointer-events: none;
 }
 
-
-/* --- ESTILOS DAS CAMADAS DO RODAPÉ (AGORA COM VARIÁVEIS) --- */
+/* --- ESTILOS DAS CAMADAS DO RODAPÉ --- */
 
 /* Camada de Trás (deslocada e com borda) */
 #footer-background {
     fill: var(--color-footer-background);
     stroke: var(--color-footer-stroke);
-    stroke-linejoin: round; /* Bordas arredondadas para um visual mais suave */
+    stroke-linejoin: round;
     stroke-width: var(--stroke-width);
-    /* O transform agora usa as variáveis calculadas para o deslocamento. */
-    transform: translateX(var(--offset-x)) translateY(calc(-1 * var(--offset-y)));
+    transform: translateX(var(--offset-x)) translateY(calc(var(--offset-y) * -1));
 }
 
 /* Camada da Frente (principal) */
@@ -101,7 +97,6 @@ footer svg {
     stroke: none;
     transform: translate(0, 0);
 }
-
 
 /* Container para o grid infinito */
 .infinite-grid {
@@ -117,12 +112,11 @@ footer svg {
 /* Estilo dos quadrados individuais do padrão de xadrez */
 .chess-square {
     position: absolute;
+    top: 0;
+    left: 0;
     width: var(--tile-size);
-    aspect-ratio: 1; /* Garante que a altura seja igual à largura */
+    aspect-ratio: 1;
     background-color: var(--color-tile);
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.25);
-    /* Centraliza o quadrado na sua posição de `left` e `top`. */
-    transform: translate(-50%, -50%);
-    /* Otimização de performance: indica ao navegador que a propriedade `transform` vai mudar. */
     will-change: transform;
 }
