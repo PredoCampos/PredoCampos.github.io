@@ -7,10 +7,9 @@
 const CONFIG = {
     // -- VELOCIDADES --
     GRID_SPEED: 25,         // Velocidade de rolagem do grid (pixels por segundo)
-    FOOTER_SPIKE_SPEED: 40, // Velocidade de movimento das ondas do rodapé (pixels por segundo)
+    FOOTER_SPIKE_SPEED: 10, // Velocidade de movimento das ondas do rodapé (pixels por segundo)
 
     // -- PROPORÇÕES DO RODAPÉ --
-    // Estes valores devem corresponder às variáveis --*-ratio no CSS para consistência.
     FOOTER_STROKE_WIDTH_RATIO: 0.04, // Espessura da borda como uma fração do tamanho do quadrado
     FOOTER_OFFSET_Y_RATIO: 0.12,     // Deslocamento Y da camada de trás do rodapé
 
@@ -20,7 +19,7 @@ const CONFIG = {
     
     // -- PERFORMANCE E LÓGICA --
     RESIZE_DEBOUNCE_DELAY: 200, // Tempo de espera (ms) para recriar o grid após redimensionar a janela
-    TILE_BUFFER_COUNT: 3,       // Número de quadrados de buffer para garantia
+    TILE_BUFFER_COUNT: 1,       // Número de quadrados de buffer para garantia
 };
 
 /**
@@ -81,7 +80,7 @@ class ChessPattern {
      * @private
      */
     createFooterSVG() {
-        this.footer.innerHTML = ''; // Limpa qualquer conteúdo anterior.
+        this.footer.innerHTML = '';
         this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         
         this.pathBackground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -99,8 +98,6 @@ class ChessPattern {
      * @private
      */
     calculateAndSetConstants() {
-        // Cria um quadrado temporário para ler o seu tamanho em pixels,
-        // que é definido por `var(--tile-size)` no CSS.
         const tempTile = document.createElement('div');
         tempTile.className = 'chess-square';
         tempTile.style.position = 'absolute'; 
@@ -119,8 +116,8 @@ class ChessPattern {
         this.tiles = [];
 
         const buffer = this.tileSize * CONFIG.TILE_BUFFER_COUNT;
-        const containerHeight = window.innerHeight + buffer;
-        const viewportWidth = window.innerWidth;
+        const containerHeight = this.container.offsetHeight + buffer;
+        const viewportWidth = this.container.offsetWidth;
         
         const horizontalTiles = Math.ceil(viewportWidth / this.tileSize) + 2;
         let verticalTiles = Math.ceil(containerHeight / this.tileSize) + 2;
@@ -136,14 +133,10 @@ class ChessPattern {
                 if ((x + y) % 2 === 0) {
                     const tileElement = document.createElement('div');
                     tileElement.className = 'chess-square';
-                    
                     const posX = x * this.tileSize;
                     const posY = y * this.tileSize - buffer;
-                    
                     const tileObject = { element: tileElement, x: posX, y: posY };
-                    
                     tileElement.style.transform = `translate(${posX}px, ${posY}px)`;
-                    
                     this.tiles.push(tileObject);
                     this.container.appendChild(tileElement);
                 }
