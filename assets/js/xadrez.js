@@ -1,12 +1,13 @@
 /**
  * @file xadrez.js
  * @description Controla a lógica para uma animação de fundo com um padrão de xadrez infinito.
- * @version 1.0.0
+ * @version 1
  */
 
 const CONFIG = {
     GRID_SPEED: 25,
     FOOTER_SPIKE_SPEED: 10,
+
     FOOTER_STROKE_WIDTH_RATIO: 0.04,
     FOOTER_OFFSET_Y_RATIO: 0.12,
 
@@ -35,9 +36,10 @@ class ChessPattern {
         }
 
         this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        this.spikeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
         this.pathBackground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         this.pathForeground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-
+        
         this.tiles = [];
         this.animationFrameId = null;
 
@@ -47,6 +49,7 @@ class ChessPattern {
         this.footerTopPadding = 0;
         this.spikeHeight = 0;
         this.spikeBaseWidth = 0;
+        this.spikePatternWidth = 0;
 
         this.init();
     }
@@ -60,7 +63,7 @@ class ChessPattern {
         this.setupAndCreateScene();
         this.setupResizeHandler();
     }
-
+    
     /**
      * @description Cria a estrutura SVG inicial dentro do elemento do rodapé.
      * @private
@@ -69,7 +72,8 @@ class ChessPattern {
         this.footer.innerHTML = '';
         this.pathBackground.id = 'footer-background';
         this.pathForeground.id = 'footer-foreground';
-        this.svg.append(this.pathBackground, this.pathForeground);
+        this.spikeGroup.append(this.pathBackground, this.pathForeground);
+        this.svg.appendChild(this.spikeGroup);
         this.footer.appendChild(this.svg);
     }
 
@@ -89,6 +93,7 @@ class ChessPattern {
         this.footerTopPadding = offsetY + strokeWidth;
         this.spikeHeight = this.tileSize * CONFIG.SPIKE_HEIGHT_RATIO;
         this.spikeBaseWidth = this.tileSize * CONFIG.SPIKE_BASE_WIDTH_RATIO;
+        this.spikePatternWidth = this.spikeBaseWidth * 2;
     }
 
     /**
@@ -137,7 +142,33 @@ class ChessPattern {
         this.stopAnimation();
         this.calculateAndSetConstants();
         this.createPattern();
+        this.createFooterPaths();
         this.startAnimation();
+    }
+    
+    /**
+     * @description Desenha a geometria SVG do rodapé uma única vez.
+     * @private
+     */
+    createFooterPaths() {
+        if (!this.spikeBaseWidth) return;
+
+        const screenWidth = window.innerWidth;
+        const footerHeight = this.footer.offsetHeight;
+        const requiredWidth = screenWidth + this.spikePatternWidth;
+        const numPoints = Math.ceil(requiredWidth / this.spikeBaseWidth) + 3;
+
+        let points = [];
+        for (let i = 0; i < numPoints; i++) {
+            const x = i * this.spikeBaseWidth;
+            const y = ((i % 2) !== 0 ? this.spikeHeight : 0) + this.footerTopPadding;
+            points.push(`${x} ${y}`);
+        }
+
+        const pathData = `M ${points[0]} L ${points.slice(1).join(' L ')} L ${screenWidth + this.tileSize} ${footerHeight} L -${this.tileSize} ${footerHeight} Z`;
+
+        this.pathBackground.setAttribute('d', pathData);
+        this.pathForeground.setAttribute('d', pathData);
     }
 
     /**
@@ -182,28 +213,14 @@ class ChessPattern {
     }
 
     /**
-     * @description Atualiza a forma do SVG do rodapé a cada frame da animação.
+     * @description  move o grupo SVG horizontalmente.
      * @private
      */
     updateFooterShape() {
-        if (!this.spikeBaseWidth) return;
+        if (!this.spikePatternWidth) return;
         
-        const screenWidth = window.innerWidth;
-        const footerHeight = this.footer.offsetHeight;
-        const spikePatternWidth = this.spikeBaseWidth * 2;
-        const numPoints = Math.ceil(screenWidth / this.spikeBaseWidth) + 3;
-        
-        let points = [];
-        for (let i = 0; i < numPoints; i++) {
-            const x = (i * this.spikeBaseWidth) - (this.spikeOffset % spikePatternWidth);
-            const y = ((i % 2) !== 0 ? this.spikeHeight : 0) + this.footerTopPadding;
-            points.push(`${x} ${y}`);
-        }
-
-        const pathData = `M ${points[0]} L ${points.slice(1).join(' L ')} L ${screenWidth + this.tileSize} ${footerHeight} L -${this.tileSize} ${footerHeight} Z`;
-
-        this.pathBackground.setAttribute('d', pathData);
-        this.pathForeground.setAttribute('d', pathData);
+        const offsetX = -(this.spikeOffset % this.spikePatternWidth);
+        this.spikeGroup.style.transform = `translateX(${offsetX}px)`;
     }
 
     /**

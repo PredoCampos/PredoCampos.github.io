@@ -74,7 +74,7 @@ footer {
     position: fixed;
     bottom: -5vh;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: var(--footer-height);
     z-index: var(--z-footer);
     transform: rotate(-3deg) scale(1.1);
@@ -82,8 +82,8 @@ footer {
 }
 
 footer svg {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
     display: block;
 }
@@ -109,7 +109,7 @@ footer svg {
     left: 20%;
     width: 250vmax;
     height: 250vmax;
-    z-index: 1;
+    z-index: var(--z-grid);
     overflow: hidden;
     transform: translate(-50%, -50%) rotate(78deg);
     transform-origin: center;
