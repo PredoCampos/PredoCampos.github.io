@@ -1,26 +1,23 @@
 /**
  * @file xadrez.js
  * @description Controla a lógica para uma animação de fundo com um padrão de xadrez infinito.
- * @version 1
+ * @version 1.0.0
  */
 
 const CONFIG = {
     GRID_SPEED: 25,
     FOOTER_SPIKE_SPEED: 10,
-
     FOOTER_STROKE_WIDTH_RATIO: 0.04,
     FOOTER_OFFSET_Y_RATIO: 0.12,
-
     SPIKE_HEIGHT_RATIO: 0.25,
     SPIKE_BASE_WIDTH_RATIO: 0.25,
-    
     RESIZE_DEBOUNCE_DELAY: 200,
     TILE_BUFFER_COUNT: 1,
 };
 
 /**
  * @class ChessPattern
- * @description Gere e anima um padrão de xadrez infinito e um rodapé SVG dinâmico.
+ * @description Gera e anima um padrão de xadrez infinito e um rodapé SVG dinâmico.
  */
 class ChessPattern {
     /**
@@ -31,18 +28,46 @@ class ChessPattern {
         this.footer = document.querySelector('footer');
 
         if (!this.container || !this.footer) {
-            console.error("Elementos essenciais não foram encontrados.");
+            console.error("Elementos essenciais (infiniteGrid, footer) não foram encontrados no DOM.");
             return;
         }
 
-        this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        this.spikeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        this.pathBackground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        this.pathForeground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        
+        // Inicializa o estado e a cena
+        this.init();
+    }
+
+    /**
+     * @description Ponto de entrada que inicializa a cena e os handlers.
+     * @private
+     */
+    init() {
+        this._setupAndCreateScene();
+        this._setupResizeHandler();
+    }
+
+    /**
+     * @description Configura a cena, cancelando animações antigas e recriando tudo.
+     * @private
+     */
+    _setupAndCreateScene() {
+        this._stopAnimation();
+        this._resetState();
+
+        this._calculateAndSetConstants();
+        this._createFooterSVG();
+        this._createPattern();
+        this._createFooterPaths();
+
+        this._startAnimation();
+    }
+
+    /**
+     * @description Reinicia as propriedades da classe para um estado limpo.
+     * @private
+     */
+    _resetState() {
         this.tiles = [];
         this.animationFrameId = null;
-
         this.tileSize = 0;
         this.gridHeight = 0;
         this.spikeOffset = 0;
@@ -50,38 +75,37 @@ class ChessPattern {
         this.spikeHeight = 0;
         this.spikeBaseWidth = 0;
         this.spikePatternWidth = 0;
-
-        this.init();
     }
 
     /**
-     * @description Inicializa a animação.
+     * @description Cria a estrutura SVG do rodapé em memória e a insere no DOM de uma só vez.
      * @private
      */
-    init() {
-        this.createFooterSVG();
-        this.setupAndCreateScene();
-        this.setupResizeHandler();
-    }
-    
-    /**
-     * @description Cria a estrutura SVG inicial dentro do elemento do rodapé.
-     * @private
-     */
-    createFooterSVG() {
+    _createFooterSVG() {
         this.footer.innerHTML = '';
+
+        const fragment = document.createDocumentFragment();
+        
+        this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        this.spikeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+        this.pathBackground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        this.pathForeground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
         this.pathBackground.id = 'footer-background';
         this.pathForeground.id = 'footer-foreground';
+
         this.spikeGroup.append(this.pathBackground, this.pathForeground);
         this.svg.appendChild(this.spikeGroup);
-        this.footer.appendChild(this.svg);
+        
+        fragment.appendChild(this.svg);
+        this.footer.appendChild(fragment);
     }
 
     /**
-     * @description Calcula o tamanho do quadrado em pixels com base no CSS (`vmin`).
+     * @description Calcula constantes essenciais baseadas nas dimensões dos elementos.
      * @private
      */
-    calculateAndSetConstants() {
+    _calculateAndSetConstants() {
         const tempTile = document.createElement('div');
         tempTile.className = 'chess-square';
         this.container.appendChild(tempTile);
@@ -97,13 +121,11 @@ class ChessPattern {
     }
 
     /**
-     * @description Cria e posiciona todos os quadrados do padrão de xadrez.
+     * @description Cria o padrão de xadrez em memória e o insere no DOM de uma só vez.
      * @private
      */
-    createPattern() {
+    _createPattern() {
         this.container.innerHTML = '';
-        this.tiles = [];
-        
         const fragment = document.createDocumentFragment();
 
         const buffer = this.tileSize * CONFIG.TILE_BUFFER_COUNT;
@@ -121,8 +143,10 @@ class ChessPattern {
                 if ((x + y) % 2 === 0) {
                     const tileElement = document.createElement('div');
                     tileElement.className = 'chess-square';
+                    
                     const posX = x * this.tileSize;
                     const posY = y * this.tileSize - buffer;
+                    
                     tileElement.style.transform = `translate(${posX}px, ${posY}px)`;
                     
                     this.tiles.push({ element: tileElement, x: posX, y: posY });
@@ -135,22 +159,10 @@ class ChessPattern {
     }
 
     /**
-     * @description Orquestra os cálculos e a criação da cena.
+     * @description Desenha a geometria SVG do rodapé.
      * @private
      */
-    setupAndCreateScene() {
-        this.stopAnimation();
-        this.calculateAndSetConstants();
-        this.createPattern();
-        this.createFooterPaths();
-        this.startAnimation();
-    }
-    
-    /**
-     * @description Desenha a geometria SVG do rodapé uma única vez.
-     * @private
-     */
-    createFooterPaths() {
+    _createFooterPaths() {
         if (!this.spikeBaseWidth) return;
 
         const screenWidth = window.innerWidth;
@@ -158,7 +170,7 @@ class ChessPattern {
         const requiredWidth = screenWidth + this.spikePatternWidth;
         const numPoints = Math.ceil(requiredWidth / this.spikeBaseWidth) + 3;
 
-        let points = [];
+        const points = [];
         for (let i = 0; i < numPoints; i++) {
             const x = i * this.spikeBaseWidth;
             const y = ((i % 2) !== 0 ? this.spikeHeight : 0) + this.footerTopPadding;
@@ -172,10 +184,10 @@ class ChessPattern {
     }
 
     /**
-     * @description Inicia o loop de animação usando `requestAnimationFrame`.
+     * @description Inicia o loop de animação.
      * @private
      */
-    startAnimation() {
+    _startAnimation() {
         let lastTimestamp = 0;
 
         const animate = (timestamp) => {
@@ -183,18 +195,17 @@ class ChessPattern {
             const deltaTime = (timestamp - lastTimestamp) / 1000;
             lastTimestamp = timestamp;
 
-            const movement = CONFIG.GRID_SPEED * deltaTime;
+            const gridMovement = CONFIG.GRID_SPEED * deltaTime;
             for (const tile of this.tiles) {
-                tile.y -= movement;
+                tile.y -= gridMovement;
                 if (tile.y < -this.tileSize * (CONFIG.TILE_BUFFER_COUNT + 1)) {
                     tile.y += this.gridHeight;
                 }
                 tile.element.style.transform = `translate(${tile.x}px, ${tile.y}px)`;
             }
 
-            const spikeMovement = CONFIG.FOOTER_SPIKE_SPEED * deltaTime;
-            this.spikeOffset += spikeMovement;
-            this.updateFooterShape();
+            this.spikeOffset += CONFIG.FOOTER_SPIKE_SPEED * deltaTime;
+            this._updateFooterShape();
 
             this.animationFrameId = requestAnimationFrame(animate);
         };
@@ -205,7 +216,7 @@ class ChessPattern {
      * @description Para o loop de animação.
      * @private
      */
-    stopAnimation() {
+    _stopAnimation() {
         if (this.animationFrameId) {
             cancelAnimationFrame(this.animationFrameId);
             this.animationFrameId = null;
@@ -213,10 +224,10 @@ class ChessPattern {
     }
 
     /**
-     * @description  move o grupo SVG horizontalmente.
+     * @description Atualiza a posição do rodapé para simular movimento.
      * @private
      */
-    updateFooterShape() {
+    _updateFooterShape() {
         if (!this.spikePatternWidth) return;
         
         const offsetX = -(this.spikeOffset % this.spikePatternWidth);
@@ -224,15 +235,14 @@ class ChessPattern {
     }
 
     /**
-     * @description Configura um listener para o redimensionamento da janela,
-     * com "debounce" para evitar recriações excessivas.
+     * @description Configura o handler de redimensionamento da janela com debounce.
      * @private
      */
-    setupResizeHandler() {
+    _setupResizeHandler() {
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => this.setupAndCreateScene(), CONFIG.RESIZE_DEBOUNCE_DELAY);
+            resizeTimer = setTimeout(() => this._setupAndCreateScene(), CONFIG.RESIZE_DEBOUNCE_DELAY);
         });
     }
 }
