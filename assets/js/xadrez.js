@@ -1,13 +1,12 @@
 /**
  * @file xadrez.js
  * @description Controla a lógica para uma animação de fundo com um padrão de xadrez infinito.
- * @version 2.1.0
+ * @version 1.0.0
  */
 
 const CONFIG = {
     GRID_SPEED: 25,
     FOOTER_SPIKE_SPEED: 10,
-
     FOOTER_STROKE_WIDTH_RATIO: 0.04,
     FOOTER_OFFSET_Y_RATIO: 0.12,
 
@@ -31,19 +30,23 @@ class ChessPattern {
         this.footer = document.querySelector('footer');
 
         if (!this.container || !this.footer) {
-            console.error("Elementos essenciais (#infiniteGrid ou footer) não foram encontrados. A animação não pode iniciar.");
+            console.error("Elementos essenciais não foram encontrados.");
             return;
         }
 
-        this.svg = null;
-        this.pathForeground = null;
-        this.pathBackground = null;
+        this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        this.pathBackground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        this.pathForeground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
         this.tiles = [];
+        this.animationFrameId = null;
+
         this.tileSize = 0;
         this.gridHeight = 0;
         this.spikeOffset = 0;
-        this.animationFrameId = null;
+        this.footerTopPadding = 0;
+        this.spikeHeight = 0;
+        this.spikeBaseWidth = 0;
 
         this.init();
     }
@@ -54,24 +57,18 @@ class ChessPattern {
      */
     init() {
         this.createFooterSVG();
-        this.calculateAndSetConstants();
-        this.createPattern();
+        this.setupAndCreateScene();
         this.setupResizeHandler();
     }
-    
+
     /**
      * @description Cria a estrutura SVG inicial dentro do elemento do rodapé.
      * @private
      */
     createFooterSVG() {
         this.footer.innerHTML = '';
-        this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        
-        this.pathBackground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        this.pathBackground.setAttribute('id', 'footer-background');
-        this.pathForeground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        this.pathForeground.setAttribute('id', 'footer-foreground');
-
+        this.pathBackground.id = 'footer-background';
+        this.pathForeground.id = 'footer-foreground';
         this.svg.append(this.pathBackground, this.pathForeground);
         this.footer.appendChild(this.svg);
     }
@@ -83,10 +80,15 @@ class ChessPattern {
     calculateAndSetConstants() {
         const tempTile = document.createElement('div');
         tempTile.className = 'chess-square';
-        tempTile.style.position = 'absolute'; 
-        document.body.appendChild(tempTile);
+        this.container.appendChild(tempTile);
         this.tileSize = tempTile.offsetWidth;
-        document.body.removeChild(tempTile);
+        this.container.removeChild(tempTile);
+
+        const strokeWidth = this.tileSize * CONFIG.FOOTER_STROKE_WIDTH_RATIO;
+        const offsetY = this.tileSize * CONFIG.FOOTER_OFFSET_Y_RATIO;
+        this.footerTopPadding = offsetY + strokeWidth;
+        this.spikeHeight = this.tileSize * CONFIG.SPIKE_HEIGHT_RATIO;
+        this.spikeBaseWidth = this.tileSize * CONFIG.SPIKE_BASE_WIDTH_RATIO;
     }
 
     /**
@@ -94,9 +96,10 @@ class ChessPattern {
      * @private
      */
     createPattern() {
-        this.stopAnimation();
         this.container.innerHTML = '';
         this.tiles = [];
+        
+        const fragment = document.createDocumentFragment();
 
         const buffer = this.tileSize * CONFIG.TILE_BUFFER_COUNT;
         const containerHeight = this.container.offsetHeight + buffer;
@@ -104,10 +107,7 @@ class ChessPattern {
         
         const horizontalTiles = Math.ceil(viewportWidth / this.tileSize) + 2;
         let verticalTiles = Math.ceil(containerHeight / this.tileSize) + 2;
-        
-        if (verticalTiles % 2 !== 0) {
-            verticalTiles++;
-        }
+        if (verticalTiles % 2 !== 0) verticalTiles++;
 
         this.gridHeight = verticalTiles * this.tileSize;
 
@@ -118,13 +118,25 @@ class ChessPattern {
                     tileElement.className = 'chess-square';
                     const posX = x * this.tileSize;
                     const posY = y * this.tileSize - buffer;
-                    const tileObject = { element: tileElement, x: posX, y: posY };
                     tileElement.style.transform = `translate(${posX}px, ${posY}px)`;
-                    this.tiles.push(tileObject);
-                    this.container.appendChild(tileElement);
+                    
+                    this.tiles.push({ element: tileElement, x: posX, y: posY });
+                    fragment.appendChild(tileElement);
                 }
             }
         }
+        
+        this.container.appendChild(fragment);
+    }
+
+    /**
+     * @description Orquestra os cálculos e a criação da cena.
+     * @private
+     */
+    setupAndCreateScene() {
+        this.stopAnimation();
+        this.calculateAndSetConstants();
+        this.createPattern();
         this.startAnimation();
     }
 
@@ -133,16 +145,17 @@ class ChessPattern {
      * @private
      */
     startAnimation() {
-        let lastTimestamp = performance.now();
+        let lastTimestamp = 0;
 
         const animate = (timestamp) => {
-            const deltaTime = (timestamp - lastTimestamp) / 1000; // Tempo em segundos
+            if (!lastTimestamp) lastTimestamp = timestamp;
+            const deltaTime = (timestamp - lastTimestamp) / 1000;
             lastTimestamp = timestamp;
 
             const movement = CONFIG.GRID_SPEED * deltaTime;
             for (const tile of this.tiles) {
                 tile.y -= movement;
-                if (tile.y < -this.tileSize * CONFIG.TILE_BUFFER_COUNT) {
+                if (tile.y < -this.tileSize * (CONFIG.TILE_BUFFER_COUNT + 1)) {
                     tile.y += this.gridHeight;
                 }
                 tile.element.style.transform = `translate(${tile.x}px, ${tile.y}px)`;
@@ -164,6 +177,7 @@ class ChessPattern {
     stopAnimation() {
         if (this.animationFrameId) {
             cancelAnimationFrame(this.animationFrameId);
+            this.animationFrameId = null;
         }
     }
 
@@ -172,33 +186,21 @@ class ChessPattern {
      * @private
      */
     updateFooterShape() {
-        if (!this.tileSize) return;
-        
-        const strokeWidth = this.tileSize * CONFIG.FOOTER_STROKE_WIDTH_RATIO;
-        const offsetY = this.tileSize * CONFIG.FOOTER_OFFSET_Y_RATIO;
-        const topPadding = offsetY + strokeWidth;
-        
-        const spikeHeight = this.tileSize * CONFIG.SPIKE_HEIGHT_RATIO;
-        const spikeBaseWidth = this.tileSize * CONFIG.SPIKE_BASE_WIDTH_RATIO;
+        if (!this.spikeBaseWidth) return;
         
         const screenWidth = window.innerWidth;
         const footerHeight = this.footer.offsetHeight;
-        const spikePatternWidth = spikeBaseWidth * 2;
-        const numPoints = Math.ceil(screenWidth / spikeBaseWidth) + 3;
+        const spikePatternWidth = this.spikeBaseWidth * 2;
+        const numPoints = Math.ceil(screenWidth / this.spikeBaseWidth) + 3;
         
         let points = [];
-        let isValley = false;
-
         for (let i = 0; i < numPoints; i++) {
-            const x = (i * spikeBaseWidth) - (this.spikeOffset % spikePatternWidth);
-            const y = (isValley ? spikeHeight : 0) + topPadding;
+            const x = (i * this.spikeBaseWidth) - (this.spikeOffset % spikePatternWidth);
+            const y = ((i % 2) !== 0 ? this.spikeHeight : 0) + this.footerTopPadding;
             points.push(`${x} ${y}`);
-            isValley = !isValley;
         }
 
-        let pathData = `M ${points[0]}`;
-        pathData += points.slice(1).map(p => `L ${p}`).join(' ');
-        pathData += ` L ${screenWidth + this.tileSize} ${footerHeight} L -${this.tileSize} ${footerHeight} Z`;
+        const pathData = `M ${points[0]} L ${points.slice(1).join(' L ')} L ${screenWidth + this.tileSize} ${footerHeight} L -${this.tileSize} ${footerHeight} Z`;
 
         this.pathBackground.setAttribute('d', pathData);
         this.pathForeground.setAttribute('d', pathData);
@@ -213,10 +215,7 @@ class ChessPattern {
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => {
-                this.calculateAndSetConstants();
-                this.createPattern();
-            }, CONFIG.RESIZE_DEBOUNCE_DELAY);
+            resizeTimer = setTimeout(() => this.setupAndCreateScene(), CONFIG.RESIZE_DEBOUNCE_DELAY);
         });
     }
 }
