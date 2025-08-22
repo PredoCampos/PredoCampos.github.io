@@ -5,21 +5,17 @@
  */
 
 const CONFIG = {
-    // -- VELOCIDADES --
-    GRID_SPEED: 25,         // Velocidade de rolagem do grid (pixels por segundo)
-    FOOTER_SPIKE_SPEED: 10, // Velocidade de movimento das ondas do rodapé (pixels por segundo)
+    GRID_SPEED: 25,
+    FOOTER_SPIKE_SPEED: 10,
 
-    // -- PROPORÇÕES DO RODAPÉ --
-    FOOTER_STROKE_WIDTH_RATIO: 0.04, // Espessura da borda como uma fração do tamanho do quadrado
-    FOOTER_OFFSET_Y_RATIO: 0.12,     // Deslocamento Y da camada de trás do rodapé
+    FOOTER_STROKE_WIDTH_RATIO: 0.04,
+    FOOTER_OFFSET_Y_RATIO: 0.12,
 
-    // -- GEOMETRIA DAS ONDAS DO RODAPÉ --
-    SPIKE_HEIGHT_RATIO: 0.25,     // Altura da onda (1/4 do tamanho do quadrado)
-    SPIKE_BASE_WIDTH_RATIO: 0.25, // Largura da base da onda (1/4 do tamanho do quadrado)
+    SPIKE_HEIGHT_RATIO: 0.25,
+    SPIKE_BASE_WIDTH_RATIO: 0.25,
     
-    // -- PERFORMANCE E LÓGICA --
-    RESIZE_DEBOUNCE_DELAY: 200, // Tempo de espera (ms) para recriar o grid após redimensionar a janela
-    TILE_BUFFER_COUNT: 1,       // Número de quadrados de buffer para garantia
+    RESIZE_DEBOUNCE_DELAY: 200,
+    TILE_BUFFER_COUNT: 1,
 };
 
 /**
@@ -31,10 +27,7 @@ class ChessPattern {
      * @constructor
      */
     constructor() {
-        // -- ELEMENTOS DO DOM --
-        /** @private @type {HTMLElement} */
         this.container = document.getElementById('infiniteGrid');
-        /** @private @type {HTMLElement} */
         this.footer = document.querySelector('footer');
 
         if (!this.container || !this.footer) {
@@ -42,23 +35,14 @@ class ChessPattern {
             return;
         }
 
-        /** @private @type {SVGElement} */
         this.svg = null;
-        /** @private @type {SVGPathElement} */
         this.pathForeground = null;
-        /** @private @type {SVGPathElement} */
         this.pathBackground = null;
 
-        // -- PROPRIEDADES DE ESTADO --
-        /** @private @type {Array<Object>} */
         this.tiles = [];
-        /** @private @type {number} */
         this.tileSize = 0;
-        /** @private @type {number} */
         this.gridHeight = 0;
-        /** @private @type {number} */
         this.spikeOffset = 0;
-        /** @private @type {number|null} */
         this.animationFrameId = null;
 
         this.init();
@@ -85,7 +69,6 @@ class ChessPattern {
         
         this.pathBackground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         this.pathBackground.setAttribute('id', 'footer-background');
-
         this.pathForeground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
         this.pathForeground.setAttribute('id', 'footer-foreground');
 
