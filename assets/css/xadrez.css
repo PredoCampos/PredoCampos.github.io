@@ -114,13 +114,3 @@ footer svg {
     transform: translate(-50%, -50%) rotate(78deg);
     transform-origin: center;
 }
-
-.chess-square {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: var(--tile-size);
-    aspect-ratio: 1;
-    background-color: var(--color-tile);
-    will-change: transform;
-}
