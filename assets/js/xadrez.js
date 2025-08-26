@@ -9,10 +9,13 @@ const CONFIG = {
     GRID_SPEED: 25, // Velocidade de rolagem da grade em pixels/segundo
     FOOTER_SPIKE_SPEED: 10, // Velocidade de rolagem dos "espinhos" do rodapé em pixels/segundo
 
-    // Configurações do tamanho dos quadrados (tiles)
-    TILE_SIZE_VMIN_FACTOR: 5, // Fator de VMIN para o tamanho do tile (5 * vmin)
-    TILE_SIZE_MIN_PX: 35, // Tamanho mínimo do tile em pixels
-    TILE_SIZE_MAX_PX: 75, // Tamanho máximo do tile em pixels
+    SCREEN_WIDTH_MIN: 320,  // Largura de tela mínima em pixels para o cálculo
+    SCREEN_WIDTH_MAX: 1920, // Largura de tela máxima em pixels para o cálculo
+    TILE_SIZE_ON_MIN_SCREEN: 85, // Tamanho do quadrado na tela mínima (valor máximo)
+    TILE_SIZE_ON_MAX_SCREEN: 70, // Tamanho do quadrado na tela máxima (valor mínimo)
+
+    FOOTER_SIZE_ON_MIN_SCREEN: 58, // Tamanho base do rodapé na tela MÍNIMA
+    FOOTER_SIZE_ON_MAX_SCREEN: 50, // Tamanho base do rodapé na tela MÁXIMA
     
     // Buffers para garantir que a animação não tenha falhas nas bordas
     TILE_GRID_BUFFER_COUNT: 2, // Quantos tiles extras desenhar nas direções X e Y
@@ -99,7 +102,7 @@ class ChessPattern {
      * @private
      */
     _handleDPIScaling() {
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const rect = this.canvas.getBoundingClientRect();
 
         this.canvas.width = rect.width * dpr;
@@ -112,30 +115,28 @@ class ChessPattern {
     }
     
     /**
-     * @description Retorna o valor de uma variável CSS.
-     * @param {string} varName - O nome da variável (--exemplo).
-     * @param {string} fallbackValue - O valor padrão.
-     * @returns {string} O valor da variável ou o padrão.
-     * @static
-     */
-    static _getCSSVariable(varName, fallbackValue) {
-        const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
-        return value || fallbackValue;
-    }
-
-    /**
      * @description Calcula constantes essenciais com base no tamanho da janela e CONFIG.
      * @private
      */
     _calculateAndSetConstants() {
-        const vmin = Math.min(window.innerWidth, window.innerHeight) / 100;
-        const dynamicSize = CONFIG.TILE_SIZE_VMIN_FACTOR * vmin;
-        this.tileSize = Math.max(CONFIG.TILE_SIZE_MIN_PX, Math.min(dynamicSize, CONFIG.TILE_SIZE_MAX_PX));
+        const screenWidth = window.innerWidth;
+        const { 
+            SCREEN_WIDTH_MIN, SCREEN_WIDTH_MAX, 
+            TILE_SIZE_ON_MIN_SCREEN, TILE_SIZE_ON_MAX_SCREEN,
+            FOOTER_SIZE_ON_MIN_SCREEN, FOOTER_SIZE_ON_MAX_SCREEN 
+        } = CONFIG;
 
-        this.tileColor = ChessPattern._getCSSVariable('--color-tile', '#000000');
+        const widthRange = SCREEN_WIDTH_MAX - SCREEN_WIDTH_MIN;
+        const screenPercent = Math.max(0, Math.min(1, (screenWidth - SCREEN_WIDTH_MIN) / widthRange));
+        const tileSizeRange = TILE_SIZE_ON_MIN_SCREEN - TILE_SIZE_ON_MAX_SCREEN;
+        this.tileSize = TILE_SIZE_ON_MIN_SCREEN - (tileSizeRange * screenPercent);
+        
+        const footerSizeRange = FOOTER_SIZE_ON_MIN_SCREEN - FOOTER_SIZE_ON_MAX_SCREEN;
+        this.footerBaseSize = FOOTER_SIZE_ON_MIN_SCREEN - (footerSizeRange * screenPercent);
 
-        this.spikeHeight = this.tileSize * CONFIG.SPIKE_HEIGHT_RATIO;
-        this.spikeBaseWidth = this.tileSize * CONFIG.SPIKE_BASE_WIDTH_RATIO;
+        this.tileColor = getComputedStyle(document.documentElement).getPropertyValue('--color-tile').trim();
+        this.spikeHeight = this.footerBaseSize * CONFIG.SPIKE_HEIGHT_RATIO;
+        this.spikeBaseWidth = this.footerBaseSize * CONFIG.SPIKE_BASE_WIDTH_RATIO;
         this.spikePatternWidth = this.spikeBaseWidth * 2;
     }
 
@@ -255,8 +256,8 @@ class ChessPattern {
 
         const screenWidth = this.logicalWidth; 
         const footerHeight = this.footer.offsetHeight;
-        const strokeWidth = this.tileSize * CONFIG.FOOTER_STROKE_WIDTH_RATIO;
-        const offsetY = this.tileSize * CONFIG.FOOTER_OFFSET_Y_RATIO;
+        const strokeWidth = this.footerBaseSize * CONFIG.FOOTER_STROKE_WIDTH_RATIO;
+        const offsetY = this.footerBaseSize * CONFIG.FOOTER_OFFSET_Y_RATIO;
         const footerTopPadding = offsetY + strokeWidth;
         
         const requiredWidth = screenWidth + this.spikePatternWidth;
