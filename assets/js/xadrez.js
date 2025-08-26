@@ -1,18 +1,33 @@
 /**
  * @file xadrez.js
  * @description Controla a lógica para uma animação de fundo com um padrão de xadrez infinito usando Canvas.
- * @version 1.0.1
+ * @version 1.0.0
  */
 
 const CONFIG = {
-    GRID_SPEED: 25,
-    FOOTER_SPIKE_SPEED: 10,
-    FOOTER_STROKE_WIDTH_RATIO: 0.04,
-    FOOTER_OFFSET_Y_RATIO: 0.12,
-    SPIKE_HEIGHT_RATIO: 0.25,
-    SPIKE_BASE_WIDTH_RATIO: 0.25,
-    RESIZE_DEBOUNCE_DELAY: 200,
-    TILE_BUFFER_COUNT: 1,
+    // Velocidades de animação
+    GRID_SPEED: 25, // Velocidade de rolagem da grade em pixels/segundo
+    FOOTER_SPIKE_SPEED: 10, // Velocidade de rolagem dos "espinhos" do rodapé em pixels/segundo
+
+    // Configurações do tamanho dos quadrados (tiles)
+    TILE_SIZE_VMIN_FACTOR: 5, // Fator de VMIN para o tamanho do tile (5 * vmin)
+    TILE_SIZE_MIN_PX: 35, // Tamanho mínimo do tile em pixels
+    TILE_SIZE_MAX_PX: 75, // Tamanho máximo do tile em pixels
+    
+    // Buffers para garantir que a animação não tenha falhas nas bordas
+    TILE_GRID_BUFFER_COUNT: 2, // Quantos tiles extras desenhar nas direções X e Y
+    TILE_VERTICAL_OFFSET_BUFFER: 1, // Quantos tiles de offset vertical para iniciar o desenho
+    
+    // Configurações do rodapé SVG
+    FOOTER_STROKE_WIDTH_RATIO: 0.04, // Espessura da borda do rodapé em relação ao tileSize
+    FOOTER_OFFSET_Y_RATIO: 0.12, // Deslocamento vertical do rodapé em relação ao tileSize
+    SPIKE_HEIGHT_RATIO: 0.25, // Altura do "espinho" em relação ao tileSize
+    SPIKE_BASE_WIDTH_RATIO: 0.25, // Largura da base do "espinho" em relação ao tileSize
+    SPIKE_POINTS_BUFFER: 3, // Número de pontos extras para o caminho SVG para evitar falhas
+    FOOTER_PATH_HORIZONTAL_BUFFER_RATIO: 1, // Buffer para evitar cortes nas laterais (1 = 100% do tileSize)
+
+    // Outros
+    RESIZE_DEBOUNCE_DELAY: 200, // Atraso em ms para recalcular a cena ao redimensionar a janela
 };
 
 /**
@@ -28,15 +43,17 @@ class ChessPattern {
         this.footer = document.querySelector('footer');
 
         if (!this.canvas || !this.footer) {
-            console.error("Elementos essenciais (infiniteGrid, footer) não foram encontrados no DOM.");
+            console.error("Erro Crítico: Elementos essenciais (canvas#infiniteGrid ou footer) não foram encontrados. A animação não será iniciada.");
             return;
         }
 
         this.ctx = this.canvas.getContext('2d');
         if (!this.ctx) {
-            console.error("Não foi possível obter o contexto 2D do canvas.");
+            console.error("Erro Crítico: Não foi possível obter o contexto 2D do canvas. A animação não será iniciada.");
             return;
         }
+        
+        this.resizeHandler = this._debounce(this._setupAndCreateScene.bind(this), CONFIG.RESIZE_DEBOUNCE_DELAY);
         
         this.init();
     }
@@ -47,7 +64,7 @@ class ChessPattern {
      */
     init() {
         this._setupAndCreateScene();
-        this._setupResizeHandler();
+        window.addEventListener('resize', this.resizeHandler);
     }
 
     /**
@@ -59,8 +76,7 @@ class ChessPattern {
         this._resetState();
         this._handleDPIScaling();
         this._calculateAndSetConstants();
-        this._createFooterSVG();
-        this._createFooterPaths();
+        this._setupFooter();
         this._createPatternData();
         this._startAnimation();
     }
@@ -75,6 +91,7 @@ class ChessPattern {
         this.tileSize = 0;
         this.gridHeight = 0;
         this.spikeOffset = 0;
+        this.offScreenBoundaryY = 0;
     }
     
     /**
@@ -87,7 +104,7 @@ class ChessPattern {
 
         this.canvas.width = rect.width * dpr;
         this.canvas.height = rect.height * dpr;
-
+        
         this.ctx.scale(dpr, dpr);
 
         this.logicalWidth = rect.width;
@@ -97,51 +114,54 @@ class ChessPattern {
     /**
      * @description Retorna o valor de uma variável CSS.
      * @param {string} varName - O nome da variável (--exemplo).
-     * @returns {string} O valor da variável.
+     * @param {string} fallbackValue - O valor padrão.
+     * @returns {string} O valor da variável ou o padrão.
+     * @static
      */
-    _getCSSVariable(varName) {
-        return getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+    static _getCSSVariable(varName, fallbackValue) {
+        const value = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+        return value || fallbackValue;
     }
 
     /**
-     * @description Calcula constantes essenciais.
+     * @description Calcula constantes essenciais com base no tamanho da janela e CONFIG.
      * @private
      */
     _calculateAndSetConstants() {
         const vmin = Math.min(window.innerWidth, window.innerHeight) / 100;
-        const lowerBound = 2.1875 * 16;
-        const upperBound = 4.6875 * 16;
-        this.tileSize = Math.max(lowerBound, Math.min(5 * vmin, upperBound));
+        const dynamicSize = CONFIG.TILE_SIZE_VMIN_FACTOR * vmin;
+        this.tileSize = Math.max(CONFIG.TILE_SIZE_MIN_PX, Math.min(dynamicSize, CONFIG.TILE_SIZE_MAX_PX));
 
-        this.tileColor = this._getCSSVariable('--color-tile');
+        this.tileColor = ChessPattern._getCSSVariable('--color-tile', '#000000');
 
-        const strokeWidth = this.tileSize * CONFIG.FOOTER_STROKE_WIDTH_RATIO;
-        const offsetY = this.tileSize * CONFIG.FOOTER_OFFSET_Y_RATIO;
-        this.footerTopPadding = offsetY + strokeWidth;
         this.spikeHeight = this.tileSize * CONFIG.SPIKE_HEIGHT_RATIO;
         this.spikeBaseWidth = this.tileSize * CONFIG.SPIKE_BASE_WIDTH_RATIO;
         this.spikePatternWidth = this.spikeBaseWidth * 2;
     }
 
     /**
-     * @description Cria as coordenadas dos quadrados, sem criar elementos DOM.
+     * @description Gera as coordenadas iniciais dos quadrados da grade.
      * @private
      */
     _createPatternData() {
-        const buffer = this.tileSize * CONFIG.TILE_BUFFER_COUNT;
+        if (this.tileSize <= 0) return;
+
+        const verticalOffset = this.tileSize * CONFIG.TILE_VERTICAL_OFFSET_BUFFER;
+        const horizontalTiles = Math.ceil(this.logicalWidth / this.tileSize) + CONFIG.TILE_GRID_BUFFER_COUNT;
+        let verticalTiles = Math.ceil(this.logicalHeight / this.tileSize) + CONFIG.TILE_GRID_BUFFER_COUNT;
         
-        const horizontalTiles = Math.ceil(this.logicalWidth / this.tileSize) + 2;
-        let verticalTiles = Math.ceil(this.logicalHeight / this.tileSize) + 2;
         if (verticalTiles % 2 !== 0) verticalTiles++;
 
         this.gridHeight = verticalTiles * this.tileSize;
+        this.offScreenBoundaryY = -this.tileSize * (CONFIG.TILE_VERTICAL_OFFSET_BUFFER + 1);
 
-        for (let x = 0; x < horizontalTiles; x++) {
-            for (let y = 0; y < verticalTiles; y++) {
+        for (let y = 0; y < verticalTiles; y++) {
+            for (let x = 0; x < horizontalTiles; x++) {
                 if ((x + y) % 2 === 0) {
-                    const posX = x * this.tileSize;
-                    const posY = y * this.tileSize - buffer;
-                    this.tiles.push({ x: posX, y: posY });
+                    this.tiles.push({ 
+                        x: x * this.tileSize, 
+                        y: y * this.tileSize - verticalOffset 
+                    });
                 }
             }
         }
@@ -159,37 +179,47 @@ class ChessPattern {
     }
 
     /**
+     * @description O loop principal de animação, executado a cada frame.
+     * @param {number} timestamp - O tempo atual fornecido pelo browser.
+     * @private
+     */
+    _animate(timestamp) {
+        if (!this.lastTimestamp) this.lastTimestamp = timestamp;
+        const deltaTime = (timestamp - this.lastTimestamp) / 1000;
+        this.lastTimestamp = timestamp;
+
+        if (deltaTime > 0.5) {
+            this.animationFrameId = requestAnimationFrame(this._animate.bind(this));
+            return;
+        }
+        
+        this.ctx.clearRect(0, 0, this.logicalWidth, this.logicalHeight);
+
+        const gridMovement = CONFIG.GRID_SPEED * deltaTime;
+        for (const tile of this.tiles) {
+            tile.y -= gridMovement;
+            if (tile.y < this.offScreenBoundaryY) {
+                tile.y += this.gridHeight;
+            }
+        }
+        this._drawGrid();
+
+        const footerMovement = CONFIG.FOOTER_SPIKE_SPEED * deltaTime;
+        this.spikeOffset += footerMovement;
+        this._updateFooterShape();
+        
+        this.animationFrameId = requestAnimationFrame(this._animate.bind(this));
+    }
+    
+    /**
      * @description Inicia o loop de animação.
      * @private
      */
     _startAnimation() {
-        let lastTimestamp = 0;
-
-        const animate = (timestamp) => {
-            if (!lastTimestamp) lastTimestamp = timestamp;
-            const deltaTime = (timestamp - lastTimestamp) / 1000;
-            lastTimestamp = timestamp;
-
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-            const gridMovement = CONFIG.GRID_SPEED * deltaTime;
-            for (const tile of this.tiles) {
-                tile.y -= gridMovement;
-                if (tile.y < -this.tileSize * (CONFIG.TILE_BUFFER_COUNT + 1)) {
-                    tile.y += this.gridHeight;
-                }
-            }
-
-            this._drawGrid();
-
-            this.spikeOffset += CONFIG.FOOTER_SPIKE_SPEED * deltaTime;
-            this._updateFooterShape();
-
-            this.animationFrameId = requestAnimationFrame(animate);
-        };
-        this.animationFrameId = requestAnimationFrame(animate);
+        this.lastTimestamp = 0;
+        this.animationFrameId = requestAnimationFrame(this._animate.bind(this));
     }
-    
+
     /**
      * @description Para o loop de animação.
      * @private
@@ -201,50 +231,92 @@ class ChessPattern {
         }
     }
 
-    _createFooterSVG() {
-        this.footer.innerHTML = '';
-        const fragment = document.createDocumentFragment();
-        this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        this.spikeGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-        this.pathBackground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        this.pathForeground = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        this.pathBackground.id = 'footer-background';
-        this.pathForeground.id = 'footer-foreground';
-        this.spikeGroup.append(this.pathBackground, this.pathForeground);
-        this.svg.appendChild(this.spikeGroup);
-        fragment.appendChild(this.svg);
-        this.footer.appendChild(fragment);
-    }
-    
-    _createFooterPaths() {
-        if (!this.spikeBaseWidth) return;
-        const screenWidth = window.innerWidth;
+    /**
+     * @description Cria e configura o SVG do rodapé e seus caminhos.
+     * @private
+     */
+    _setupFooter() {
+        if (this.tileSize <= 0) return;
+
+        this.footer.querySelector('svg')?.remove();
+
+        const svgNS = 'http://www.w3.org/2000/svg';
+        this.svg = document.createElementNS(svgNS, 'svg');
+        this.footerSpikeGroup = document.createElementNS(svgNS, 'g');
+        const pathBackground = document.createElementNS(svgNS, 'path');
+        const pathForeground = document.createElementNS(svgNS, 'path');
+        
+        pathBackground.id = 'footer-background';
+        pathForeground.id = 'footer-foreground';
+        
+        this.footerSpikeGroup.append(pathBackground, pathForeground);
+        this.svg.appendChild(this.footerSpikeGroup);
+        this.footer.prepend(this.svg);
+
+        const screenWidth = this.logicalWidth; 
         const footerHeight = this.footer.offsetHeight;
+        const strokeWidth = this.tileSize * CONFIG.FOOTER_STROKE_WIDTH_RATIO;
+        const offsetY = this.tileSize * CONFIG.FOOTER_OFFSET_Y_RATIO;
+        const footerTopPadding = offsetY + strokeWidth;
+        
         const requiredWidth = screenWidth + this.spikePatternWidth;
-        const numPoints = Math.ceil(requiredWidth / this.spikeBaseWidth) + 3;
+        const numPoints = Math.ceil(requiredWidth / this.spikeBaseWidth) + CONFIG.SPIKE_POINTS_BUFFER;
+        
         const points = [];
         for (let i = 0; i < numPoints; i++) {
             const x = i * this.spikeBaseWidth;
-            const y = ((i % 2) !== 0 ? this.spikeHeight : 0) + this.footerTopPadding;
+            const y = (i % 2 !== 0 ? this.spikeHeight : 0) + footerTopPadding;
             points.push(`${x} ${y}`);
         }
-        const pathData = `M ${points[0]} L ${points.slice(1).join(' L ')} L ${screenWidth + this.tileSize} ${footerHeight} L -${this.tileSize} ${footerHeight} Z`;
-        this.pathBackground.setAttribute('d', pathData);
-        this.pathForeground.setAttribute('d', pathData);
+        
+        const pathHorizontalBuffer = this.tileSize * CONFIG.FOOTER_PATH_HORIZONTAL_BUFFER_RATIO;
+        
+        const pathData = `
+            M ${points[0]}
+            L ${points.slice(1).join(' L ')}
+            L ${screenWidth + pathHorizontalBuffer} ${footerHeight}
+            L ${-pathHorizontalBuffer} ${footerHeight}
+            Z
+        `;
+        
+        pathBackground.setAttribute('d', pathData);
+        pathForeground.setAttribute('d', pathData);
     }
     
+    /**
+     * @description Atualiza a posição do grupo SVG para simular o movimento.
+     * @private
+     */
     _updateFooterShape() {
         if (!this.spikePatternWidth) return;
         const offsetX = -(this.spikeOffset % this.spikePatternWidth);
-        this.spikeGroup.style.transform = `translateX(${offsetX}px)`;
+        this.footerSpikeGroup.style.transform = `translateX(${offsetX}px)`;
     }
     
-    _setupResizeHandler() {
-        let resizeTimer;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimer);
-            resizeTimer = setTimeout(() => this._setupAndCreateScene(), CONFIG.RESIZE_DEBOUNCE_DELAY);
-        });
+    /**
+     * @description Cria uma função com "debounce", que limita a frequência de sua execução.
+     * @param {Function} func - A função a ser executada.
+     * @param {number} delay - O tempo de espera em milissegundos.
+     * @returns {Function} A nova função com debounce.
+     * @private
+     */
+    _debounce(func, delay) {
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => {
+                func.apply(this, args);
+            }, delay);
+        };
+    }
+
+    /**
+     * @description Remove os ouvintes de evento e para a animação.
+     */
+    destroy() {
+        this._stopAnimation();
+        window.removeEventListener('resize', this.resizeHandler);
+        this.footer.querySelector('svg')?.remove();
     }
 }
 
