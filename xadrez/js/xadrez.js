@@ -119,20 +119,24 @@ class ChessPattern {
      * @private
      */
     _calculateAndSetConstants() {
-        const screenWidth = window.innerWidth;
+        const screenWidth = this.logicalWidth;
         const { 
             SCREEN_WIDTH_MIN, SCREEN_WIDTH_MAX, 
             TILE_SIZE_ON_MIN_SCREEN, TILE_SIZE_ON_MAX_SCREEN,
             FOOTER_SIZE_ON_MIN_SCREEN, FOOTER_SIZE_ON_MAX_SCREEN 
         } = CONFIG;
 
-        const widthRange = SCREEN_WIDTH_MAX - SCREEN_WIDTH_MIN;
-        const screenPercent = Math.max(0, Math.min(1, (screenWidth - SCREEN_WIDTH_MIN) / widthRange));
-        const tileSizeRange = TILE_SIZE_ON_MIN_SCREEN - TILE_SIZE_ON_MAX_SCREEN;
-        this.tileSize = TILE_SIZE_ON_MIN_SCREEN - (tileSizeRange * screenPercent);
+        this.tileSize = this._interpolateValue(
+            screenWidth, 
+            SCREEN_WIDTH_MIN, SCREEN_WIDTH_MAX, 
+            TILE_SIZE_ON_MIN_SCREEN, TILE_SIZE_ON_MAX_SCREEN
+        );
         
-        const footerSizeRange = FOOTER_SIZE_ON_MIN_SCREEN - FOOTER_SIZE_ON_MAX_SCREEN;
-        this.footerBaseSize = FOOTER_SIZE_ON_MIN_SCREEN - (footerSizeRange * screenPercent);
+        this.footerBaseSize = this._interpolateValue(
+            screenWidth,
+            SCREEN_WIDTH_MIN, SCREEN_WIDTH_MAX,
+            FOOTER_SIZE_ON_MIN_SCREEN, FOOTER_SIZE_ON_MAX_SCREEN
+        );
 
         this.tileColor = getComputedStyle(document.documentElement).getPropertyValue('--color-tile').trim();
         this.spikeHeight = this.footerBaseSize * CONFIG.SPIKE_HEIGHT_RATIO;
@@ -251,16 +255,15 @@ class ChessPattern {
         pathForeground.id = 'footer-foreground';
         
         this.footerSpikeGroup.append(pathBackground, pathForeground);
-        this.svg.appendChild(this.footerSpikeGroup);
+        this.svg.append(this.footerSpikeGroup);
         this.footer.prepend(this.svg);
 
-        const screenWidth = this.logicalWidth; 
         const footerHeight = this.footer.offsetHeight;
         const strokeWidth = this.footerBaseSize * CONFIG.FOOTER_STROKE_WIDTH_RATIO;
         const offsetY = this.footerBaseSize * CONFIG.FOOTER_OFFSET_Y_RATIO;
         const footerTopPadding = offsetY + strokeWidth;
         
-        const requiredWidth = screenWidth + this.spikePatternWidth;
+        const requiredWidth = this.logicalWidth + this.spikePatternWidth;
         const numPoints = Math.ceil(requiredWidth / this.spikeBaseWidth) + CONFIG.SPIKE_POINTS_BUFFER;
         
         const points = [];
@@ -272,13 +275,13 @@ class ChessPattern {
         
         const pathHorizontalBuffer = this.tileSize * CONFIG.FOOTER_PATH_HORIZONTAL_BUFFER_RATIO;
         
-        const pathData = `
-            M ${points[0]}
-            L ${points.slice(1).join(' L ')}
-            L ${screenWidth + pathHorizontalBuffer} ${footerHeight}
-            L ${-pathHorizontalBuffer} ${footerHeight}
-            Z
-        `;
+        const pathData = [
+            `M ${points[0]}`,
+            `L ${points.slice(1).join(' L ')}`,
+            `L ${this.logicalWidth + pathHorizontalBuffer} ${footerHeight}`,
+            `L ${-pathHorizontalBuffer} ${footerHeight}`,
+            'Z'
+        ].join(' ');
         
         pathBackground.setAttribute('d', pathData);
         pathForeground.setAttribute('d', pathData);
@@ -292,6 +295,27 @@ class ChessPattern {
         if (!this.spikePatternWidth) return;
         const offsetX = -(this.spikeOffset % this.spikePatternWidth);
         this.footerSpikeGroup.style.transform = `translateX(${offsetX}px)`;
+    }
+
+    /**
+     * @description Calcula um valor intermediário entre um mínimo e um máximo com base numa posição.
+     * @param {number} position - A posição atual (ex: largura da tela).
+     * @param {number} posMin - A posição mínima do intervalo.
+     * @param {number} posMax - A posição máxima do intervalo.
+     * @param {number} valMin - O valor correspondente à posição mínima.
+     * @param {number} valMax - O valor correspondente à posição máxima.
+     * @returns {number} O valor interpolado.
+     * @private
+     */
+    _interpolateValue(position, posMin, posMax, valMin, valMax) {
+        if (position <= posMin) return valMin;
+        if (position >= posMax) return valMax;
+        
+        const positionRange = posMax - posMin;
+        const valueRange = valMin - valMax;
+        const percent = (position - posMin) / positionRange;
+
+        return valMin - (valueRange * percent);
     }
     
     /**

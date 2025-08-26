@@ -5,15 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Xadrez</title>
     <link rel="icon" type="image/png" href="../assets/images/xadrez/xadrez-icon.png">
-    <link rel="stylesheet" href="../assets/css/xadrez.css">
+    <link rel="stylesheet" href="css/xadrez.css">
     <link rel="preload" href="../assets/images/xadrez/mouse.svg" as="image">
     <link rel="preload" href="../assets/images/xadrez/mouse-click.svg" as="image">
 </head>
 <body>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="#">INDEX</a></li>
+            <li><a href="#">ASCII</a></li>
+            <li><a href="#">HORSE</a></li>
+            <li><a href="#">SYSTEM</a></li>
+        </ul>
+    </nav>
+
     <canvas class="infinite-grid" id="infiniteGrid"></canvas>
 
     <footer></footer>
 
-    <script src="../assets/js/xadrez.js" defer></script>
+    <script src="js/xadrez.js" defer></script>
+    <script src="js/ripple.js" defer></script>
+    <script src="js/menu.js" defer></script>
 </body>
 </html>
