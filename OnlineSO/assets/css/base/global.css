@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'Tahoma';
-    src: url('../../../fonts/Tahoma.otf') format('opentype');
+    src: url('../../fonts/Tahoma.otf') format('opentype');
     font-weight: normal;
     font-display: swap;
 }
