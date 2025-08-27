@@ -1,41 +1,26 @@
 /**
- * @file xadrez.js
+ * @file backgroundAnimation.js
  * @description Controla a lógica para uma animação de fundo com um padrão de xadrez infinito usando Canvas.
  * @version 1.0.0
  */
 
 const CONFIG = {
-    // Velocidades de animação
     GRID_SPEED: 25, // Velocidade de rolagem da grade em pixels/segundo
-    FOOTER_SPIKE_SPEED: 10, // Velocidade de rolagem dos "espinhos" do rodapé em pixels/segundo
 
     SCREEN_WIDTH_MIN: 320,  // Largura de tela mínima em pixels para o cálculo
     SCREEN_WIDTH_MAX: 1920, // Largura de tela máxima em pixels para o cálculo
     TILE_SIZE_ON_MIN_SCREEN: 85, // Tamanho do quadrado na tela mínima (valor máximo)
     TILE_SIZE_ON_MAX_SCREEN: 70, // Tamanho do quadrado na tela máxima (valor mínimo)
-
-    FOOTER_SIZE_ON_MIN_SCREEN: 58, // Tamanho base do rodapé na tela MÍNIMA
-    FOOTER_SIZE_ON_MAX_SCREEN: 50, // Tamanho base do rodapé na tela MÁXIMA
     
-    // Buffers para garantir que a animação não tenha falhas nas bordas
     TILE_GRID_BUFFER_COUNT: 2, // Quantos tiles extras desenhar nas direções X e Y
     TILE_VERTICAL_OFFSET_BUFFER: 1, // Quantos tiles de offset vertical para iniciar o desenho
     
-    // Configurações do rodapé SVG
-    FOOTER_STROKE_WIDTH_RATIO: 0.04, // Espessura da borda do rodapé em relação ao tileSize
-    FOOTER_OFFSET_Y_RATIO: 0.12, // Deslocamento vertical do rodapé em relação ao tileSize
-    SPIKE_HEIGHT_RATIO: 0.25, // Altura do "espinho" em relação ao tileSize
-    SPIKE_BASE_WIDTH_RATIO: 0.25, // Largura da base do "espinho" em relação ao tileSize
-    SPIKE_POINTS_BUFFER: 3, // Número de pontos extras para o caminho SVG para evitar falhas
-    FOOTER_PATH_HORIZONTAL_BUFFER_RATIO: 1, // Buffer para evitar cortes nas laterais (1 = 100% do tileSize)
-
-    // Outros
     RESIZE_DEBOUNCE_DELAY: 200, // Atraso em ms para recalcular a cena ao redimensionar a janela
 };
 
 /**
  * @class ChessPattern
- * @description Gera e anima um padrão de xadrez infinito em Canvas e um rodapé SVG dinâmico.
+ * @description Gera e anima um padrão de xadrez infinito em Canvas.
  */
 class ChessPattern {
     /**
@@ -43,10 +28,9 @@ class ChessPattern {
      */
     constructor() {
         this.canvas = document.getElementById('infiniteGrid');
-        this.footer = document.querySelector('footer');
 
-        if (!this.canvas || !this.footer) {
-            console.error("Erro Crítico: Elementos essenciais (canvas#infiniteGrid ou footer) não foram encontrados. A animação não será iniciada.");
+        if (!this.canvas) {
+            console.error("Erro Crítico: Elemento canvas#infiniteGrid não foi encontrado. A animação não será iniciada.");
             return;
         }
 
@@ -79,7 +63,6 @@ class ChessPattern {
         this._resetState();
         this._handleDPIScaling();
         this._calculateAndSetConstants();
-        this._setupFooter();
         this._createPatternData();
         this._startAnimation();
     }
@@ -93,7 +76,6 @@ class ChessPattern {
         this.animationFrameId = null;
         this.tileSize = 0;
         this.gridHeight = 0;
-        this.spikeOffset = 0;
         this.offScreenBoundaryY = 0;
     }
     
@@ -123,7 +105,6 @@ class ChessPattern {
         const { 
             SCREEN_WIDTH_MIN, SCREEN_WIDTH_MAX, 
             TILE_SIZE_ON_MIN_SCREEN, TILE_SIZE_ON_MAX_SCREEN,
-            FOOTER_SIZE_ON_MIN_SCREEN, FOOTER_SIZE_ON_MAX_SCREEN 
         } = CONFIG;
 
         this.tileSize = this._interpolateValue(
@@ -132,16 +113,7 @@ class ChessPattern {
             TILE_SIZE_ON_MIN_SCREEN, TILE_SIZE_ON_MAX_SCREEN
         );
         
-        this.footerBaseSize = this._interpolateValue(
-            screenWidth,
-            SCREEN_WIDTH_MIN, SCREEN_WIDTH_MAX,
-            FOOTER_SIZE_ON_MIN_SCREEN, FOOTER_SIZE_ON_MAX_SCREEN
-        );
-
         this.tileColor = getComputedStyle(document.documentElement).getPropertyValue('--color-tile').trim();
-        this.spikeHeight = this.footerBaseSize * CONFIG.SPIKE_HEIGHT_RATIO;
-        this.spikeBaseWidth = this.footerBaseSize * CONFIG.SPIKE_BASE_WIDTH_RATIO;
-        this.spikePatternWidth = this.spikeBaseWidth * 2;
     }
 
     /**
@@ -208,10 +180,6 @@ class ChessPattern {
             }
         }
         this._drawGrid();
-
-        const footerMovement = CONFIG.FOOTER_SPIKE_SPEED * deltaTime;
-        this.spikeOffset += footerMovement;
-        this._updateFooterShape();
         
         this.animationFrameId = requestAnimationFrame(this._animate.bind(this));
     }
@@ -235,68 +203,7 @@ class ChessPattern {
             this.animationFrameId = null;
         }
     }
-
-    /**
-     * @description Cria e configura o SVG do rodapé e seus caminhos.
-     * @private
-     */
-    _setupFooter() {
-        if (this.tileSize <= 0) return;
-
-        this.footer.querySelector('svg')?.remove();
-
-        const svgNS = 'http://www.w3.org/2000/svg';
-        this.svg = document.createElementNS(svgNS, 'svg');
-        this.footerSpikeGroup = document.createElementNS(svgNS, 'g');
-        const pathBackground = document.createElementNS(svgNS, 'path');
-        const pathForeground = document.createElementNS(svgNS, 'path');
-        
-        pathBackground.id = 'footer-background';
-        pathForeground.id = 'footer-foreground';
-        
-        this.footerSpikeGroup.append(pathBackground, pathForeground);
-        this.svg.append(this.footerSpikeGroup);
-        this.footer.prepend(this.svg);
-
-        const footerHeight = this.footer.offsetHeight;
-        const strokeWidth = this.footerBaseSize * CONFIG.FOOTER_STROKE_WIDTH_RATIO;
-        const offsetY = this.footerBaseSize * CONFIG.FOOTER_OFFSET_Y_RATIO;
-        const footerTopPadding = offsetY + strokeWidth;
-        
-        const requiredWidth = this.logicalWidth + this.spikePatternWidth;
-        const numPoints = Math.ceil(requiredWidth / this.spikeBaseWidth) + CONFIG.SPIKE_POINTS_BUFFER;
-        
-        const points = [];
-        for (let i = 0; i < numPoints; i++) {
-            const x = i * this.spikeBaseWidth;
-            const y = (i % 2 !== 0 ? this.spikeHeight : 0) + footerTopPadding;
-            points.push(`${x} ${y}`);
-        }
-        
-        const pathHorizontalBuffer = this.tileSize * CONFIG.FOOTER_PATH_HORIZONTAL_BUFFER_RATIO;
-        
-        const pathData = [
-            `M ${points[0]}`,
-            `L ${points.slice(1).join(' L ')}`,
-            `L ${this.logicalWidth + pathHorizontalBuffer} ${footerHeight}`,
-            `L ${-pathHorizontalBuffer} ${footerHeight}`,
-            'Z'
-        ].join(' ');
-        
-        pathBackground.setAttribute('d', pathData);
-        pathForeground.setAttribute('d', pathData);
-    }
     
-    /**
-     * @description Atualiza a posição do grupo SVG para simular o movimento.
-     * @private
-     */
-    _updateFooterShape() {
-        if (!this.spikePatternWidth) return;
-        const offsetX = -(this.spikeOffset % this.spikePatternWidth);
-        this.footerSpikeGroup.style.transform = `translateX(${offsetX}px)`;
-    }
-
     /**
      * @description Calcula um valor intermediário entre um mínimo e um máximo com base numa posição.
      * @param {number} position - A posição atual (ex: largura da tela).
@@ -341,7 +248,6 @@ class ChessPattern {
     destroy() {
         this._stopAnimation();
         window.removeEventListener('resize', this.resizeHandler);
-        this.footer.querySelector('svg')?.remove();
     }
 }
 

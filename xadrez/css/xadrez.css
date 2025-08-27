@@ -41,25 +41,23 @@
 
 @font-face {
     font-family: 'Aktiv Grotesk Black Italic';
-    src: url('../../assets/fonts/Aktiv Grotesk/OTF/AktivGrotesk-BlackItalic.otf') format('opentype');
+    src: url('../../assets/fonts/Aktiv Grotesk/AktivGrotesk-BlackItalic.woff2') format('woff2'),
+         url('../../assets/fonts/Aktiv Grotesk/OTF/AktivGrotesk-BlackItalic.otf') format('opentype');
 }
-
 html, body {
     width: 100vw;
     height: 100vh;
     overflow: hidden;
-    margin: 0;
-    padding: 0;
 }
 
 body {
     background-color: var(--color-page-background);
     position: relative;
-    cursor: var(--cursor-default) !important;
+    cursor: var(--cursor-default);
 }
 
 body:active {
-    cursor: var(--cursor-click) !important;
+    cursor: var(--cursor-click);
 }
 
 body::before {
@@ -123,10 +121,10 @@ footer svg {
 .ripple {
     position: fixed;
     border-radius: 50%;
-    border: 2px solid hsla(0, 0%, 0%, 0.952);
+    border: 2px solid hsla(0, 0%, 100%, 0.952);
     animation: ripple-effect 0.7s ease-out;
     pointer-events: none;
-    transform: translate(-50%, -50%); 
+    transform: translate(-50%, -50%);
     z-index: var(--z-ui); 
 }
 
@@ -141,80 +139,4 @@ footer svg {
         height: 150px;
         opacity: 0;
     }
-}
-
-/*-------------------------------------------*\
-    $MENU DE NAVEGAÇÃO (v3 - Generativo)
-\*-------------------------------------------*/
-
-.main-nav {
-    position: fixed;
-    top: 35%; 
-    left: 5vw;
-    /* A inclinação da "coluna" principal mantém-se */
-    transform: rotate(-3deg);
-    transform-origin: left center;
-    z-index: var(--z-ui);
-}
-
-.main-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.main-nav li {
-    position: relative;
-    padding: 1rem 0; /* Aumentamos o espaçamento para a aleatoriedade */
-}
-
-.main-nav a {
-    display: inline-block; /* Importante para que a rotação funcione bem */
-    color: var(--color-footer-foreground);
-    text-decoration: none;
-    font-family: 'Aktiv Grotesk Black Italic', sans-serif;
-    font-size: 4.5rem;
-    
-    /* Posição relativa e z-index para garantir que o texto fique ACIMA do triângulo */
-    position: relative;
-    z-index: 2;
-    
-    /* A transição agora não inclui o transform, pois ele é definido pelo JS */
-    transition: color 0.3s ease;
-}
-
-/* --- ESTILO DO TRIÂNGULO (AGORA ATRÁS DO TEXTO) --- */
-
-.main-nav li::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%); /* Centraliza o triângulo no LI */
-    
-    /* O triângulo agora é maior e sólido, para servir de fundo */
-    width: 0;
-    height: 0;
-    border-style: solid;
-    border-width: 0 90px 150px 90px; /* Aumentamos o tamanho */
-    border-color: transparent transparent hsl(45, 100%, 70%) transparent; /* Cor amarela */
-    
-    /* O triângulo fica numa camada abaixo do texto (<a>) */
-    z-index: 1;
-    
-    /* Efeito de surgimento */
-    opacity: 0;
-    transition: opacity 0.4s ease;
-}
-
-/* --- ESTADO "SELECIONADO" --- */
-
-/* Quando o LI tiver a classe .selected, o triângulo (fundo) aparece */
-.main-nav li.selected::before {
-    opacity: 1;
-}
-
-/* Quando o LI tiver a classe .selected, o link (<a>) muda de cor */
-.main-nav li.selected a {
-    color: var(--color-page-background); /* Cor de texto escura para contrastar com o fundo amarelo */
 }
