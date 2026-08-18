@@ -1,68 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Arquivo Vivo de Arte Urbana</title>
-  <link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Em Construção</title>
+    <style>
+        /* Estilos básicos para centralizar o conteúdo e deixar a leitura agradável */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #212529;
+        }
+
+        p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.5;
+            color: #495057;
+            margin-bottom: 2rem;
+        }
+
+        .footer {
+            margin-top: auto;
+            padding-bottom: 20px;
+            font-size: 0.9rem;
+            color: #868e96;
+        }
+    </style>
 </head>
 <body>
-  <!-- O Mundo -->
-  <canvas id="world"></canvas>
 
-  <!-- Camada de Interface -->
-  <div id="ui-layer">
+    <h1>Página em Construção 🚧</h1>
     
-    <!-- Botão de Adicionar Principal -->
-    <button id="btn-add" class="fab" aria-label="Adicionar Obra">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="12" y1="5" x2="12" y2="19"></line>
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-      </svg>
-    </button>
+    <p>
+        Este espaço está sendo preparado no momento. 
+        Em breve, o site estará disponível com todo o conteúdo finalizado.
+    </p>
 
-    <!-- Painel Lateral de Submissão -->
-    <aside id="sidebar" class="hidden">
-      <div class="sidebar-header">
-        <h2>Adicionar Obra</h2>
-        <button id="btn-close-sidebar" class="icon-btn">&times;</button>
-      </div>
-      
-      <div class="sidebar-content">
-        <form id="submit-form">
-          <div class="form-group">
-            <label for="sticker-file">Selecione a imagem (PNG, fundo transparente)</label>
-            <input type="file" id="sticker-file" accept="image/png" required>
-            <div id="image-preview-container" class="hidden">
-              <canvas id="preview-canvas"></canvas>
-            </div>
-          </div>
+    <div class="footer">
+        &copy; 2026 Pedro Henrique Barbosa Campos
+    </div>
 
-          <div class="form-group">
-            <label for="artist-name">Nome artístico</label>
-            <input type="text" id="artist-name" maxlength="60" required>
-          </div>
-
-          <div class="form-group">
-            <label for="artist-handle">Usuário (ex: @artista)</label>
-            <input type="text" id="artist-handle" maxlength="40">
-          </div>
-
-          <div class="form-group">
-            <label for="artist-city">Cidade</label>
-            <input type="text" id="artist-city" maxlength="60" required>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" id="btn-cancel" class="btn-secondary">Cancelar</button>
-            <button type="submit" id="btn-submit" class="btn-primary" disabled>Posicionar no Muro</button>
-          </div>
-        </form>
-      </div>
-    </aside>
-
-  </div>
-
-  <script type="module" src="js/app.js"></script>
 </body>
 </html>

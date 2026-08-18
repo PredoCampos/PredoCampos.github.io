@@ -18,6 +18,24 @@ dist
 dist-ssr
 *.local
 
+# sticker-wall — gerados por build/seed, nunca commitados
+sticker-wall/_site/
+sticker-wall/.wrangler/
+
+# obras geradas por `npm run seed` — fixtures de teste, não conteúdo real
+# (obras de verdade entram uma a uma via PR de curadoria; ver B.1/B.5 item 8)
+sticker-wall/data/stickers/*
+!sticker-wall/data/stickers/.gitkeep
+sticker-wall/stickers/*
+!sticker-wall/stickers/.gitkeep
+
+# segredos locais do wrangler — nunca commitados, só `wrangler secret put`
+sticker-wall/worker/.dev.vars*
+.env*
+
+# gerado pelo deploy.yml ao montar a publicação unificada
+_publicar/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

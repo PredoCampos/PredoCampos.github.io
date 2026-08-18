@@ -1,0 +1,66 @@
+name: Deploy
+
+# Publica o repo inteiro: o portfólio na raiz e o território de
+# sticker-wall/ montado em /sticker-wall/, no mesmo artefato do Pages.
+# sticker-wall/scripts/build-index.mjs não tem dependências de terceiros
+# (só node:fs, node:path e shared/*.js), então não precisa de npm install.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Testar shared/ (regras usadas por sticker-wall)
+        working-directory: sticker-wall
+        run: node --test
+
+      - name: Montar sticker-wall/_site
+        working-directory: sticker-wall
+        run: node scripts/build-index.mjs
+
+      - name: Montar publicação unificada
+        run: |
+          mkdir -p _publicar
+          shopt -s dotglob nullglob
+          for item in ./*; do
+            nome=$(basename "$item")
+            case "$nome" in
+              .git|.github|.vscode|node_modules|sticker-wall|_publicar) continue ;;
+            esac
+            cp -r "$item" "_publicar/$nome"
+          done
+          mkdir -p _publicar/sticker-wall
+          cp -r sticker-wall/_site/. _publicar/sticker-wall/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _publicar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
